@@ -1,13 +1,13 @@
 .register{
   display: flex;
   font-family: var(--font-family);
-  color: white;
+  /*color: white;*/
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 .register-container {
-  background: #2A2D3A;
+  background: rgba(243, 243, 243, 0.71);
   border-radius: 20px;
   padding: 2rem;
   min-width: 30%;
@@ -34,7 +34,7 @@
   margin-bottom: 15px;
 }
 .register-formGroup input{
-  background: #1B1A21;
+  background: rgba(105, 99, 70, 0.32);
   border-radius: 10px;
   padding: 1rem 1.5rem;
   outline: none;
@@ -45,7 +45,7 @@
 }
 
 .register-formGroup textarea{
-  background: #2D2E36;
+  background: rgba(4, 85, 94, 0.55);
   border-radius: 10px;
   padding: 1rem 1.5rem;
   outline: none;
@@ -55,7 +55,7 @@
   line-height: 26px;
 }
 .register-formGroup select{
-  background: #2D2E36;
+  background: rgba(4, 85, 94, 0.55);
   border-radius: 10px;
   padding: 1rem 1.5rem;
   outline: none;
@@ -72,7 +72,7 @@
 }
 .register-writeButton{
   /* float: right; */
-  background: var(--primary-btn);
+  background: var(--secondary-color);
   border: none;
   border-radius: 10px;
   padding: 12px 30px;

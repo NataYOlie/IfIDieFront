@@ -29,7 +29,7 @@ const Bids = ({title}) => {
               </div>
               <div className="bids-card-bottom">
                 <p>1.25 <span>ETH</span></p>
-                <p> <AiFillHeart /> 92</p>
+                <p> <AiOutlineHeart /> 0</p>
               </div>
             </div>
           </div>

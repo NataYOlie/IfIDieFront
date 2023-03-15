@@ -4,14 +4,14 @@
   --font-family: 'Poppins', sans-serif;
 
   --gradient2: linear-gradient(89.97deg, #EB1484 1.84%, #c81cc5 102.67%);
-  --primary-btn: linear-gradient(101.12deg, #EB1484 27.35%, #C91CC3 99.99%, #C81CC5 100%, #C81CC5 100%);
+  --primary-btn: linear-gradient(101.12deg, #c0b2ff 27.35%, #eb61e8 99.99%, #C81CC5 100%, #eb61e8 100%);
+  --gradient-navbar: linear-gradient(101.12deg, #29d4e0 27.35%, #d875f7 100%);
   
-  --primary-color: #EB1484;
-  --secondary-color: #c81cc5;
-
-  --color-bg: #24252d;
-  --color-card : #2A2D3A;
-  --color-footer : #24252D;
+  --primary-color: rgb(41, 212, 224);
+  --secondary-color: #d875f7;
+  --color-bg: rgba(54, 56, 65, 0.3);
+  --color-card : rgba(42, 45, 58, 0.37);
+  --color-footer : rgba(36, 37, 45, 0.33);
 }
 /* ===== Scrollbar CSS ===== */
   /* Firefox */

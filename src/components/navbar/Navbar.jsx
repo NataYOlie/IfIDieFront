@@ -1,13 +1,13 @@
 import React,{ useState} from 'react'
 import './navbar.css'
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo_100.png'
 import {  Link } from "react-router-dom";
 
 const Menu = () => (
   <>
-     <Link to="/"><p>Explore</p> </Link>
-     <p>My Items</p>
+     <Link to="/"><p>Planifier</p> </Link>
+     <p>Cimetière</p>
     
   </>
  )
@@ -29,32 +29,33 @@ const Menu = () => (
         <div className="navbar-links_logo">
           <img src={logo} alt="logo" />
           <Link to="/"> 
-            <h1>CryptoKet</h1>
+            <h1>If I Die</h1>
           </Link>
         </div>
         <div className="navbar-links_container">
-          <input type="text" placeholder='Search Item Here' autoFocus={true} />
-         <Menu />
+          {/*<input type="text" placeholder='Search Item Here' autoFocus={true} />*/}
+
          {user && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> }
         
         </div>
       </div>
       <div className="navbar-sign">
+          <Menu />
       {user ? (
         <>
-         <Link to="/create"> 
-          <button type='button' className='primary-btn' >Create</button>
-        </Link>
-        <button type='button' className='secondary-btn'>Connect</button>
+        {/* <Link to="/create"> */}
+        {/*  <button type='button' className='primary-btn' >Create</button>*/}
+        {/*</Link>*/}
+        <button type='button' className='secondary-btn'>Connexion</button>
         </>
       ): (
         <>
         <Link to="/login"> 
-         <button type='button' className='primary-btn' onClick={handleLogin} >Sign In</button>
+         <button type='button' className='primary-btn' onClick={handleLogin} >Connexion</button>
         </Link>
-        <Link to="/register"> 
-          <button type='button' className='secondary-btn'>Sign Up</button>
-        </Link>
+        {/*<Link to="/register"> */}
+        {/*  <button type='button' className='secondary-btn'>Sign Up</button>*/}
+        {/*</Link>*/}
         </>
       )}
        

@@ -28,7 +28,7 @@
   width: 20%;
 }
 .bids-card{
-  background: #2A2D3A;
+  background: rgba(42, 45, 58, 0.57);
   border-radius: 20px;
   padding: 11px 12px 19px 11px;
   margin-inline: 10px;
