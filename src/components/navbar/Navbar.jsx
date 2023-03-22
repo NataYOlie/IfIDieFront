@@ -14,7 +14,7 @@ const Menu = () => (
 
  const Navbar = () => {
   const [toggleMenu,setToggleMenu] = useState(false)
-   const [user,setUser] = useState(false)
+  const [user,setUser] = useState(false)
 
   const handleLogout = () => {
     setUser(false);
@@ -59,8 +59,6 @@ const Menu = () => (
         </>
       )}
        
-
-       
       </div>
       <div className="navbar-menu">
         {toggleMenu ? 
@@ -89,7 +87,6 @@ const Menu = () => (
               </Link>
               </>
             )}
-           
             </div>
             </div>
         )}
