@@ -6,7 +6,7 @@ const Home = () => {
   return <div>
     <Header />
     <FunnyDeath />
-    <Bids title="Services"  />
+    <Bids title="Envisager"  />
   </div>;
 };
 

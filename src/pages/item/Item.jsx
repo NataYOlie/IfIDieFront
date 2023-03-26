@@ -2,7 +2,6 @@ import React from 'react';
 import './item.css'
 import creator from '../../assets/OLD/seller2.png'
 import item from '../../assets/OLD/item1.png'
-
 const Item = () => {
 
 
