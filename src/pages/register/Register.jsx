@@ -1,7 +1,7 @@
 import React from 'react';
 import './register.css'
 import {Link} from 'react-router-dom'
-import Image from '../../assets/Image.png'
+import Image from '../../assets/OLD/Image.png'
 
 const Register = () => {
 
@@ -9,23 +9,23 @@ const Register = () => {
     <div className='register section__padding'>
       <div className="register-container">
         <h1>register</h1>
-        <p className='upload-file'>Upload Profile pic</p>
+        {/* <p className='upload-file'>Upload Profile pic</p>
         <div className="upload-img-show">
           <img src={Image} alt="banner" />
           <p>browse media on your device</p>
-        </div>
+        </div> */}
         <form className='register-writeForm' autoComplete='off' >
-          <div className="register-formGroup">
+          {/* <div className="register-formGroup">
             <label>Upload</label>
             <input type="file" className='custom-file-input'
           />
-          </div>
+          </div> */}
           <div className="register-formGroup">
-            <label>Full Name</label>
+            <label>Nom</label>
             <input type="text" placeholder='Name' />
           </div>
           <div className="register-formGroup">
-            <label>Username</label>
+            <label>Prenom</label>
             <input type="text" placeholder='Username'  />
           </div>
           <div className="register-formGroup">

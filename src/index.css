@@ -2,6 +2,7 @@
 
 :root {
   --font-family: 'Poppins', sans-serif;
+  --font-titles: 'Handlee', sans-serif;
 
   --gradient2: linear-gradient(89.97deg, #EB1484 1.84%, #c81cc5 102.67%);
   --primary-btn: linear-gradient(101.12deg, #c0b2ff 27.35%, #eb61e8 99.99%, #C81CC5 100%, #eb61e8 100%);
@@ -9,7 +10,8 @@
   
   --primary-color: rgb(41, 212, 224);
   --secondary-color: #d875f7;
-  --color-bg: rgba(54, 56, 65, 0.3);
+  --ternary-color: #ff4800;
+  --color-bg: linear-gradient(#12a3df 27.35%, #ffffff 100%);
   --color-card : rgba(42, 45, 58, 0.37);
   --color-footer : rgba(36, 37, 45, 0.33);
 }

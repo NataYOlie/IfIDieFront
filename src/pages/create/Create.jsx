@@ -1,5 +1,5 @@
 import './create.css'
-import Image from '../../assets/Image.png'
+import Image from '../../assets/OLD/Image.png'
 const Create = () => {
 
   return (

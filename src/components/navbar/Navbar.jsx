@@ -1,20 +1,25 @@
 import React,{ useState} from 'react'
 import './navbar.css'
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
-import logo from '../../assets/logo_100.png'
 import {  Link } from "react-router-dom";
 
-const Menu = () => (
-  <>
-     <Link to="/"><p>Planifier</p> </Link>
-     <p>Cimetière</p>
-    
-  </>
+
+const Menu = () => {
+    const [envisagerToggleMenu,envisagerSetToggleMenu] = useState(false)
+    const [serviceToggleMenu,serviceSetToggleMenu] = useState(false)
+
+    return (
+    <>
+        <Link to="/" ><p onClick={() => envisagerSetToggleMenu(true)}>Envisager</p></Link>
+        <Link to="/" ><p>Services</p></Link>
+        <Link to="/" ><p>Cimetière</p></Link>
+    </>
  )
+}
 
  const Navbar = () => {
-  const [toggleMenu,setToggleMenu] = useState(false)
-  const [user,setUser] = useState(false)
+     const [toggleMenu,setToggleMenu] = useState(false)
+     const [user,setUser] = useState(false)
 
   const handleLogout = () => {
     setUser(false);
@@ -27,7 +32,6 @@ const Menu = () => (
     <div className='navbar'>
       <div className="navbar-links">
         <div className="navbar-links_logo">
-          <img src={logo} alt="logo" />
           <Link to="/"> 
             <h1>If I Die</h1>
           </Link>
@@ -35,7 +39,11 @@ const Menu = () => (
         <div className="navbar-links_container">
           {/*<input type="text" placeholder='Search Item Here' autoFocus={true} />*/}
 
-         {user && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> }
+         {user && 
+         <>
+         <Link to="/"><p>{user}</p></Link>
+         </>
+         }
         
         </div>
       </div>
@@ -43,19 +51,13 @@ const Menu = () => (
           <Menu />
       {user ? (
         <>
-        {/* <Link to="/create"> */}
-        {/*  <button type='button' className='primary-btn' >Create</button>*/}
-        {/*</Link>*/}
-        <button type='button' className='secondary-btn'>Connexion</button>
+            <Link to="/"><p onClick={handleLogout}>Logout</p></Link>
         </>
       ): (
         <>
-        <Link to="/login"> 
-         <button type='button' className='primary-btn' onClick={handleLogin} >Connexion</button>
+        <Link to="/login">
+         <p onClick={handleLogin} >Connection</p>
         </Link>
-        {/*<Link to="/register"> */}
-        {/*  <button type='button' className='secondary-btn'>Sign Up</button>*/}
-        {/*</Link>*/}
         </>
       )}
        

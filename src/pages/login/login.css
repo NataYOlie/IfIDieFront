@@ -7,7 +7,7 @@
   width: 100%;
 }
 .login-container {
-  background: #2A2D3A;
+  background: #29D4E0;
   border-radius: 20px;
   padding: 2rem;
   min-width: 30%;
@@ -82,7 +82,7 @@
   line-height: 21px;
 }
 .login-reg-writeButton{
-  background-color: transparent;
+  background: var(--primary-btn);
   border: 1px solid var(--primary-color);
   border-radius: 10px;
   padding: 12px 30px;

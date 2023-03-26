@@ -1,7 +1,7 @@
 import React from 'react';
 import './profile.css'
-import profile_banner from '../../assets/profile_banner.png'
-import profile_pic from '../../assets/profile.jpg'
+import profile_banner from '../../assets/OLD/profile_banner.png'
+import profile_pic from '../../assets/OLD/profile.jpg'
 import Bids from '../../components/bids/Bids'
 
 const Profile = () => {

@@ -1,9 +1,8 @@
 body{
-  /*background: var(--color-bg);*/
-  background-image: url("/src/assets/background.png") ;
-  /*height: 500px;*/
-  /*background-repeat: repeat;*/
-  scroll-behavior: smooth;
+    background: var(--color-bg);
+    max-width: 1400px;
+    margin: 0 auto !important;
+    scroll-behavior: smooth;
 }
 a{
   text-decoration: none;
