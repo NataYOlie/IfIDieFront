@@ -2,7 +2,7 @@ import React from 'react';
 import './profile.css'
 import profile_banner from '../../assets/OLD/profile_banner.png'
 import profile_pic from '../../assets/OLD/profile.jpg'
-import Bids from '../../components/bids/Bids'
+import Cards from '../../components/Cards/Cards'
 
 const Profile = () => {
 
@@ -27,7 +27,7 @@ const Profile = () => {
             <option>High to Low</option>
           </select>
         </div>
-        <Bids   title="Item" />
+        <Cards title="Item" />
       </div>
     </div>
   );

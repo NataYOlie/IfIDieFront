@@ -1,12 +1,12 @@
 import React from 'react';
-import {Bids, Header, FunnyDeath } from '../../components'
+import {Cards, Header, FunnyDeath } from '../../components'
 
 const Home = () => {
 
   return <div>
     <Header />
     <FunnyDeath />
-    <Bids title="Envisager"  />
+    <Cards title="Envisager"  />
   </div>;
 };
 

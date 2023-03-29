@@ -48,6 +48,7 @@
   justify-content: space-around;
   /*margin: auto;*/
 }
+
 .header-content div h1{
   font-family: var(--font-family);
   font-weight: bold;
@@ -283,7 +284,7 @@ border-radius: 50%;
   .slider .slider-card{
     margin-right: 1rem;
   }
-  .bids{
+  .cards{
     padding: 2rem 0px !important;
   }
 }

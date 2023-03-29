@@ -1,6 +1,6 @@
 import React from 'react'
 import './footer.css'
-import nftlogo from '../../assets/OLD/logo_33px.png'
+import logo from '../../assets/IfIDie_logo_blanc.png'
 import { AiOutlineInstagram,AiOutlineTwitter, } from "react-icons/ai";
 import { RiDiscordFill } from "react-icons/ri";
 import { FaTelegramPlane } from "react-icons/fa";
@@ -8,11 +8,11 @@ import { FaTelegramPlane } from "react-icons/fa";
 const Footer = () => {
 
   return (
-    <div className='footer section__padding'>
+    <div className='footer'>
       <div className="footer-links">
         <div className="footer-links_logo">
         <div>
-          <img src={nftlogo} alt="logo" />
+          <img src={logo} alt="logo" />
           <p>If I Die</p>
         </div>
         <div>
