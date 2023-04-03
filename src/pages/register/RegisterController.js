@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Home, Register} from "../index";
 import "whatwg-fetch";
+import {Navigate} from "react-router";
 
 
 export default function RegisterController(props){
@@ -27,7 +28,13 @@ export default function RegisterController(props){
             }));
     }
 
-    return (
-        <Register createUser={(username, password, surname, lastname) => createUser(username, password, surname, lastname)}/>
-    );
+    // RETURN REDIRECT TO USER SPACE IF CONNECTED
+    if (props.user) {
+        return <Navigate replace to="/" />;
+    } else {
+        return (
+            <Register
+                createUser={(username, password, surname, lastname) => createUser(username, password, surname, lastname)}/>
+        );
+    }
 }
