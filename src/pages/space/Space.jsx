@@ -1,10 +1,10 @@
 import React from 'react';
-import './profile.css'
+import './space.css'
 import profile_banner from '../../assets/OLD/profile_banner.png'
 import profile_pic from '../../assets/OLD/profile.jpg'
 import Cards from '../../components/Cards/Cards'
 
-const Profile = () => {
+const Space = () => {
 
   return (
     <div className='profile section__padding'>
@@ -33,4 +33,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Space;

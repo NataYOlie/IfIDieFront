@@ -1,7 +1,7 @@
 import React from 'react';
 import {Cards, Header, FunnyDeath } from '../../components'
 
-const Home = () => {
+const Home = (props) => {
 
   return <div>
     <Header />

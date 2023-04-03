@@ -17,15 +17,15 @@ const Menu = () => {
  )
 }
 
- const Navbar = () => {
+ const Navbar = (props) => {
      const [toggleMenu,setToggleMenu] = useState(false)
-     const [user,setUser] = useState(false)
+     // const [user,setUser] = useState(false) // On va le récupérer en props donc à priori plus besoin
 
   const handleLogout = () => {
-    setUser(false);
+    props.setUser(null);
   }
   const handleLogin = () => {
-    setUser(true);
+     props.setUser(props.user);
   }
 
   return (
@@ -39,9 +39,9 @@ const Menu = () => {
         <div className="navbar-links_container">
           {/*<input type="text" placeholder='Search Item Here' autoFocus={true} />*/}
 
-         {user && 
+         {props.user &&
          <>
-         <Link to="/"><p>{user}</p></Link>
+         <Link to="/space"><p>{props.user.surname} {props.user.lastname}</p></Link>
          </>
          }
         
@@ -49,7 +49,7 @@ const Menu = () => {
       </div>
       <div className="navbar-sign">
           <Menu />
-      {user ? (
+      {props.user ? (
         <>
             <Link to="/"><p onClick={handleLogout}>Logout</p></Link>
         </>
@@ -72,7 +72,7 @@ const Menu = () => {
              <Menu />
             </div>
             <div className="navbar-menu_container-links-sign">
-            {user ? (
+            {props.user ? (
               <>
               <Link to="/create"> 
                 <button type='button' className='primary-btn' >Create</button>
