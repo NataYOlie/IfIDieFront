@@ -3,6 +3,7 @@ import Image from '../../assets/OLD/Image.png'
 const Create = () => {
 
   return (
+      <span className='body1400'>
     <div className='create section__padding'>
       <div className="create-container">
         <h1>Create new Item</h1>
@@ -59,7 +60,7 @@ const Create = () => {
         </form>
       </div>
     </div>
-   
+   </span>
   )
 };
 

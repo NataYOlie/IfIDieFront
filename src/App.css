@@ -1,23 +1,27 @@
 body{
     background: var(--color-bg);
-    max-width: 1400px;
-    margin: 0 auto !important;
+    margin: auto;
     scroll-behavior: smooth;
 }
+
+
 a{
   text-decoration: none;
   color: inherit;
 }
 
 .gradient__text{
-  background: var(--gradient-text);
+
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .section__padding{
+  max-width: 1400px;
   padding: 4rem 6rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .section__margin{

@@ -1,7 +1,6 @@
-import React, {useState} from "react";
-import {Home, Register} from "../index";
+import {Register} from "../index";
 import "whatwg-fetch";
-import {Navigate} from "react-router";
+import RegisterValidation from "./RegisterValidation";
 
 
 export default function RegisterController(props){
@@ -24,13 +23,15 @@ export default function RegisterController(props){
                 token: json.token,
                 id: json.user.id,
                 name: json.user.name,
-                surname: json.user.surname
+                surname: json.user.surname,
+                lastname: json.user.lastname,
+                email:  json.user.email
             }));
     }
 
     // RETURN REDIRECT TO USER SPACE IF CONNECTED
     if (props.user) {
-        return <Navigate replace to="/" />;
+        return <RegisterValidation user={props.user} />;
     } else {
         return (
             <Register

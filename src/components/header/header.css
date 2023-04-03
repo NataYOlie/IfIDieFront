@@ -30,6 +30,7 @@
 
 .header-content{
   flex-wrap: wrap-reverse;
+
 }
 
 .header-content img{
@@ -52,10 +53,11 @@
 .header-content div h1{
   font-family: var(--font-family);
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.7rem;
   /*line-height: 105.7%;*/
   color: #FFFFFF;
   padding: 1rem;
+  text-align: center;
   /*margin-left: 2rem;*/
 }
 

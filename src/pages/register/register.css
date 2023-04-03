@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin: auto;
 }
 .register-container {
   background: var(--jaune);
@@ -23,6 +24,35 @@
   margin-top: 20px;
   filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
 }
+
+.register-validation-container{
+  background: var(--vert);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 50%;
+  filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
+
+
+}
+
+.register-validation-container h3{
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 42px;
+  margin-bottom: 40px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-validation-container h2{
+  font-weight: 500;
+  font-size: 1.7rem;
+  line-height: 42px;
+  margin-bottom: 40px;
+  text-align: center;
+  margin-top: 20px;
+}
+
 
 .register-formGroup{
   display: flex;

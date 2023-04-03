@@ -1,13 +1,16 @@
+.plants img{
+  margin: auto;
+}
+
 .footer{
   display: flex;
-  border-radius: 25px 25px 0 0 ;
+  /*border-radius: 25px 25px 0 0 ;*/
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: var(--color-footer);
   /*border-top: 1px solid rgba(165, 165, 165, 0.1);*/
   padding-bottom: 2rem;
-  width: 100% !important;
 }
 
 .footer-btn p{
@@ -23,9 +26,8 @@
   align-items: flex-start;
   flex-wrap: wrap;
   flex-direction: row;
-
   width: 100%;
-  text-align: left;
+
 }
 .footer-links div{
   width: 250px;
@@ -50,9 +52,9 @@
   color: #FFFFFF;
 }
 .footer-links_logo img {
-  width: 32px;
-  height: 32px;
-  margin-right: 4px;
+  width: 50px;
+  margin-right: 10px;
+
 }
 .footer-links_logo p{
   font-family: var(--font-family);
@@ -61,6 +63,7 @@
   line-height: 17px;
   color: #FFFFFF;
 }
+
 .footer-links_logo input {
   background: #1B1A21;
   border-radius: 10px;
@@ -116,7 +119,6 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
-  border-top: 1px solid rgba(165, 165, 165, 0.1);
   padding-top: 2rem;
 }
 .footer-copyright p{

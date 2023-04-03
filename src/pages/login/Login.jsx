@@ -1,11 +1,13 @@
 import {useState} from "react";
 import './login.css'
 import {Link} from 'react-router-dom'
+import clouds from "../../assets/clouds.svg";
 
 const Login = (props) => {
     const [fields, setFields] = useState({ login: "", password: "" }); //Objet qui contients les différents field de la page
   return (
     <div className='login section__padding'>
+        <img src={clouds}/>
       <div className="login-container">
         <h1>Login</h1>
         <form className='login-writeForm' autoComplete='off'>

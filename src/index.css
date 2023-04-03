@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
+  max-width: unset !important;
   --font-family: 'Poppins', sans-serif;
   --font-titles: 'Handlee', sans-serif;
 
@@ -12,6 +13,7 @@
   --secondary-color: #d875f7;
   --ternary-color: #ff4800;
   --color-bg: linear-gradient(#12a3df 27.35%, #ffffff 100%);
+  --color-bgjaune: linear-gradient(#fcd200 27.35%, #ffffff 100%);
   --color-card : rgba(42, 45, 58, 0.37);
   --color-footer : rgb(109, 88, 57);
 

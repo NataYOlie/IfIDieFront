@@ -1,6 +1,7 @@
 import React from 'react'
 import './footer.css'
 import logo from '../../assets/IfIDie_logo_blanc.png'
+import plants from '../../assets/plants.png'
 import { AiOutlineInstagram,AiOutlineTwitter, } from "react-icons/ai";
 import { RiDiscordFill } from "react-icons/ri";
 import { FaTelegramPlane } from "react-icons/fa";
@@ -8,6 +9,8 @@ import { FaTelegramPlane } from "react-icons/fa";
 const Footer = () => {
 
   return (
+      <div className='plants'>
+        <img src={plants} alt="plants"/>
     <div className='footer'>
       <div className="footer-links">
         <div className="footer-links_logo">
@@ -51,7 +54,8 @@ const Footer = () => {
 
       </div>
     </div>
+      </div>
   )
 }
-
 export default Footer
+
