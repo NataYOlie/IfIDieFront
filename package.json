@@ -52,7 +52,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/api/",
+
   "devDependencies": {
     "webpack-cli": "^5.0.1"
   }

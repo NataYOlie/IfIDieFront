@@ -12,7 +12,7 @@ import AdminBoardController from "./pages/adminBoard/AdminBoardController";
 function App() {
 
     const [user, setUser] = useState(null);
-    const [tasks, setTasks] = useState([]);
+    const [stepTasks, setStepTasks] = useState([]);
 
 
   return (
@@ -22,12 +22,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
-                   element={<Envisager user={user} setUser={setUser} tasks={tasks} setTasks={setTasks} /> } />
+                   element={<Envisager user={user} setUser={setUser} tasks={stepTasks} setTasks={setStepTasks} /> } />
             <Route path="/space/:id" element={<Space />} />
             <Route path="/login" element={<SecurityController user={user} setUser={setUser} />} />
             <Route path="/register" element={ <RegisterController user={user} setUser={setUser}/>} />
             <Route path="/register/validation"  user={user} setUser={setUser}/>} />
-            <Route path="/adminboard" element={<AdminBoardController user={user} setUser={setUser} tasks={tasks} setTasks={setTasks}/>} />
+            <Route path="/adminboard" element={<AdminBoardController user={user} setUser={setUser} stepTasks={stepTasks} setStepTasks={setStepTasks}/>} />
           </Routes>
 
 

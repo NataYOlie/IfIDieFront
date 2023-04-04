@@ -5,12 +5,12 @@ import {Navigate} from "react-router";
 
 export default function AdminBoardController(props){
 
-    const backUrl = "http://localhost:8081/task"; ///steplist/{id}/{subtype}
+    const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
     const [subtypes, setSubtypes] = useState();
 
-    function fetchStepTasks(subtypes){
+    function fetchStepTasks(){
         const newTasks = []
-        fetch(backUrl +"/steplist/" + props.user.id + "/" + subtypes)
+        fetch(backUrl +"/steplist/")
             .then(response => response.json())
             .then(response => {
                 for(let i=0; i<response.length; i++){
@@ -25,11 +25,10 @@ export default function AdminBoardController(props){
                         }
                     );
                 }
-                props.setTasks(newTasks)
+                props.setStepTasks(newTasks)
             });
         return newTasks
     }
-
     };
 
     function fetchTask(login, password) {
