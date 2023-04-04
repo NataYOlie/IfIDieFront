@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -7,7 +6,7 @@ import './register.css';
     const schema = yup.object().shape({
         lastname: yup.string().required("Merci de renseigner votre nom"),
         surname: yup.string().required("Merci de renseigner votre prénom"),
-        username: yup.string().email().required("Merci de renseigner votre email"),
+        username: yup.string().email("Cela ne ressemble pas à un email valide").required("Merci de renseigner votre email"),
         password: yup.string().min(6, "le mot de passe doit faire au moins 6 caractère")
             .max(20, "le mot de passe ne peut dépasser 20 caractères")
             .required("Vous devez entrer un mot de passe"),

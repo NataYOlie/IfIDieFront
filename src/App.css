@@ -1,3 +1,5 @@
+
+
 body{
     background: var(--color-bg);
     margin: auto;
@@ -75,4 +77,5 @@ button{
   .section__margin{
    margin:4rem 2rem;
   }
+
 }

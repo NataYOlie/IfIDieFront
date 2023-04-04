@@ -11,18 +11,22 @@
   background: var(--jaune);
   border-radius: 20px;
   padding: 2rem;
-  min-width: 30%;
+  min-width: 50%;
   filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
 }
 .register-container h1{
-  font-weight: 600;
-  font-size: 2rem;
+  font-family: var(--font-titles);
+  font-weight: bolder;
+  font-size: 2.3rem;
   line-height: 42px;
   margin-bottom: 40px;
   text-align: center;
   text-transform: uppercase;
   margin-top: 20px;
   filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
+}
+.register-container p{
+  color: var(--rouge);
 }
 
 .register-validation-container{
@@ -31,12 +35,10 @@
   padding: 2rem;
   max-width: 50%;
   filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
-
-
 }
 
 .register-validation-container h3{
-  font-weight: 300;
+  font-weight: bold;
   font-size: 1.2rem;
   line-height: 42px;
   margin-bottom: 40px;
@@ -98,10 +100,12 @@
   line-height: 26px;
   text-overflow: ellipsis;
 }
+
 .register-button{
   display: flex;
   justify-content: center;
 }
+
 .register-writeButton{
   /* float: right; */
   background: var(--rouge);
@@ -125,8 +129,13 @@
 }
 
 .register-writeButton:hover{
-  background: rgb(250, 226, 109);
+  filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
 }
+
+.register-writeButton:active {
+  background: rgb(183, 51, 0);
+}
+
 @media screen and (max-width: 550px){
   .register{
     padding:2rem 1.5rem !important;

@@ -42,6 +42,7 @@ const Menu = () => {
          {props.user &&
          <>
          <Link to="/space"><p>{props.user.surname} {props.user.lastname}</p></Link>
+         <Link to="/adminboard"><p>{props.user.surname} {props.user.lastname}</p></Link>
          </>
          }
         

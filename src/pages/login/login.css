@@ -9,26 +9,30 @@
   margin: auto;
 }
 .login-container {
-  background: #29D4E0;
+  background: #9fceea;
   border-radius: 20px;
   padding: 2rem;
-  min-width: 30%;
+  min-width: 40%;
+  filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
 
 }
 .login img{
   position: absolute;
   max-width: 10%;
   left:20% ;
-  top:20%;
+  top:40%;
 }
 .login-container h1{
   font-weight: 600;
-  font-size: 48px;
+  font-family: var(--font-titles);
+  color: whitesmoke;
+  font-size: 2.3rem;
   line-height: 42px;
   margin-bottom: 40px;
   text-align: center;
   text-transform: uppercase;
   margin-top: 20px;
+  filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
 }
 
 .login-formGroup{
@@ -79,17 +83,26 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .login-writeButton{
   /* float: right; */
-  background: var(--primary-btn);
+  background: whitesmoke;
   border: none;
   border-radius: 10px;
   padding: 12px 30px;
-  color: white;
+  color: var(--bleu);
   font-weight: 600;
   font-size: 14px;
   line-height: 21px;
 }
+.login-writeButton:hover{
+  filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.login-writeButton:active{
+  background: #c7c3c3;
+}
+
 .login-reg-writeButton{
   background: var(--primary-btn);
   border: 1px solid var(--primary-color);
@@ -100,6 +113,8 @@
   font-size: 14px;
   line-height: 21px;
 }
+
+
 @media screen and (max-width: 550px){
   .login{
     padding:2rem 1.5rem !important;

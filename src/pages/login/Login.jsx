@@ -9,7 +9,7 @@ const Login = (props) => {
     <div className='login section__padding'>
         <img src={clouds}/>
       <div className="login-container">
-        <h1>Login</h1>
+        <h1>Se connecter</h1>
         <form className='login-writeForm' autoComplete='off'>
 
           <div className="login-formGroup">
@@ -22,20 +22,20 @@ const Login = (props) => {
           </div>
 
           <div className="login-formGroup">
-            <label>Password</label>
+            <label>Mot de passe</label>
             <input type="password"
-                   placeholder='Password'
+                   placeholder='Mot de passe'
                    value={fields.password}
                    onChange={form => setFields({...fields, password: form.target.value})}
             />
           </div>
           <div>
-            <a href className="login-formGroup">Forgot your password ?</a>
+            <a href className="login-formGroup">Mot de passe oublié ? </a>
           </div>
          <div className="login-button">
-          <button className='login-writeButton' type='button' onClick={() => props.fetchUser(fields.login, fields.password)}>Login</button>
+          <button className='login-writeButton' type='button' onClick={() => props.fetchUser(fields.login, fields.password)}>Se Connecter</button>
           <Link to="/register">
-            <button className='login-writeButton' type='submit'>Register</button>
+            <button className='login-writeButton' type='submit'>Créer un compte</button>
           </Link>
          </div>
         </form>
