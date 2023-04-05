@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Login from "./Login";
 import {Navigate} from "react-router";
 
-
 export default function SecurityController(props){
+    const [users, setUsers] = useState([]);
+    const [role, setRole] = useState([]);
+    const [newUser, setNewUser] = useState();
 
     const backUrl = "http://localhost:8081/security";
 
@@ -16,16 +18,32 @@ export default function SecurityController(props){
         };
 
         //correspond à l'AUTHRESPONSE
+        // fetch(backUrl + "/authorize", requestOptions)
+        //     .then(response => response.json())
+        //     .then(
+        //         json => props.setUser({
+        //         token: json.token,
+        //         id: json.user.id_user,
+        //         surname: json.user.surname,
+        //         lastname: json.user.lastname,
+        //     }));
+
         fetch(backUrl + "/authorize", requestOptions)
             .then(response => response.json())
-            .then(json => props.setUser({
-                token: json.token,
-                id: json.user.id,
-                name: json.user.name,
-                surname: json.user.surname,
-                lastname: json.user.lastname
-            }));
+            .then(json => props.setUser(json))
     }
+
+    // function setUserFromJson(user){
+    //     //User from Data
+    //     console.log("coucou")
+    //     users.user.map(user=> setNewUser(user))
+    //     users.user.roles.map(role => setRole(role))
+    //     setNewUser([...newUser, {roleName : role.roleName}])
+    //     props.setUser(
+    //     )
+    //
+    //     console.log("fonctiontest " + role.roleName)
+    // }
 
 
     // RETURN REDIRECT TO USER SPACE IF CONNECTED
