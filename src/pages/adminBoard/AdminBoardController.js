@@ -7,11 +7,20 @@ export default function AdminBoardController(props){
 
     const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
     const [subtypes, setSubtypes] = useState();
-    useEffect(()=>fetchDefaultStepTasks(), []);
+    // useEffect(()=>fetchDefaultStepTasks(), []);
 
     function fetchDefaultStepTasks(){
+        //correspond à un objet AUTHREQUEST
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${props.user.token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+
         const newTasks = []
-        fetch(backUrl +"/steplist")
+        fetch(backUrl +"/steplist", requestOptions)
             .then(response => response.json())
             .then(response => {
                 for(let i=0; i<response.length; i++){

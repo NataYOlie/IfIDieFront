@@ -21,11 +21,11 @@ export default function RegisterController(props){
             .then(response => response.json())
             .then(json => props.setUser({
                 token: json.token,
-                id: json.user.id,
-                name: json.user.name,
+                id: json.user.id_user,
                 surname: json.user.surname,
                 lastname: json.user.lastname,
-                email:  json.user.email
+                email:  json.user.email,
+                role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
             }));
     }
 

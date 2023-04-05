@@ -39,17 +39,15 @@ const Menu = () => {
         <div className="navbar-links_container">
           {/*<input type="text" placeholder='Search Item Here' autoFocus={true} />*/}
 
-         {props.user &&
-         <>
-         <Link to="/space"><p>{props.user.user.surname} {props.user.user.lastname}</p></Link>
-
-         </>}
-            {props.user && (props.user.user.role = "ROLE_ADMIN") &&
+            {props.user && (
                 <>
-                <Link to="/adminboard"><p>Admin Board</p></Link>
+                    <Link to="/space"><p>{props.user.surname} {props.user.lastname}</p></Link>
 
+                    {props.user.role === "ROLE_ADMIN" && (
+                        <Link to="/adminboard"><p>Admin Board</p></Link>
+                    )}
                 </>
-            }
+            )}
 
 
         </div>
