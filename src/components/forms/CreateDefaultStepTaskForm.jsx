@@ -2,7 +2,6 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import './createDefaultTask.css';
 import * as yup from "yup";
-import StepTask from "../stepTask/StepTask";
 
 
 const schema = yup.object().shape({
@@ -29,9 +28,10 @@ const {
 //     console.log(props.stepTasks[0] + newStepTask.subtype)
 // }
     function onSubmit(data) {
-        const newStepTask = props.createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
-        props.addStepTask(newStepTask)
-        console.log(props.stepTasks[0].subtype + newStepTask.subtype);
+        props.createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
+        if (props.stepTasks && props.stepTasks.length > 0) {
+            console.log(props.stepTasks[0].subtype + props.stepTasks[0].subtype);
+        }
     }
 
 return (

@@ -6,6 +6,7 @@ import {AdminBoard} from "../index";
 export default function AdminBoardController(props){
 
     const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
+    const [newTask, setNewTask] = useState({});
 
     function fetchDefaultStepTasks(){
         //correspond à un objet AUTHREQUEST
@@ -34,7 +35,7 @@ export default function AdminBoardController(props){
                         }
                     );
                 }
-                props.setStepTasks(newTasks)
+                props.addStepTask(newTasks)
                 console.log("COUCOU COUCOU" + newTasks)
             });
         return newTasks
@@ -42,6 +43,7 @@ export default function AdminBoardController(props){
 
     function createDefaultStepTask(subtype, header, description, externalLink, taskColor){
         console.log("coucou 2" + subtype)
+
 
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
@@ -65,7 +67,7 @@ export default function AdminBoardController(props){
         //correspond à l'AUTHRESPONSE
         fetch(backUrl + "/savetask/StepList/" + props.user.id, requestOptions)
             .then(response => response.json())
-            .then(json => props.setStepTasks(...props.stepTasks,
+            .then(json => setNewTask(
                 {
                 subtype: json.subtype,
                 header: json.header,
@@ -76,6 +78,8 @@ export default function AdminBoardController(props){
                 listType: "StepList",
                 createdBy : props.user
             }));
+        props.addStepTask(newTask)
+        console.log(newTask.header)
     }
 
 

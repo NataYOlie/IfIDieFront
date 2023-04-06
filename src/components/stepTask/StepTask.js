@@ -4,7 +4,8 @@ import React from "react";
 const StepTask = (props) => {
 
     function render (){
-        for(let i=0 ; i < props.stepTasks.length ; i++){
+        props.fetchDefaultStepTasks();
+        for (let i=0 ; i < props.stepTasks.length ; i++){
             return (
                 <div className="StepTask section__padding">
                     <div className="StepTask">
@@ -22,7 +23,7 @@ const StepTask = (props) => {
     return (
         <>
             <h1>RETURN</h1>
-            {render()}
+            {render}
         </>
     )
 

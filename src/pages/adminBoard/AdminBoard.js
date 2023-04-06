@@ -4,6 +4,7 @@ import {CreateDefaultStepTaskForm, StepTask} from '../../components'
 
 export default function AdminBoard(props) {
 
+
     return(
         <>
             <CreateDefaultStepTaskForm
@@ -14,7 +15,9 @@ export default function AdminBoard(props) {
                 setStepTasks={props.setStepTasks}/>
 
             <StepTask stepTasks={props.stepTasks}
-                      setStepTasks={props.setStepTasks} />
+                      setStepTasks={props.setStepTasks}
+                      fetchDefaultStepTasks={()=>props.fetchDefaultStepTasks}
+            />
         </>
 
     )

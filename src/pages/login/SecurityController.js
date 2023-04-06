@@ -5,6 +5,7 @@ import {Navigate} from "react-router";
 export default function SecurityController(props) {
 
     const backUrl = "http://localhost:8081/security";
+    const newTasks = [];
 
     /**
      * This method fetch user and gives them a token + affect a role.
@@ -18,6 +19,7 @@ export default function SecurityController(props) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: login, password: password})
         };
+
 
         //correspond à l'AUTHRESPONSE
         fetch(backUrl + "/authorize", requestOptions)
@@ -33,7 +35,9 @@ export default function SecurityController(props) {
                         role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
                     }));
                 })
-    }
+
+        }
+
 
     // RETURN REDIRECT TO USER SPACE IF CONNECTED
     if (props.user) {
