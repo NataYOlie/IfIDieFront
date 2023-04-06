@@ -1,0 +1,157 @@
+.adminBoard{
+    display: flex;
+    font-family: var(--font-family);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+}
+.adminBoard-container {
+    background: var(--jaune);
+    border-radius: 20px;
+    padding: 2rem;
+    min-width: 50%;
+    filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
+}
+.adminBoard-container h1{
+    font-family: var(--font-titles);
+    font-weight: bolder;
+    font-size: 2.3rem;
+    line-height: 42px;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 20px;
+    filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
+}
+.adminBoard-container p{
+    color: var(--rouge);
+}
+
+.adminBoard-validation-container{
+    background: var(--vert);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 50%;
+    filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
+}
+
+.adminBoard-validation-container h3{
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 42px;
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.adminBoard-validation-container h2{
+    font-weight: 500;
+    font-size: 1.7rem;
+    line-height: 42px;
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.adminBoard-formGroup{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+.adminBoard-formGroup label{
+    /*font-weight: 600;*/
+    font-size: 1.3rem;
+    line-height: 36px;
+    margin-bottom: 15px;
+    /*font-style: italic;*/
+}
+.adminBoard-formGroup input{
+    background: #3b3b3b;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.adminBoard-formGroup textarea{
+    background: #2D2E36;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 26px;
+}
+.adminBoard-formGroup select{
+    background: #2D2E36;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 26px;
+    text-overflow: ellipsis;
+}
+
+.adminBoard-button{
+    display: flex;
+    justify-content: center;
+}
+
+.adminBoard-writeButton{
+    /* float: right; */
+    background: var(--rouge);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+}
+.adminBoard-login-writeButton{
+    background-color: var(--bleu);
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.adminBoard-writeButton:hover{
+    filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.adminBoard-writeButton:active {
+    background: rgb(183, 51, 0);
+}
+
+@media screen and (max-width: 550px){
+    .adminBoard{
+        padding:2rem 1.5rem !important;
+
+    }
+    .adminBoard-container{
+        padding: 1.5rem 1rem;
+    }
+    .adminBoard-container h1{
+        /* display: none; */
+        font-size: 36px;
+        margin-top: 0;
+    }
+    .adminBoard-formGroup label{
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+}
