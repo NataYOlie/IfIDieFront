@@ -1,14 +1,6 @@
 import React from 'react'
 import './cards.css'
-import {AiFillHeart, AiFillHourglass, AiOutlineHeart, AiOutlineHourglass, AiTwotoneHourglass} from "react-icons/ai";
 import cimetary from '../../assets/springfield_isometric.jpg'
-import bids2 from '../../assets/OLD/bids2.png'
-import bids3 from '../../assets/OLD/bids3.png'
-import bids4 from '../../assets/OLD/bids4.png'
-import bids5 from '../../assets/OLD/bids5.png'
-import bids6 from '../../assets/OLD/bids6.png'
-import bids7 from '../../assets/OLD/bids7.png'
-import bids8 from '../../assets/OLD/bids8.png'
 import { Link } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core'

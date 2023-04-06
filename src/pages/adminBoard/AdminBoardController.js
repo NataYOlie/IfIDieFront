@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {AdminBoard} from "../index";
-import "whatwg-fetch";
+
 
 
 export default function AdminBoardController(props){
 
     const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
-
 
     function fetchDefaultStepTasks(){
         //correspond à un objet AUTHREQUEST
@@ -36,11 +35,14 @@ export default function AdminBoardController(props){
                     );
                 }
                 props.setStepTasks(newTasks)
+                console.log("COUCOU COUCOU" + newTasks)
             });
         return newTasks
     }
 
     function createDefaultStepTask(subtype, header, description, externalLink, taskColor){
+        console.log("coucou 2" + subtype)
+
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
             method: 'POST',
@@ -57,6 +59,8 @@ export default function AdminBoardController(props){
                 defaultTask: true
             })
         };
+
+        console.log("lala" + requestOptions.method)
 
         //correspond à l'AUTHRESPONSE
         fetch(backUrl + "/savetask/StepList/" + props.user.id, requestOptions)
@@ -76,11 +80,11 @@ export default function AdminBoardController(props){
 
 
         return (
-
             <AdminBoard fetchDefaultStepTasks={()=>fetchDefaultStepTasks()}
                         createDefaultStepTask={(subtype, header, description, externalLink, taskColor) =>
                             createDefaultStepTask(subtype, header, description, externalLink, taskColor)}
                         stepTasks={props.stepTasks}
+                        addStepTask={props.addStepTask}
                         setStepTasks={props.setStepTasks}/>
         );
     }

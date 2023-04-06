@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import {Navbar,Footer} from './components'
+import {Navbar} from './components'
 import {Home, Item, Envisager, AdminBoard} from './pages'
 import { Routes, Route,  } from "react-router-dom";
 import SecurityController from "./pages/login/SecurityController";
@@ -14,6 +14,9 @@ function App() {
     const [user, setUser] = useState(null);
     const [stepTasks, setStepTasks] = useState([]);
 
+    function addStepTask(newStepTask) {
+        setStepTasks([...stepTasks, newStepTask]);
+    }
 
   return (
     <div>
@@ -27,10 +30,12 @@ function App() {
             <Route path="/login" element={<SecurityController user={user} setUser={setUser} />} />
             <Route path="/register" element={ <RegisterController user={user} setUser={setUser}/>} />
             <Route path="/register/validation"  user={user} setUser={setUser}/>} />
-            <Route path="/adminboard" element={<AdminBoardController user={user} setUser={setUser} stepTasks={stepTasks} setStepTasks={setStepTasks}/>} />
+            <Route path="/adminboard" element={<AdminBoardController user={user}
+                                                                     setUser={setUser}
+                                                                     addStepTask={addStepTask}
+                                                                     stepTasks={stepTasks}
+                                                                     setStepTasks={setStepTasks}/>} />
           </Routes>
-
-
     </div>
   );
 }
