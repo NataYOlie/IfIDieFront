@@ -1,5 +1,6 @@
 import React from 'react';
 import TasksComp from "../../components/tasks/TasksComp";
+import {StepTask} from "../../components";
 
 
 const Envisager = (props) => {
@@ -17,9 +18,9 @@ const Envisager = (props) => {
             Quelles sont vos convictions quant au sens de la vie et de la mort ?
             Comment envisagez-vous les années à venir et qu’aimeriez-vous vivre avant votre départ ?
         </p>
+        <StepTask />
 
 
-        <TasksComp />
 
     </div>
 )};

@@ -20,18 +20,8 @@ const {
     resolver: yupResolver(schema),
 });
 
-// function onSubmit(data){
-//     console.log(data)
-//     let newStepTask = [];
-//     newStepTask.push(props.createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor));
-//     props.setStepTasks.push(data)
-//     console.log(props.stepTasks[0] + newStepTask.subtype)
-// }
     function onSubmit(data) {
         props.createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
-        if (props.stepTasks && props.stepTasks.length > 0) {
-            console.log(props.stepTasks[0].subtype + props.stepTasks[0].subtype);
-        }
     }
 
 return (

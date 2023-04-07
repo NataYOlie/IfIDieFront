@@ -17,6 +17,7 @@ export default function AdminBoard(props) {
             <StepTask stepTasks={props.stepTasks}
                       setStepTasks={props.setStepTasks}
                       fetchDefaultStepTasks={()=>props.fetchDefaultStepTasks}
+                      stepTasksDisplay = {props.stepTasksDisplay}
             />
         </>
 

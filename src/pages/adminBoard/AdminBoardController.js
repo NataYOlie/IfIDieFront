@@ -6,7 +6,11 @@ import {AdminBoard} from "../index";
 export default function AdminBoardController(props){
 
     const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
-    const [newTask, setNewTask] = useState({});
+    const [newTask, setNewTask] = useState({})
+    useEffect(() => {
+        // Call your function here
+        fetchDefaultStepTasks();}, []);
+
 
     function fetchDefaultStepTasks(){
         //correspond à un objet AUTHREQUEST
@@ -24,26 +28,26 @@ export default function AdminBoardController(props){
             .then(response => {
                 for(let i=0; i<response.length; i++){
                     newTasks.push({
-                        id_task: response[i].id_task,
-                        description: response[i].description,
-                        external_link: response[i].external_link,
-                        header: response[i].header,
-                        previsional_date: response[i].previsional_date,
-                        subtype: response[i].subtype,
-                        task_color: response[i].task_color,
-                        listType: response[i].listType
+                            id_task: response[i].id_task,
+                            description: response[i].description,
+                            external_link: response[i].external_link,
+                            header: response[i].header,
+                            previsional_date: response[i].previsional_date,
+                            subtype: response[i].subtype,
+                            task_color: response[i].task_color,
+                            listType: response[i].listType
                         }
                     );
                 }
-                props.addStepTask(newTasks)
-                console.log("COUCOU COUCOU" + newTasks)
+                props.setStepTasksArray(newTasks)
+
+                console.log("fetchDefaultStepTasks "+ newTasks.length + " tâches")
             });
-        return newTasks
+        return props.stepTasks
     }
 
     function createDefaultStepTask(subtype, header, description, externalLink, taskColor){
-        console.log("coucou 2" + subtype)
-
+        console.log("Create Default Step Task : " + header)
 
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
@@ -89,7 +93,8 @@ export default function AdminBoardController(props){
                             createDefaultStepTask(subtype, header, description, externalLink, taskColor)}
                         stepTasks={props.stepTasks}
                         addStepTask={props.addStepTask}
-                        setStepTasks={props.setStepTasks}/>
+                        setStepTasks={props.setStepTasks}
+                        stepTasksDisplay = {props.stepTasksDisplay}/>
         );
     }
 

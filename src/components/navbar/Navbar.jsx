@@ -10,7 +10,7 @@ const Menu = () => {
 
     return (
     <>
-        <Link to="/" ><p onClick={() => envisagerSetToggleMenu(true)}>Envisager</p></Link>
+        <Link to="/envisager" ><p>Envisager</p></Link>
         <Link to="/" ><p>Services</p></Link>
         <Link to="/" ><p>Cimetière</p></Link>
     </>

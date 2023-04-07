@@ -13,13 +13,46 @@ function App() {
 
     const [user, setUser] = useState(null);
     const [stepTasks, setStepTasks] = useState([]);
+    const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
 
 
     function addStepTask(newStepTask) {
         if (stepTasks && stepTasks.length > 0) {
             setStepTasks([...stepTasks, newStepTask]);
+            console.log("addsteptask if")
+            stepTasksRender()
+            console.log("addStepTask " + newStepTask.header)
         } else setStepTasks([newStepTask])
+        console.log("addsteptask else")
+        stepTasksRender();
     }
+
+    function setStepTasksArray(newStepTasks) {
+        setStepTasks(newStepTasks)
+    }
+
+    function stepTasksRender (){
+        const newTaskDisplay = []
+        console.log("Step Task Render " + stepTasks.length)
+        for (let i=0 ; i < stepTasks.length ; i++){
+            newTaskDisplay.push(
+                <div className="section__padding">
+                    <div className="task">
+                        <div>
+                            <h1>loulou {stepTasks[i].header}</h1>
+                        </div>
+                        <div>
+                            <p>lala {stepTasks[i].description}</p>
+                        </div>
+                    </div>
+                </div>        )
+
+        }
+
+        setStepTasksDisplay(newTaskDisplay)
+        console.log(stepTasksDisplay.length)
+    }
+
 
   return (
     <div>
@@ -28,7 +61,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
-                   element={<Envisager user={user} setUser={setUser} tasks={stepTasks} setTasks={setStepTasks} /> } />
+                   element={<Envisager user={user} setUser={setUser}
+                                       tasks={stepTasks}
+                                       setTasks={setStepTasks}
+                                       stepTasksDisplay = {stepTasksDisplay}/> } />
             <Route path="/space/:id" element={<Space />} />
             <Route path="/login" element={<SecurityController user={user} setUser={setUser} addStepTasks={addStepTask}/>} />
             <Route path="/register" element={ <RegisterController user={user} setUser={setUser}/>} />
@@ -37,7 +73,10 @@ function App() {
                                                                      setUser={setUser}
                                                                      addStepTask={addStepTask}
                                                                      stepTasks={stepTasks}
-                                                                     setStepTasks={setStepTasks}/>} />
+                                                                     setStepTasks={setStepTasks}
+                                                                     setStepTasksArray = {setStepTasksArray}
+                                                                     stepTasksDisplay = {stepTasksDisplay}
+                                                                                                />} />
           </Routes>
     </div>
   );

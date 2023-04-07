@@ -1,32 +1,19 @@
 import "./stepTask.css"
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-const StepTask = (props) => {
 
-    function render (){
-        props.fetchDefaultStepTasks();
-        for (let i=0 ; i < props.stepTasks.length ; i++){
-            return (
-                <div className="StepTask section__padding">
-                    <div className="StepTask">
-                        <div>
-                            <h1>{props.stepTasks.header}</h1>
-                        </div>
-                        <div>
-                            <p>{props.stepTasks.description}</p>
-                        </div>
-                    </div>
-                </div>        )
 
-            }
-        }
+
+export default function StepTask(props){
+
     return (
         <>
             <h1>RETURN</h1>
-            {render}
+            <div>
+                {props.stepTasksDisplay}
+            </div>
+
         </>
     )
 
 };
-
-export default StepTask;

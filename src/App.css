@@ -35,6 +35,37 @@ a{
 	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
+.task{
+    background: rgba(255, 255, 255);
+    border-radius: 20px;
+    padding: 11px 12px 19px 11px;
+    margin-inline: 10px;
+    margin: 20px 10px 20px 10px  ;
+}
+.task-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    /*width: 90%;*/
+
+}
+
+.task-container-text h1{
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 42px;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+}
+.container-task{
+    margin: 0 -5px;
+    justify-content: center;
+    align-items: center;
+}
+
 button{
   cursor: pointer;
 }
