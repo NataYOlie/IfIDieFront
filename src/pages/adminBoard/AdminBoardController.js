@@ -7,44 +7,6 @@ export default function AdminBoardController(props){
 
     const backUrl = "http://localhost:8081/adminboard"; ///steplist/{id}/{subtype}
     const [newTask, setNewTask] = useState({})
-    useEffect(() => {
-        // Call your function here
-        fetchDefaultStepTasks();}, []);
-
-
-    function fetchDefaultStepTasks(){
-        //correspond à un objet AUTHREQUEST
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${props.user.token}`,
-                'Content-Type': 'application/json'
-            }
-        };
-
-        const newTasks = []
-        fetch(backUrl +"/steplist", requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                for(let i=0; i<response.length; i++){
-                    newTasks.push({
-                            id_task: response[i].id_task,
-                            description: response[i].description,
-                            external_link: response[i].external_link,
-                            header: response[i].header,
-                            previsional_date: response[i].previsional_date,
-                            subtype: response[i].subtype,
-                            task_color: response[i].task_color,
-                            listType: response[i].listType
-                        }
-                    );
-                }
-                props.setStepTasksArray(newTasks)
-
-                console.log("fetchDefaultStepTasks "+ newTasks.length + " tâches")
-            });
-        return props.stepTasks
-    }
 
     function createDefaultStepTask(subtype, header, description, externalLink, taskColor){
         console.log("Create Default Step Task : " + header)
@@ -88,11 +50,11 @@ export default function AdminBoardController(props){
 
 
         return (
-            <AdminBoard fetchDefaultStepTasks={()=>fetchDefaultStepTasks()}
+            <AdminBoard
                         createDefaultStepTask={(subtype, header, description, externalLink, taskColor) =>
                             createDefaultStepTask(subtype, header, description, externalLink, taskColor)}
                         stepTasks={props.stepTasks}
-                        addStepTask={props.addStepTask}
+                        addStepTask={(newStepTask)=>props.addStepTask(newStepTask)}
                         setStepTasks={props.setStepTasks}
                         stepTasksDisplay = {props.stepTasksDisplay}/>
         );

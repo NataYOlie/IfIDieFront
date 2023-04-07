@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import {Footer} from "./components";
+import AppController from "./AppController";
 
 
 ReactDOM.render(
   <BrowserRouter>
-    <App style={{maxWidth:1400}}/>
+    <AppController />
       <Footer />
   </BrowserRouter>,
   document.getElementById('root')

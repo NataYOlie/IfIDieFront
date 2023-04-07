@@ -8,78 +8,37 @@ import React, {useEffect, useState} from "react";
 import RegisterController from "./pages/register/RegisterController";
 import Space from "./pages/space/Space";
 import AdminBoardController from "./pages/adminBoard/AdminBoardController";
+import AppController from "./AppController";
 
-function App() {
-
-    const [user, setUser] = useState(null);
-    const [stepTasks, setStepTasks] = useState([]);
-    const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
-
-
-    function addStepTask(newStepTask) {
-        if (stepTasks && stepTasks.length > 0) {
-            setStepTasks([...stepTasks, newStepTask]);
-            console.log("addsteptask if")
-            stepTasksRender()
-            console.log("addStepTask " + newStepTask.header)
-        } else setStepTasks([newStepTask])
-        console.log("addsteptask else")
-        stepTasksRender();
-    }
-
-    function setStepTasksArray(newStepTasks) {
-        setStepTasks(newStepTasks)
-    }
-
-    function stepTasksRender (){
-        const newTaskDisplay = []
-        console.log("Step Task Render " + stepTasks.length)
-        for (let i=0 ; i < stepTasks.length ; i++){
-            newTaskDisplay.push(
-                <div className="section__padding">
-                    <div className="task">
-                        <div>
-                            <h1>loulou {stepTasks[i].header}</h1>
-                        </div>
-                        <div>
-                            <p>lala {stepTasks[i].description}</p>
-                        </div>
-                    </div>
-                </div>        )
-
-        }
-
-        setStepTasksDisplay(newTaskDisplay)
-        console.log(stepTasksDisplay.length)
-    }
-
+export default function App(props) {
 
   return (
-    <div>
-      <Navbar user={user} setUser={setUser} />
+    <>
+      <Navbar user={props.user}  setUser={props.setUser} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
-                   element={<Envisager user={user} setUser={setUser}
-                                       tasks={stepTasks}
-                                       setTasks={setStepTasks}
-                                       stepTasksDisplay = {stepTasksDisplay}/> } />
+                   element={<Envisager user={props.user} setUser={props.setUser}
+                                       tasks={props.stepTasks}
+                                       setTasks={props.setStepTasks}
+                                       stepTasksRender = {()=>props.stepTasksRender()}
+                                       stepTasksDisplay = {props.stepTasksDisplay}/> } />
             <Route path="/space/:id" element={<Space />} />
-            <Route path="/login" element={<SecurityController user={user} setUser={setUser} addStepTasks={addStepTask}/>} />
-            <Route path="/register" element={ <RegisterController user={user} setUser={setUser}/>} />
-            <Route path="/register/validation"  user={user} setUser={setUser}/>} />
-            <Route path="/adminboard" element={<AdminBoardController user={user}
-                                                                     setUser={setUser}
-                                                                     addStepTask={addStepTask}
-                                                                     stepTasks={stepTasks}
-                                                                     setStepTasks={setStepTasks}
-                                                                     setStepTasksArray = {setStepTasksArray}
-                                                                     stepTasksDisplay = {stepTasksDisplay}
+            <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}/>} />
+            <Route path="/register" element={ <RegisterController user={props.user} setUser={props.setUser}/>} />
+            <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>} />
+            <Route path="/adminboard" element={<AdminBoardController user={props.user}
+                                                                     setUser={props.setUser}
+                                                                     addStepTask={(newStepTask)=>props.addStepTask(newStepTask)}
+                                                                     stepTasks={props.stepTasks}
+                                                                     setStepTasks={props.setStepTasks}
+                                                                     setStepTasksArray = {props.setStepTasksArray}
+                                                                     tasklist = {props.tasklist}
+                                                                     stepTasksDisplay = {props.stepTasksDisplay}
                                                                                                 />} />
           </Routes>
-    </div>
+    </>
   );
 }
 
-export default App;

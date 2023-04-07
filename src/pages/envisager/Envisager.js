@@ -1,10 +1,10 @@
 import React from 'react';
 import TasksComp from "../../components/tasks/TasksComp";
 import {StepTask} from "../../components";
+import TaskList from "../../components/tasks/TaskList";
 
 
 const Envisager = (props) => {
-
 
     return (
     <div>
@@ -18,10 +18,13 @@ const Envisager = (props) => {
             Quelles sont vos convictions quant au sens de la vie et de la mort ?
             Comment envisagez-vous les années à venir et qu’aimeriez-vous vivre avant votre départ ?
         </p>
-        <StepTask />
-
-
-
+        <StepTask
+            stepTasksDisplay = {props.stepTasksDisplay}
+        />
+        <TaskList stepTasks = {props.tasks}
+                  setStepTasks={props.setStepTasks}
+                  user={props.user} setUser={props.setUser}
+                  stepTasksDisplay = {props.stepTasksDisplay}/>
     </div>
 )};
 
