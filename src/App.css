@@ -36,20 +36,32 @@ a{
 }
 
 .task{
-    background: rgba(255, 255, 255, 0.71);
+    background: rgba(255, 255, 255);
     border-radius: 20px;
-    padding: 11px 12px 19px 11px;
-    margin-inline: 10px;
-    margin: 20px 10px 20px 10px  ;
-    max-width: 50%;
+    padding: 2rem;
+    /*!*padding: 11px 12px 19px 11px;*!*/
+    /*margin-inline: 10px;*/
+    /*margin: 20px 10px 20px 10px  ;*/
+    margin: 3rem auto;
+    width: 80%;
+    filter: drop-shadow(3px 3px 10px rgb(0 0 0 / 0.2));
 }
+
 .task-container{
+    background: rgba(255, 255, 255);
+    border-radius: 20px;
+    padding: 2rem;
     display: flex;
-    max-width: 50%;
+    max-width: 80%;
     flex-direction: column;
     align-items: center;
     text-align: left !important;
-    justify-content: left;
+    justify-content: center;
+}
+.task-container h1 {
+    font-family: var(--font-titles);
+    color: var(--rouge);
+    margin-left:2rem;
 }
 
 .task-header{
@@ -59,7 +71,6 @@ a{
 .task-header h1{
     font-family: var(--font-family);
     font-weight: 500;
-
     font-size: 1.5rem;
     line-height: 42px;
     color: #000000;
@@ -70,6 +81,27 @@ a{
 button{
   cursor: pointer;
 }
+
+
+.login-writeButton{
+    background: whitesmoke;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: var(--bleu);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: var(--font-family);
+}
+.login-writeButton:hover{
+    filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.login-writeButton:active{
+    background: #c7c3c3;
+}
+
 
  @-webkit-keyframes scale-up-center {
   0% {

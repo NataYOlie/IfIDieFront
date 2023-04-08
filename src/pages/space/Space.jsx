@@ -2,7 +2,7 @@ import React from 'react';
 import './space.css'
 import profile_banner from '../../assets/OLD/profile_banner.png'
 import profile_pic from '../../assets/OLD/profile.jpg'
-import Cards from '../../components/Cards/Cards'
+import Cards from '../../components/cards/Cards'
 
 const Space = () => {
 

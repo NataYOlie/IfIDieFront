@@ -1,25 +1,28 @@
 import './adminBoard.css';
 import React from "react";
-import {CreateDefaultStepTaskForm, StepTask} from '../../components'
+import {CreateDefaultStepTaskForm, StepTask, TaskList} from '../../components'
 
 export default function AdminBoard(props) {
 
 
     return(
-        <>
+        <span>
             <CreateDefaultStepTaskForm
-                createDefaultStepTask={(subtype, header, description, externalLink, taskColor)=>
-                    props.createDefaultStepTask(subtype, header, description, externalLink, taskColor)}
+                user={props.user}
                 addStepTask={props.addStepTask}
+                // createDefaultStepTask={props.createDefaultStepTask}
                 stepTasks={props.stepTasks}
+                fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                 setStepTasks={props.setStepTasks}/>
 
-            <StepTask stepTasks={props.stepTasks}
-                      setStepTasks={props.setStepTasks}
-                      fetchDefaultStepTasks={()=>props.fetchDefaultStepTasks}
-                      stepTasksDisplay = {props.stepTasksDisplay}
-            />
-        </>
+             <TaskList
+                 stepTasks={props.tasks}
+                 user={props.user} setUser={props.setUser}
+                 stepTasksDisplay={props.stepTasksDisplay}
+                 setStepTasksDisplayArray={props.setStepTasksDisplayArray}
+             />
+
+        </span>
 
     )
 }

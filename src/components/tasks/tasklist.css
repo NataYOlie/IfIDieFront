@@ -1,0 +1,43 @@
+
+.tasklist{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.task-header{
+    cursor: pointer;
+}
+
+.task-header h1{
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 42px;
+    color: #000000;
+    margin-bottom: 1rem;
+}
+
+
+
+
+
+.expand-writeButton{
+    background: whitesmoke;
+    border: none;
+    margin : 3rem auto;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: var(--bleu);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: var(--font-family);
+}
+.expand-writeButton:hover{
+    filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.expand-writeButton:active{
+    background: #c7c3c3;
+}

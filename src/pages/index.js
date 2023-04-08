@@ -5,5 +5,8 @@ export {default as Create} from './create/Create';
 export {default as Envisager} from './envisager/Envisager';
 export {default as Login} from './login/Login';
 export {default as Register} from './register/Register';
+export {default as RegisterController} from './register/RegisterController';
 export {default as AdminBoard} from './adminBoard/AdminBoard';
+export {default as AdminBoardController} from './adminBoard/AdminBoard';
+export {default as SecurityController} from './login/SecurityController';
 

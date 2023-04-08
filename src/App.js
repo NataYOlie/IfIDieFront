@@ -1,14 +1,9 @@
 import './App.css';
 import './index.css';
 import {Navbar} from './components'
-import {Home, Item, Envisager} from './pages'
+import {Home, Item, Envisager, Space, SecurityController, RegisterController, AdminBoardController} from './pages'
 import { Routes, Route,  } from "react-router-dom";
-import SecurityController from "./pages/login/SecurityController";
-import React, {useEffect, useState} from "react";
-import RegisterController from "./pages/register/RegisterController";
-import Space from "./pages/space/Space";
-import AdminBoardController from "./pages/adminBoard/AdminBoardController";
-import AppController from "./AppController";
+
 
 export default function App(props) {
 
@@ -22,21 +17,21 @@ export default function App(props) {
                    element={<Envisager user={props.user} setUser={props.setUser}
                                        tasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
-                                       stepTasksRender = {()=>props.stepTasksRender()}
-                                       stepTasksDisplay = {props.stepTasksDisplay}/> } />
+                                       stepTasksRender={()=>props.stepTasksRender()}
+                                       stepTasksDisplay={props.stepTasksDisplay}
+                                       setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>} />
             <Route path="/space/:id" element={<Space />} />
             <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}/>} />
             <Route path="/register" element={ <RegisterController user={props.user} setUser={props.setUser}/>} />
-            <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>} />
+            <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>}
             <Route path="/adminboard" element={<AdminBoardController user={props.user}
                                                                      setUser={props.setUser}
+                                                                     fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                                                                      addStepTask={(newStepTask)=>props.addStepTask(newStepTask)}
                                                                      stepTasks={props.stepTasks}
-                                                                     setStepTasks={props.setStepTasks}
-                                                                     setStepTasksArray = {props.setStepTasksArray}
-                                                                     tasklist = {props.tasklist}
-                                                                     stepTasksDisplay = {props.stepTasksDisplay}
-                                                                                                />} />
+                                                                     setStepTasksDisplayArray={props.setStepTasksDisplayArray}
+                                                                     stepTasksDisplay={props.stepTasksDisplay} />}
+            />
           </Routes>
     </>
   );

@@ -1,38 +1,45 @@
 import React, {useEffect, useState} from "react";
 import App from "./App";
 import './App.css'
-import {nanoid} from "nanoid";
 
 /**
  * This controller is kind of an init method for If I Die App
+ * it fetches tasks before launch. What does it do after dinner ?
+ * It stores app states and their methods.
+ *
  * @returns {JSX.Element}
  * @constructor
  */
 export default function AppController() {
 
+    /**
+     * Connected User
+     */
     const [user, setUser] = useState(null);
+    /**
+     * Step Tasks
+     */
     const [stepTasks, setStepTasks] = useState([]);
+    /**
+     * Step Tasks Display, steptasks in their html dress to go party
+     */
     const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
-    const [expanded, setExpanded] = useState(false);
+
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app
      */
     useEffect(() => {
-        // Call your function here
         fetchDefaultStepTasks();
     }, []);
 
-    /**
-     * This useEffect updates my rendered task everytime steptasks state changes
-     */
-    useEffect(() => {
-        stepTasksRender();
-    }, [stepTasks]);
+    // /**
+    //  * This useEffect updates my rendered task everytime steptasks state changes
+    //  */
+    // useEffect(() => {
+    //     stepTasksRender();
+    // }, [stepTasks]);
 
-    function toggleExpand() {
-        setExpanded(!expanded);
-    }
 
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
@@ -44,12 +51,7 @@ export default function AppController() {
     function addStepTask(newStepTask) {
         if (stepTasks && stepTasks.length > 0) {
             setStepTasks([...stepTasks, newStepTask]);
-            console.log("addsteptask if")
-            stepTasksRender()
-            console.log("addStepTask " + newStepTask.header)
         } else setStepTasks([newStepTask])
-        console.log("addsteptask else")
-        stepTasksRender();
     }
 
     /**
@@ -60,52 +62,61 @@ export default function AppController() {
         setStepTasks(newStepTasks)
         console.log("steptasks Array " + stepTasks.length)
     }
-
-    function addStepTaskDisplay(newStepTaskDispaly) {
+    /**
+     * This function adds a setStepTaskDisplay to be use in all the components
+     * @param newStepTaskDisplay
+     */
+    function addStepTaskDisplay(newStepTaskDisplay) {
         if (stepTasksDisplay && stepTasksDisplay.length > 0) {
-            setStepTasksDisplay([...stepTasksDisplay, newStepTaskDispaly]);
-            console.log("addsteptaskDisplay if")
-            stepTasksRender()
-            console.log("addStepTask " + newStepTask.header)
-        } else setStepTasks([newStepTask])
-        console.log("addsteptask else")
-        stepTasksRender();
+            setStepTasksDisplay([...stepTasksDisplay, newStepTaskDisplay]);
+        } else setStepTasks([newStepTaskDisplay])
     }
-
 
     /**
-     * This function Display StepTask in html to be rendered. This should be a component, why is it not ????
+     * This function is just a setStepTask to be use in all the components
+     * @param newStepTasksDisplays
      */
-    function stepTasksRender(){
-        console.log("stepTaskRender !")
-        const newTaskDisplay = []
-        console.log("Step Task Render " + stepTasks.length)
-        for (let i=0 ; i < stepTasks.length ; i++){
-            newTaskDisplay.push(
-                    <div className="task" key={nanoid()}>
-                        <div className="task-header"
-                             key={nanoid()}
-                             onClick={()=>toggleExpand()}>
-                        <button className="login-button" key={nanoid()} onClick={()=>toggleExpand()}>
-                            {expanded ? "Collapse All" : "Expand All"}
-                        </button>
-                            <h1>{stepTasks[i].header}</h1>
-                        </div>
-                        <span key={nanoid()}>{expanded ? '-' : '+'}</span>
-                        {expanded && (
-                            <div
-                                key={nanoid()}
-                                className="task-container">
-                                <p key={nanoid()}>{stepTasks[i].description}</p>
-                            </div>
-                        )}
-                    </div>
-                )
-        }
-
-        setStepTasksDisplay(newTaskDisplay)
-        console.log(stepTasksDisplay.length)
+    function setStepTasksDisplayArray(newStepTasksDisplays) {
+        setStepTasksDisplay(newStepTasksDisplays)
+        console.log("setStepTasksDisplayArray " + stepTasksDisplay.length)
     }
+
+
+    // /**
+    //  * This function Display StepTask in html to be rendered. This should be a component, why is it not ????
+    //  */
+    // function stepTasksRender(){
+    //     console.log("stepTaskRender !")
+    //     const newTaskDisplay = []
+    //     console.log("Step Task Render " + stepTasks.length)
+    //     for (let i=0 ; i < stepTasks.length ; i++){
+    //         newTaskDisplay.push(
+    //                 <div className="task" key={nanoid()}>
+    //                     <div className="task-header"
+    //                          key={nanoid()}
+    //                          onClick={()=>toggleExpand()}>
+    //                     <button className="login-button" key={nanoid()} onClick={()=>toggleExpand()}>
+    //                         {expanded ? "Collapse All" : "Expand All"}
+    //                     </button>
+    //                         <h1>{stepTasks[i].header}</h1>
+    //                     </div>
+    //                     <span key={nanoid()}>{expanded ? '-' : '+'}</span>
+    //                     {expanded && (
+    //                         <div
+    //                             key={nanoid()}
+    //                             className="task-container">
+    //                             <p key={nanoid()}>{stepTasks[i].description}</p>
+    //                         </div>
+    //                     )}
+    //                 </div>
+    //             )
+    //     }
+    //
+    //     setStepTasksDisplay(newTaskDisplay)
+    //     console.log(stepTasksDisplay.length)
+    // }
+    //
+
 
 //FETCH TASKS///////////////// FETCH TASKS ////////////////////////////FETCH TASKS////////////////////////////FETCH TASKS///////////////////////////////////////
 
@@ -162,8 +173,9 @@ export default function AppController() {
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
-                setStepTasksArray = {setStepTasksArray}
-
-                // stepTasksRender = {()=>stepTasksRender()}
+                fetchDefaultStepTasks={fetchDefaultStepTasks}
+                setStepTasksArray = {(newStepTasks)=>setStepTasksArray(newStepTasks)}
+                addStepTaskDisplay = {(newStepTaskDisplay)=>addStepTaskDisplay(newStepTaskDisplay)}
+                setStepTasksDisplayArray = {setStepTasksDisplayArray}
                 stepTasksDisplay = {stepTasksDisplay}/>
 }
