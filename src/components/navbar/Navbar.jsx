@@ -23,6 +23,8 @@ const Menu = () => {
 
   const handleLogout = () => {
     props.setUser(null);
+    props.setStepTasksDisplayArray([])
+
   }
   const handleLogin = () => {
      props.setUser(props.user);

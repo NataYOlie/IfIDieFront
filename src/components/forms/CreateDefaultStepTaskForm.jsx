@@ -14,8 +14,6 @@ export default function CreateDefaultStepTaskForm(props) {
     const [newTask, setNewTask] = useState({})
 
 
-
-
     /**
      * This function add freshly created default StepTask in database and populate the stepTasks list with it
      * @param subtype category of the task

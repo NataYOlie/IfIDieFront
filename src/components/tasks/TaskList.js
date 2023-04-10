@@ -2,9 +2,9 @@ import {nanoid} from "nanoid";
 import React, {useEffect, useState} from "react";
 import "./tasklist.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import {faEyeSlash, faEye, faCircle, faCircleCheck} from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
-library.add(faEyeSlash, faEye)
+library.add(faEyeSlash, faEye, faCircle, faCircleCheck)
 
 
 /**
@@ -15,7 +15,7 @@ export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
-
+    const [expandedTasks, setExpandedTasks] = useState([]);
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -26,10 +26,41 @@ export default function TaskList(props) {
         };
     }, [props.stepTasks]);
 
+    /**
+     * This useEffect fetch StepTasks from ddb when launching app
+     */
+    useEffect(() => {(props.user ? (props.fetchUserStepTasks()):
+        props.fetchDefaultStepTasks());
+    }, []);
+
+    useEffect(() => {
+        // update subtypeListState here when props.stepTasks changes
+        // ...
+    }, [props.stepTasks]);
+
+    /**
+     * toggle expand ALL tasks
+     */
     function toggleExpand() {
         setExpanded(!expanded);
         stepTasksRender()
     }
+
+    /**
+     * toggle expand one task
+     * @param index
+     */
+    const toggleTask = (index) => {
+        console.log('Toggle task called with index:', index);
+        if (expandedTasks.includes(index)) {
+            console.log("if toggle " + expandedTasks)
+            setExpandedTasks(expandedTasks.filter((i) => i !== index));
+        } else {
+            console.log("else toggle" + expandedTasks)
+            setExpandedTasks([...expandedTasks, index]);
+        }
+        stepTasksRender()
+    };
 
     // function stepTasksRender() {
     //     console.log("stepTaskRender !")
@@ -81,7 +112,7 @@ export default function TaskList(props) {
                 console.log(newList)
                 for (let n = 0; n < subtypeListState.length; n++) {
                     //Créer une liste du nom de la catégorie et y coller le début du bloc :
-                    newList.push(<div className="task-category"><h1>{(subtypeListState[n])}</h1></div>)
+                    newList.push(<div className="task-category" key={nanoid()}><h1 key={nanoid()}>{(subtypeListState[n])}</h1></div>)
                     console.log("boucle 2 " + n)
                     console.log(subtypeListState[n])
                     console.log("props.stepTasks.length = " + props.stepTasks.length)
@@ -91,18 +122,20 @@ export default function TaskList(props) {
                         console.log("boucle 3 " + i)
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
                             console.log(props.stepTasks[i].subtype + " et " + subtypeListState[n])
+                            console.log('expandedTasks:', expandedTasks)
                             newList.push(
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
                                          key={nanoid()}>
-                                        <div key={nanoid()}><h1>{props.stepTasks[i].header}</h1></div>
+                                        <div key={nanoid()} onClick={() => toggleTask(i)}><h1>{props.stepTasks[i].header}</h1></div>
                                         {props.stepTasks[i].visible ? (
                                             <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
                                         ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="sm" style={{color: "#ff4800"}} /> )}
+                                        <FontAwesomeIcon icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} key={nanoid()}/>
 
-                                        <div className={props.stepTasks[i].task_color} key={nanoid()}></div>
                                     </div>
-                                    {expanded && (
+
+                                    {expandedTasks.includes(i) && (
                                         <div
                                             key={nanoid()}
                                             className="task-container">
@@ -110,8 +143,8 @@ export default function TaskList(props) {
                                         </div>
                                     )}
                                     {props.stepTasks[i].validationDate ? (
-                                        <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
-                                    ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="sm" style={{color: "#ff4800"}} /> )}
+                                        <FontAwesomeIcon name="check" icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} key={nanoid()}/>
+                                    ) : (<FontAwesomeIcon name="check" icon="fa-circle-check" size="sm" className={props.stepTasks[i].task_color} key={nanoid()}/> )}
                                 </div>
                             )
                             console.log("task pushed " + props.stepTasks[i].header + " on en est à " + newList.length)
@@ -128,56 +161,14 @@ export default function TaskList(props) {
         }
     }
 
-            //
-            //     switch (props.stepTasks.subtype) {
-            //         case "Famille":
-            //             newTaskDisplayFamille.push()
-            //             break;
-            //         case "Administratif":
-            //             newTaskDisplayAdministratif.push()
-            //             break;
-            //         case "Santé":
-            //             newTaskDisplaySante.push()
-            //             break;
-            //         case "Transmission":
-            //             newTaskDisplayTransmission.push()
-            //             break;
-            //         case "Obsèques":
-            //             newTaskDisplayObseques.push()
-            //             break;
-            //         default :
-            //             newTaskDisplayAutre.push()
-            //             break;
-            //     }
-            //
-            //     newTaskDisplay.push(
-            //         <div className="task" key={nanoid()}>
-            //             <div className="task-header"
-            //                  key={nanoid()}>
-            //                 <h1>{props.stepTasks[i].header}</h1>
-            //             </div>
-            //             {expanded && (
-            //                 <div
-            //                     key={nanoid()}
-            //                     className="task-container">
-            //                     <p key={nanoid()}>{props.stepTasks[i].description}</p>
-            //                 </div>
-            //             )}
-            //         </div>
-            //     )
-            // }
-
-    //         props.setStepTasksDisplayArray(newTaskDisplay)
-    //     }
-    // }
 
     return (
         <div className="tasklist section__padding">
-        <button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>
-            {expanded ? "Expand All" :  "Collapse All" }
-        </button>
+        {/*<button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>*/}
+        {/*    {expanded ? "Expand All" :  "Collapse All" }*/}
+        {/*</button>*/}
 
-            <div className="task-container">
+            <div key={nanoid()} className="task-container">
                 {props.stepTasksDisplay}
             </div>
 

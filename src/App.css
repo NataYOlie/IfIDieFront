@@ -56,43 +56,23 @@ a{
 }
 
 .pastille-rouge {
-    width: 30px !important;
-    height: 30px !important;
-    flex:30px 30px;
-    border-radius: 20px;
-    background: var(--rouge);
+    color: var(--rouge);
     margin-left: 2rem;
-    padding: 1rem;
 }
 
 .pastille-jaune {
-    width: 30px !important;
-    height: 30px !important;
-    flex:30px 30px;
-    border-radius: 20px;
-    background: var(--jaune);
+    color: var(--jaune);
     margin-left: 2rem;
-    padding: 1rem;
 }
 
 .pastille-vert {
-    width: 30px !important;
-    height: 30px !important;
-    flex:30px 30px;
-    border-radius: 20px;
-    background: var(--vert);
+    color: var(--vert);
     margin-left: 2rem;
-    padding: 1rem;
 }
 
 .pastille-bleu {
-    width: 30px !important;
-    height: 30px !important;
-    flex:30px 30px;
-    border-radius: 20px;
-    background: var(--bleu);
+    color: var(--bleu);
     margin-left: 2rem;
-    padding: 1rem;
 }
 
 .task-container{

@@ -35,6 +35,9 @@ const Envisager = (props) => {
             stepTasks={props.tasks}
             user={props.user} setUser={props.setUser}
             stepTasksDisplay={props.stepTasksDisplay}
+            fetchUserStepTasks={props.fetchUserStepTasks}
+            fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+            saveStepListTasks={props.saveStepListTasks}
             setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
         />
     </div>

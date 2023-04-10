@@ -9,7 +9,7 @@ export default function App(props) {
 
   return (
     <>
-      <Navbar user={props.user}  setUser={props.setUser} />
+      <Navbar user={props.user}  setUser={props.setUser} setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path=":item/:id" element={<Item />} />
@@ -19,6 +19,9 @@ export default function App(props) {
                                        setTasks={props.setStepTasks}
                                        stepTasksRender={()=>props.stepTasksRender()}
                                        stepTasksDisplay={props.stepTasksDisplay}
+                                       fetchUserStepTasks={props.fetchUserStepTasks}
+                                       fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+                                       saveStepListTasks={props.saveStepListTasks}
                                        setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>} />
             <Route path="/space/:id" element={<Space />} />
             <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}/>} />

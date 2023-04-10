@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import App from "./App";
 import './App.css'
+import {forEach} from "react-bootstrap/ElementChildren";
 
 /**
  * This controller is kind of an init method for If I Die App
@@ -24,18 +25,18 @@ export default function AppController() {
      * Step Tasks Display, steptasks in their html dress to go party
      */
     const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
-    /**
-     * Step Tasks
-     */
-    const [myStepTasks, setMyStepTasks] = useState([]);
+
+    /////A EXPLIQUER
+    const [newTask, setNewTask] = useState({})
+    const [stepTasksDao, setStepTasksDao] = useState([]);
 
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app
      */
-    useEffect(() => {
-        fetchDefaultStepTasks();
-    }, []);
+    useEffect(() =>
+        fetchDefaultStepTasks(),
+     []);
 
     // /**
     //  * This useEffect updates my rendered task everytime steptasks state changes
@@ -65,7 +66,6 @@ export default function AppController() {
     function updateStepTask(stepTask){
         let index = stepTasks.findIndex(task => task.header === stepTasks.header)
         stepTasks[index] = stepTask;
-
 
         //Trouver la tache dans la liste "stepTasks"
         //remplacer la tâche
@@ -145,12 +145,12 @@ export default function AppController() {
      * This function fetch DefaultStepTasks from ddb and reinitialize StepTasks
      * @returns {*}
      */
-
     function fetchDefaultStepTasks() {
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
             method: 'GET',
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             }
         };
@@ -171,7 +171,6 @@ export default function AppController() {
                             listType: response[i].listType,
                             validationDate : response[i].validationDate,
                             visible:response[i].visible
-
                         }
                     );
                 }
@@ -181,60 +180,131 @@ export default function AppController() {
         return stepTasks
     }
 
+    /**
+     * This function fetch User StepTasks from ddb and reinitialize StepTasks
+     * @returns {*}
+     */
+    function fetchUserStepTasks() {
+        //correspond à un objet AUTHREQUEST
+        console.log("USER STEPTASK")
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user.token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+
+        const newTasks = []
+        fetch(backUrl + "/mySteplist/" + user.id, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                for (let i = 0; i < response.length; i++) {
+                    newTasks.push({
+                            id_task: response[i].id_task,
+                            description: response[i].description,
+                            external_link: response[i].external_link,
+                            header: response[i].header,
+                            previsionalDate: response[i].previsionalDate,
+                            subtype: response[i].subtype,
+                            task_color: response[i].taskColor,
+                            listType: response[i].listType,
+                            validationDate : response[i].validationDate,
+                            visible:response[i].visible
+                        }
+                    );
+                }if (newTasks.length>0){
+                    setStepTasksArray(newTasks)
+                    console.log("fetchUserStepTasks " + newTasks.length + " tâches")
+                }else saveStepListTasks()
+
+            })
+        return stepTasks
+    }
+
+    function saveStepListTasks (){
+        stepTasks.forEach(task => {
+            saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color);
+            console.log("saving " + task.header)
+        });
+        console.log("Steplist is saved " + stepTasks.length)
+    }
+
 
     /**
      *
-     * @param task
+     * @param subtype
+     * @param header
+     * @param description
+     * @param externalLink
+     * @param taskColor
      */
-    function updateTaskDao(task){
-        console.log("UpdateTask : " + task.header)
-        //correspond à un objet AUTHREQUEST
+    function saveStepListTask(subtype, header, description, externalLink, taskColor){
+        console.log("Save Step Task : " + header)
+        try {
+            //correspond à un objet AUTHREQUEST
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
 
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+                body: JSON.stringify({
+                    subtype: subtype,
+                    header: header,
+                    description: description,
+                    externalLink: externalLink,
+                    taskColor: taskColor,
+                    defaultTask: false
+                })
+            };
 
-            body: JSON.stringify({
-                subtype: task.subtype,
-                header: task.header,
-                description: task.description,
-                externalLink: task.externalLink,
-                taskColor: task.taskColor,
-                defaultTask: false
-            })
-        };
+            //correspond à l'AUTHRESPONSE
+            fetch(backUrl + "/savetask/StepList/" + user.id, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(json => setNewTask(
+                    {
+                        subtype: json.subtype,
+                        header: json.header,
+                        description: json.description,
+                        externalLink: json.externalLink,
+                        taskColor: json.taskColor,
+                        defaultTask: true,
+                        listType: "StepList",
+                        createdBy: user
+                    }))
+                .catch(error => {
+                    console.error('An error occurred while fetching the API:', error);
+                    throw new Error("Network error occurred while fetching the API");
+                });
 
-        console.log("lala" + requestOptions.method)
-
-        //correspond à l'AUTHRESPONSE
-        fetch(backUrl + "/savetask", requestOptions)
-            .then(response => response.json())
-            .then(json => setNewTask(
-                {
-                    subtype: json.subtype,
-                    header: json.header,
-                    description: json.description,
-                    externalLink: json.externalLink,
-                    taskColor: json.taskColor,
-                    defaultTask: true,
-                    listType: "StepList",
-                    createdBy: props.user
-                }));
-        props.addStepTask(newTask)
-        console.log(newTask.header)
+            stepTasksDao.push(newTask)
+            console.log(newTask.header)
+        } catch (error) {
+            console.error('An error occurred while saving the step list task:', error);
+        }
     }
+
+
 
 /////RETURN//////////////////////RETURN////////////////////////RETURN////////////////////////RETURN////////////////////RETURN//////////////////////////
 
     return <App style={{maxWidth:1400}}
                 user={user}
                 setUser={setUser}
+
+
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
+                saveStepListTasks={saveStepListTasks}
                 fetchDefaultStepTasks={fetchDefaultStepTasks}
+                fetchUserStepTasks={fetchUserStepTasks}
                 setStepTasksArray = {(newStepTasks)=>setStepTasksArray(newStepTasks)}
                 addStepTaskDisplay = {(newStepTaskDisplay)=>addStepTaskDisplay(newStepTaskDisplay)}
                 setStepTasksDisplayArray = {setStepTasksDisplayArray}
