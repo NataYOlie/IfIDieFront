@@ -6,7 +6,11 @@
 }
 
 .task-header{
+    display: flex;
     cursor: pointer;
+    font-family: var(--font-family);
+    justify-content: space-between;
+
 }
 
 .task-header h1{
@@ -17,6 +21,16 @@
     color: #000000;
     margin-bottom: 1rem;
 }
+
+.task-category{
+    font-family: var(--font-titles);
+    color: var(--rouge);
+    text-align: left !important;
+    margin: 3rem 1rem auto;
+    width: 80%;
+
+}
+
 
 
 

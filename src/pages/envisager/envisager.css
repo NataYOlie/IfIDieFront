@@ -1,9 +1,16 @@
 .step-list {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
     font-family: var(--font-family);
     color: white;
-    margin: auto;
     text-align: center;
 }
+.steplist-intro{
+    margin: 2rem auto;
+    width:60%;
+}
+
 
 .step-list h1 {
     font-weight: bold;
@@ -16,4 +23,10 @@
 .step-list h2 {
     font-weight: normal;
     font-size: 2.3rem;
+}
+
+.step-list p {
+    font-weight: normal;
+    font-size: 1rem;
+    text-align: left !important;
 }

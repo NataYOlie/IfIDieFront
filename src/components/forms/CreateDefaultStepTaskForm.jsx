@@ -82,8 +82,12 @@ export default function CreateDefaultStepTaskForm(props) {
 
     function onSubmit(data){
         console.log("bouton " + data.header)
-        createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
-        props.fetchDefaultStepTasks();
+        if(data){
+            createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
+            props.fetchDefaultStepTasks();
+        }else {
+            props.fetchDefaultStepTasks();
+        }
 
     }
 
@@ -140,15 +144,15 @@ return (
                         marron	#6d5839
                         orange   #c89345
                         */}
-                    <input type="radio" id="bleu" name="bleu" value="" defaultChecked="true" {...register("taskColor")}/>
-                    <label htmlFor="bleu">Aucune</label><br />
-                    <input type="radio" id="bleu" name="bleu" value="#12a3df" {...register("taskColor")}/>
+                    <input type="radio" id="none" name="none" value="" defaultChecked="true" {...register("taskColor")}/>
+                    <label htmlFor="none">Aucune</label><br />
+                    <input type="radio" id="bleu" name="bleu" value="pastille-bleu" {...register("taskColor")}/>
                     <label htmlFor="bleu">Bleue</label><br />
-                    <input type="radio" id="jaune" name="jaune" value="#fcd200" {...register("taskColor")}/>
+                    <input type="radio" id="jaune" name="jaune" value="pastille-jaune" {...register("taskColor")}/>
                     <label htmlFor="jaune">Jaune</label><br />
-                    <input type="radio" id="rouge" name="rouge" value="#ff4800" {...register("taskColor")}/>
+                    <input type="radio" id="rouge" name="rouge" value="pastille-rouge" {...register("taskColor")}/>
                     <label htmlFor="rouge">Rouge</label><br />
-                    <input type="radio" id="vert" name="vert" value="#46d308" {...register("taskColor")}/>
+                    <input type="radio" id="vert" name="vert" value="pastille-vert" {...register("taskColor")}/>
                     <label htmlFor="vert">Verte</label><br />
                 </div>
                 <div className="createDefaultTask-button">

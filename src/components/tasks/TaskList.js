@@ -1,6 +1,10 @@
 import {nanoid} from "nanoid";
 import React, {useEffect, useState} from "react";
 import "./tasklist.css"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import {library} from "@fortawesome/fontawesome-svg-core";
+library.add(faEyeSlash, faEye)
 
 
 /**
@@ -55,7 +59,6 @@ export default function TaskList(props) {
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
-
         if (props.stepTasks && props.stepTasks.length > 0) {
             const steptasksMirror = props.stepTasks
             console.log("Step Task Render " + props.stepTasks.length + " et son miroir " + steptasksMirror.length)
@@ -78,7 +81,7 @@ export default function TaskList(props) {
                 console.log(newList)
                 for (let n = 0; n < subtypeListState.length; n++) {
                     //Créer une liste du nom de la catégorie et y coller le début du bloc :
-                    newList.push(<h1>{(subtypeListState[n])}</h1>)
+                    newList.push(<div className="task-category"><h1>{(subtypeListState[n])}</h1></div>)
                     console.log("boucle 2 " + n)
                     console.log(subtypeListState[n])
                     console.log("props.stepTasks.length = " + props.stepTasks.length)
@@ -92,7 +95,12 @@ export default function TaskList(props) {
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
                                          key={nanoid()}>
-                                        <h1>{props.stepTasks[i].header}</h1>
+                                        <div key={nanoid()}><h1>{props.stepTasks[i].header}</h1></div>
+                                        {props.stepTasks[i].visible ? (
+                                            <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
+                                        ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="sm" style={{color: "#ff4800"}} /> )}
+
+                                        <div className={props.stepTasks[i].task_color} key={nanoid()}></div>
                                     </div>
                                     {expanded && (
                                         <div
@@ -101,6 +109,9 @@ export default function TaskList(props) {
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
                                         </div>
                                     )}
+                                    {props.stepTasks[i].validationDate ? (
+                                        <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
+                                    ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="sm" style={{color: "#ff4800"}} /> )}
                                 </div>
                             )
                             console.log("task pushed " + props.stepTasks[i].header + " on en est à " + newList.length)

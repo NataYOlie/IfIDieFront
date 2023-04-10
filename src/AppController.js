@@ -24,6 +24,10 @@ export default function AppController() {
      * Step Tasks Display, steptasks in their html dress to go party
      */
     const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
+    /**
+     * Step Tasks
+     */
+    const [myStepTasks, setMyStepTasks] = useState([]);
 
 
     /**
@@ -52,6 +56,21 @@ export default function AppController() {
         if (stepTasks && stepTasks.length > 0) {
             setStepTasks([...stepTasks, newStepTask]);
         } else setStepTasks([newStepTask])
+    }
+
+    /**
+     * This function update a StepTask and update StepTask List
+     * @param stepTask
+     */
+    function updateStepTask(stepTask){
+        let index = stepTasks.findIndex(task => task.header === stepTasks.header)
+        stepTasks[index] = stepTask;
+
+
+        //Trouver la tache dans la liste "stepTasks"
+        //remplacer la tâche
+        //mettre à jour la liste
+
     }
 
     /**
@@ -148,9 +167,10 @@ export default function AppController() {
                             header: response[i].header,
                             previsionalDate: response[i].previsionalDate,
                             subtype: response[i].subtype,
-                            task_color: response[i].task_color,
+                            task_color: response[i].taskColor,
                             listType: response[i].listType,
-                            validationDate : response[i].validationDate
+                            validationDate : response[i].validationDate,
+                            visible:response[i].visible
 
                         }
                     );
@@ -162,8 +182,49 @@ export default function AppController() {
     }
 
 
+    /**
+     *
+     * @param task
+     */
+    function updateTaskDao(task){
+        console.log("UpdateTask : " + task.header)
+        //correspond à un objet AUTHREQUEST
 
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
 
+            body: JSON.stringify({
+                subtype: task.subtype,
+                header: task.header,
+                description: task.description,
+                externalLink: task.externalLink,
+                taskColor: task.taskColor,
+                defaultTask: false
+            })
+        };
+
+        console.log("lala" + requestOptions.method)
+
+        //correspond à l'AUTHRESPONSE
+        fetch(backUrl + "/savetask", requestOptions)
+            .then(response => response.json())
+            .then(json => setNewTask(
+                {
+                    subtype: json.subtype,
+                    header: json.header,
+                    description: json.description,
+                    externalLink: json.externalLink,
+                    taskColor: json.taskColor,
+                    defaultTask: true,
+                    listType: "StepList",
+                    createdBy: props.user
+                }));
+        props.addStepTask(newTask)
+        console.log(newTask.header)
+    }
 
 /////RETURN//////////////////////RETURN////////////////////////RETURN////////////////////////RETURN////////////////////RETURN//////////////////////////
 

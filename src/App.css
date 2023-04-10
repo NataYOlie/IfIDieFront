@@ -35,33 +35,88 @@ a{
 	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
+/*///TASK/////////////////////TASK//////////////////////////////////TASK////////////////////////TASK//////////////////////////////*/
+
 .task{
     background: rgba(255, 255, 255);
     border-radius: 20px;
     padding: 2rem;
-    /*!*padding: 11px 12px 19px 11px;*!*/
-    /*margin-inline: 10px;*/
-    /*margin: 20px 10px 20px 10px  ;*/
-    margin: 3rem auto;
+    margin: 2rem auto;
     width: 80%;
     filter: drop-shadow(3px 3px 10px rgb(0 0 0 / 0.2));
 }
 
-.task-container{
-    background: rgba(255, 255, 255);
+.pastille {
+    width: 30px !important;
+    height: 30px !important;
+    flex:30px 30px;
     border-radius: 20px;
-    padding: 2rem;
+    margin-left: 2rem;
+    padding: 1rem;
+}
+
+.pastille-rouge {
+    width: 30px !important;
+    height: 30px !important;
+    flex:30px 30px;
+    border-radius: 20px;
+    background: var(--rouge);
+    margin-left: 2rem;
+    padding: 1rem;
+}
+
+.pastille-jaune {
+    width: 30px !important;
+    height: 30px !important;
+    flex:30px 30px;
+    border-radius: 20px;
+    background: var(--jaune);
+    margin-left: 2rem;
+    padding: 1rem;
+}
+
+.pastille-vert {
+    width: 30px !important;
+    height: 30px !important;
+    flex:30px 30px;
+    border-radius: 20px;
+    background: var(--vert);
+    margin-left: 2rem;
+    padding: 1rem;
+}
+
+.pastille-bleu {
+    width: 30px !important;
+    height: 30px !important;
+    flex:30px 30px;
+    border-radius: 20px;
+    background: var(--bleu);
+    margin-left: 2rem;
+    padding: 1rem;
+}
+
+.task-container{
+    background: rgba(255, 255, 255, 0.48);
+    border-radius: 20px;
+    padding: 1rem;
     display: flex;
     max-width: 80%;
+    margin:auto;
     flex-direction: column;
     align-items: center;
     text-align: left !important;
     justify-content: center;
+    white-space: pre-line;
+
 }
 .task-container h1 {
     font-family: var(--font-titles);
     color: var(--rouge);
-    margin-left:2rem;
+    margin:auto;
+}
+
+.task-container p {
+    font-family: var(--font-family);
 }
 
 .task-header{
@@ -78,6 +133,8 @@ a{
 }
 
 
+
+/*///BUTTON/////////////////////BUTTON//////////////////////////////////BUTTON////////////////////////BUTTON///////////////*/
 button{
   cursor: pointer;
 }
@@ -103,6 +160,10 @@ button{
 }
 
 
+
+
+
+/* This animation will scale an element from 50% of its original size to its full size////////////////////////////////*/
  @-webkit-keyframes scale-up-center {
   0% {
     -webkit-transform: scale(0.5);
@@ -124,6 +185,8 @@ button{
   }
 }
 
+
+/*///RESPONSIVE/////////////////////RESPONSIVE//////////////////////////////////RESPONSIVE////////////////////////RESPONSIVE///////////////*/
 
 @media screen and (max-width: 700px){
   .section__padding{
