@@ -16,6 +16,7 @@ export default function TaskList(props) {
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
     const [expandedTasks, setExpandedTasks] = useState([]);
+    const [check, setCheck] = useState()
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -33,17 +34,13 @@ export default function TaskList(props) {
         props.fetchDefaultStepTasks());
     }, []);
 
-    useEffect(() => {
-        // update subtypeListState here when props.stepTasks changes
-        // ...
-    }, [props.stepTasks]);
 
     /**
      * toggle expand ALL tasks
      */
     function toggleExpand() {
         setExpanded(!expanded);
-        stepTasksRender()
+        // stepTasksRender()
     }
 
     /**
@@ -52,39 +49,28 @@ export default function TaskList(props) {
      */
     const toggleTask = (index) => {
         console.log('Toggle task called with index:', index);
-        if (expandedTasks.includes(index)) {
-            console.log("if toggle " + expandedTasks)
-            setExpandedTasks(expandedTasks.filter((i) => i !== index));
-        } else {
-            console.log("else toggle" + expandedTasks)
-            setExpandedTasks([...expandedTasks, index]);
+        if (props.stepTasks[index].visible){
+            props.stepTasks[index].visible = false
+        } else{
+            props.stepTasks[index].visible = true
         }
         stepTasksRender()
     };
 
-    // function stepTasksRender() {
-    //     console.log("stepTaskRender !")
-    //     const newTaskDisplay = []
-    //     console.log("Step Task Render " + props.stepTasks.length)
-    //     for (let i = 0; i < props.stepTasks.length; i++) {
-    //         newTaskDisplay.push(
-    //             <div className="task" key={nanoid()}>
-    //                 <div className="task-header"
-    //                      key={nanoid()}>
-    //                     <h1>{props.stepTasks[i].header}</h1>
-    //                 </div>
-    //                 {expanded && (
-    //                     <div
-    //                         key={nanoid()}
-    //                         className="task-container">
-    //                         <p key={nanoid()}>{props.stepTasks[i].description}</p>
-    //                     </div>
-    //                 )}
-    //             </div>
-    //         )
-    //     }
-    //     props.setStepTasksDisplayArray(newTaskDisplay)
-    // }
+    /**
+     * This method set validationDate for the task (if task has a validation date, the task is checked, else (if the
+     * date is set to null) then task is unchecked
+     * @param index index of the task is the list (stepTasks)
+     */
+    const checkTask = (index) => {
+        if (props.stepTasks[index].validationDate){
+            props.stepTasks[index].validationDate = null
+        } else{
+                props.stepTasks[index].validationDate = Date.now()
+            }
+            stepTasksRender()
+        }
+
 
     function stepTasksRender() {
         console.log("stepTaskRender !")
@@ -122,7 +108,6 @@ export default function TaskList(props) {
                         console.log("boucle 3 " + i)
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
                             console.log(props.stepTasks[i].subtype + " et " + subtypeListState[n])
-                            console.log('expandedTasks:', expandedTasks)
                             newList.push(
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
@@ -130,21 +115,21 @@ export default function TaskList(props) {
                                         <div key={nanoid()} onClick={() => toggleTask(i)}><h1>{props.stepTasks[i].header}</h1></div>
                                         {props.stepTasks[i].visible ? (
                                             <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
-                                        ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="sm" style={{color: "#ff4800"}} /> )}
-                                        <FontAwesomeIcon icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} key={nanoid()}/>
+                                        ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="lg" style={{color: "#ff4800"}} /> )}
+                                        {props.stepTasks[i].validationDate ? (
+                                            <FontAwesomeIcon name="check" icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
+                                        ) : (<FontAwesomeIcon name="check" icon="fa-circle-check" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
 
                                     </div>
 
-                                    {expandedTasks.includes(i) && (
+                                    {props.stepTasks[i].visible  && (
                                         <div
                                             key={nanoid()}
                                             className="task-container">
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
                                         </div>
                                     )}
-                                    {props.stepTasks[i].validationDate ? (
-                                        <FontAwesomeIcon name="check" icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} key={nanoid()}/>
-                                    ) : (<FontAwesomeIcon name="check" icon="fa-circle-check" size="sm" className={props.stepTasks[i].task_color} key={nanoid()}/> )}
+
                                 </div>
                             )
                             console.log("task pushed " + props.stepTasks[i].header + " on en est à " + newList.length)
@@ -160,8 +145,6 @@ export default function TaskList(props) {
             }
         }
     }
-
-
     return (
         <div className="tasklist section__padding">
         {/*<button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>*/}
