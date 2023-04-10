@@ -13,7 +13,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {forEach} from "react-bootstrap/ElementChildren";
+import {Link} from "react-router-dom";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus)
+
+
 
 
 /**
@@ -24,6 +27,7 @@ export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
+    const [comments, setComments] = useState('Hello');
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -54,7 +58,6 @@ export default function TaskList(props) {
             props.stepTasks.forEach((task) => {task.visible = true})
             setExpanded(true)
         }
-
         stepTasksRender()
     }
 
@@ -86,6 +89,34 @@ export default function TaskList(props) {
             stepTasksRender()
         }
 
+    const handleComment = (i) => {
+
+        //Enregistrer le commentaire
+        if(props.stepTasks[i].commentEdit){
+            props.stepTasks[i].comment = comments
+            console.log("handleComment FALSE " + comments)
+            props.stepTasks[i].commentEdit = false
+        }
+        //Editer le commentaire
+        else{
+            setComments(props.stepTasks[i].comment)
+            props.stepTasks[i].commentEdit = true
+            console.log("handleComment TRUE " + comments)
+        }
+        stepTasksRender()
+    }
+    function handleChangeComment(value){
+        console.log(value)
+    }
+
+
+
+    function handleSaveList(e) {
+        e.preventDefault();
+        props.saveStepListTasks()
+        stepTasksRender()
+    }
+
 
     function stepTasksRender() {
         console.log("stepTaskRender !")
@@ -107,22 +138,16 @@ export default function TaskList(props) {
             console.log(subtypeListState.length)
 
             if (subtypeListState.length > 0) {
-                console.log("j'entre dans le if")
                 //Enregistrer les tâches dans chacune de leur catégorie
                 const newList = []
                 console.log(newList)
                 for (let n = 0; n < subtypeListState.length; n++) {
                     //Créer une liste du nom de la catégorie et y coller le début du bloc :
                     newList.push(<div className="task-category" key={nanoid()}><h1 key={nanoid()}>{(subtypeListState[n])}</h1></div>)
-                    console.log("boucle 2 " + n)
-                    console.log(subtypeListState[n])
-                    console.log("props.stepTasks.length = " + props.stepTasks.length)
                     //Je boucle sur ma liste de tache et si le nom de la liste equals celui de la catégorie de la tache,
                     // je l'y mets d'dans
                     for (let i = 0; i < props.stepTasks.length; i++) {
-                        console.log("boucle 3 " + i)
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
-                            console.log(props.stepTasks[i].subtype + " et " + subtypeListState[n])
                             newList.push(
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
@@ -135,8 +160,8 @@ export default function TaskList(props) {
                                             <h1>{props.stepTasks[i].header}</h1></div>
 
                                         {props.stepTasks[i].validationDate ? (
-                                            <FontAwesomeIcon name="check" icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
-                                        ) : (<FontAwesomeIcon name="check" icon="fa-circle-check" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
+                                            <FontAwesomeIcon icon="fa-circle" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
+                                        ) : (<FontAwesomeIcon icon="fa-circle-check" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
 
                                     </div>
 
@@ -145,9 +170,15 @@ export default function TaskList(props) {
                                             key={nanoid()}
                                             className="task-container">
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
+                                            {props.stepTasks[i].commentEdit ? <div>
+                                            <textarea key={nanoid()} value={comments} onChange={(e) => handleChangeComment(e.target.value)}></textarea>
+                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>:<div><div className="comment">{props.stepTasks[i].comment}</div>
+                                                    <h2 onClick={(event)=>handleComment(i)}>Mon choix</h2></div>}
+
                                         </div>
                                     )}
-
+                                    {props.stepTasks[i].external_link  ? (
+                                    <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}
                                 </div>
                             )
                             console.log("task pushed " + props.stepTasks[i].header + " on en est à " + newList.length)
@@ -171,7 +202,11 @@ export default function TaskList(props) {
 
             <div key={nanoid()} className="task-container">
                 {props.stepTasksDisplay}
+                <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
+                    Enregistrer
+                </button>
             </div>
+
 
         </div>
 

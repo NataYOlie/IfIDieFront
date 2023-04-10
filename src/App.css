@@ -46,6 +46,14 @@ a{
     filter: drop-shadow(3px 3px 10px rgb(0 0 0 / 0.2));
 }
 
+.task a{
+    color:var(--bleu);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin : 2rem 3rem;
+}
+
 .pastille {
     width: 30px !important;
     height: 30px !important;
@@ -85,18 +93,55 @@ a{
     flex-direction: column;
     align-items: center;
     text-align: left !important;
-    justify-content: center;
+    justify-content: left;
     white-space: pre-line;
 
 }
 .task-container h1 {
     font-family: var(--font-titles);
     color: var(--rouge);
-    margin:auto;
+    margin: auto 2rem ;
+
 }
 
 .task-container p {
     font-family: var(--font-family);
+}
+
+.task-container h2 {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: bold;
+    font-style: italic;
+    color: var(--orange);
+    margin-top : 1rem;
+    text-align: left;
+    width: auto;
+    cursor: pointer;
+}
+
+.task-container textarea{
+    outline: none !important;
+    font-family: var(--font-family);
+    width : 80%;
+    margin : 2rem auto;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+    resize: none;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+.task-container textarea :focus{
+    outline: none !important;
+    border: 2px solid ;
+    border-color : var(--jaune);
+}
+
+.task-container input :focus{
+    outline: none !important;
+    border: 2px solid ;
+    border-color : var(--jaune);
 }
 
 .task-header{

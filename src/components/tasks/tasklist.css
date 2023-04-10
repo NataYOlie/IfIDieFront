@@ -33,7 +33,14 @@
 
 
 
+.comment{
+    background: rgba(133, 133, 133, 0.17);
+    border-radius: 20px;
+    /*padding: 2rem;*/
+    /*margin: 2rem auto;*/
+    width: 80%;
 
+}
 
 
 .expand-writeButton{
@@ -54,4 +61,26 @@
 
 .expand-writeButton:active{
     background: #c7c3c3;
+}
+
+.save-writeButton{
+    /* float: right; */
+    background: var(--rouge);
+    font-family: var(--font-family);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    margin : 2rem;
+}
+
+.save-writeButton:hover{
+    filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.save-writeButton:active {
+    background: rgb(183, 51, 0);
 }

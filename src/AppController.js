@@ -163,14 +163,16 @@ export default function AppController() {
                     newTasks.push({
                             id_task: response[i].id_task,
                             description: response[i].description,
-                            external_link: response[i].external_link,
+                            external_link: response[i].externalLink,
                             header: response[i].header,
                             previsionalDate: response[i].previsionalDate,
                             subtype: response[i].subtype,
                             task_color: response[i].taskColor,
                             listType: response[i].listType,
                             validationDate : response[i].validationDate,
-                            visible:response[i].visible
+                            visible:response[i].visible,
+                            comment:response[i].comment,
+                            commentEdit: false
                         }
                     );
                 }
@@ -203,14 +205,16 @@ export default function AppController() {
                     newTasks.push({
                             id_task: response[i].id_task,
                             description: response[i].description,
-                            external_link: response[i].external_link,
+                            external_link: response[i].externalLink,
                             header: response[i].header,
                             previsionalDate: response[i].previsionalDate,
                             subtype: response[i].subtype,
                             task_color: response[i].taskColor,
                             listType: response[i].listType,
                             validationDate : response[i].validationDate,
-                            visible:response[i].visible
+                            visible:response[i].visible,
+                            comment:response[i].comment,
+                            commentEdit: false
                         }
                     );
                 }if (newTasks.length>0){
@@ -224,7 +228,8 @@ export default function AppController() {
 
     function saveStepListTasks (){
         stepTasks.forEach(task => {
-            saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color);
+            saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
+                task.comment, task.validationDate, task.previsionalDate);
             console.log("saving " + task.header)
         });
         console.log("Steplist is saved " + stepTasks.length)
@@ -239,7 +244,7 @@ export default function AppController() {
      * @param externalLink
      * @param taskColor
      */
-    function saveStepListTask(subtype, header, description, externalLink, taskColor){
+    function saveStepListTask(subtype, header, description, externalLink, taskColor, comment, validationDate, previsionalDate){
         console.log("Save Step Task : " + header)
         try {
             //correspond à un objet AUTHREQUEST
@@ -255,7 +260,10 @@ export default function AppController() {
                     description: description,
                     externalLink: externalLink,
                     taskColor: taskColor,
-                    defaultTask: false
+                    defaultTask: false,
+                    comment : comment,
+                    validationDate : validationDate,
+                    previsionalDate : previsionalDate
                 })
             };
 

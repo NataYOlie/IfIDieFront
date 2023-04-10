@@ -1,6 +1,7 @@
 import React from 'react';
 import {TaskList} from "../../components";
 import "./envisager.css"
+import cloud_simple from "../../assets/cloud_simple.svg";
 
 
 const Envisager = (props) => {
@@ -8,6 +9,7 @@ const Envisager = (props) => {
     return (
         <>
     <div className="step-list">
+        <img src={cloud_simple} alt={cloud_simple}/>
         <h1 >StepList</h1>
         <h2>Mes démarches</h2>
         <div className="steplist-intro">
