@@ -2,9 +2,18 @@ import {nanoid} from "nanoid";
 import React, {useEffect, useState} from "react";
 import "./tasklist.css"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEyeSlash, faEye, faCircle, faCircleCheck} from '@fortawesome/free-solid-svg-icons'
+import {
+    faEyeSlash,
+    faEye,
+    faCircle,
+    faCircleCheck,
+    faChevronUp,
+    faSquarePlus,
+    faSquareMinus
+} from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
-library.add(faEyeSlash, faEye, faCircle, faCircleCheck)
+import {forEach} from "react-bootstrap/ElementChildren";
+library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus)
 
 
 /**
@@ -15,8 +24,6 @@ export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
-    const [expandedTasks, setExpandedTasks] = useState([]);
-    const [check, setCheck] = useState()
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -28,7 +35,8 @@ export default function TaskList(props) {
     }, [props.stepTasks]);
 
     /**
-     * This useEffect fetch StepTasks from ddb when launching app
+     * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
+     * otherwise it fetches DefaultSteptasks
      */
     useEffect(() => {(props.user ? (props.fetchUserStepTasks()):
         props.fetchDefaultStepTasks());
@@ -39,8 +47,15 @@ export default function TaskList(props) {
      * toggle expand ALL tasks
      */
     function toggleExpand() {
-        setExpanded(!expanded);
-        // stepTasksRender()
+        if (props.stepTasks[0].visible){
+            props.stepTasks.forEach((task) => {task.visible = false});
+            setExpanded(false)
+        }else {
+            props.stepTasks.forEach((task) => {task.visible = true})
+            setExpanded(true)
+        }
+
+        stepTasksRender()
     }
 
     /**
@@ -112,10 +127,13 @@ export default function TaskList(props) {
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
                                          key={nanoid()}>
-                                        <div key={nanoid()} onClick={() => toggleTask(i)}><h1>{props.stepTasks[i].header}</h1></div>
                                         {props.stepTasks[i].visible ? (
-                                            <FontAwesomeIcon icon="fa-solid fa-eye" size="lg" style={{color: "#12a3df"}} />
-                                        ) : (<FontAwesomeIcon icon="fa-solid fa-eye-slash" size="lg" style={{color: "#ff4800"}} /> )}
+                                            <FontAwesomeIcon icon="fa-square-minus" size="lg" style={{color: "#12a3df"}} onClick={() => toggleTask(i)}/>
+                                        ) : (<FontAwesomeIcon icon="fa-square-plus" size="lg" style={{color: "#12a3df"}} onClick={() => toggleTask(i)}/> )}
+                                        <div key={nanoid()} onClick={() => toggleTask(i)}>
+
+                                            <h1>{props.stepTasks[i].header}</h1></div>
+
                                         {props.stepTasks[i].validationDate ? (
                                             <FontAwesomeIcon name="check" icon="fa-circle" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
                                         ) : (<FontAwesomeIcon name="check" icon="fa-circle-check" size="lg" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
@@ -147,9 +165,9 @@ export default function TaskList(props) {
     }
     return (
         <div className="tasklist section__padding">
-        {/*<button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>*/}
-        {/*    {expanded ? "Expand All" :  "Collapse All" }*/}
-        {/*</button>*/}
+        <button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>
+            {!props.stepTasks[0].visible ? "Expand All" :  "Collapse All" }
+        </button>
 
             <div key={nanoid()} className="task-container">
                 {props.stepTasksDisplay}
