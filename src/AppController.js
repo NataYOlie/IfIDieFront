@@ -30,6 +30,10 @@ export default function AppController() {
     const [newTask, setNewTask] = useState({})
     const [stepTasksDao, setStepTasksDao] = useState([]);
 
+    //for creation date
+    const todayprepare = new Date;
+    const today = todayprepare.toISOString().slice(0, 10);
+
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app
@@ -37,15 +41,6 @@ export default function AppController() {
     useEffect(() =>
         fetchDefaultStepTasks(),
      []);
-
-    // /**
-    //  * This useEffect updates my rendered task everytime steptasks state changes
-    //  */
-    // useEffect(() => {
-    //     stepTasksRender();
-    // }, [stepTasks]);
-
-
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +59,8 @@ export default function AppController() {
      * @param stepTask
      */
     function updateStepTask(stepTask){
-        let index = stepTasks.findIndex(task => task.header === stepTasks.header)
+        let index = stepTasks.findIndex(task => task.id === stepTasks.id)
+        stepTasks[index].modificationDate = Date.now()
         stepTasks[index] = stepTask;
 
         //Trouver la tache dans la liste "stepTasks"
@@ -81,6 +77,7 @@ export default function AppController() {
         setStepTasks(newStepTasks)
         console.log("steptasks Array " + stepTasks.length)
     }
+
     /**
      * This function adds a setStepTaskDisplay to be use in all the components
      * @param newStepTaskDisplay
@@ -172,7 +169,9 @@ export default function AppController() {
                             validationDate : response[i].validationDate,
                             visible:response[i].visible,
                             comment:response[i].comment,
-                            commentEdit: false
+                            creationDate:response[i].creationDate,
+                            commentEdit: false,
+                            modificationDate:null
                         }
                     );
                 }
@@ -214,7 +213,9 @@ export default function AppController() {
                             validationDate : response[i].validationDate,
                             visible:response[i].visible,
                             comment:response[i].comment,
-                            commentEdit: false
+                            creationDate:response[i].creationDate,
+                            commentEdit: false,
+                            modificationDate:null
                         }
                     );
                 }if (newTasks.length>0){
@@ -226,16 +227,20 @@ export default function AppController() {
         return stepTasks
     }
 
-    function saveStepListTasks (){
-        stepTasks.forEach(task => {
+
+    function saveStepListTasks (steplisttask){
+        steplisttask.forEach(task => {
             saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
                 task.comment, task.validationDate, task.previsionalDate);
-            console.log("saving " + task.header)
+            console.log("saving " + task.header + " " + today)
         });
         console.log("Steplist is saved " + stepTasks.length)
     }
-
-
+    /*
+      @PutMapping("/updatetask/{userid}/{taskid}")
+    public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, @PathVariable Integer taskid) {
+        return taskService.findById(taskid)
+     */
     /**
      *
      * @param subtype
@@ -243,9 +248,13 @@ export default function AppController() {
      * @param description
      * @param externalLink
      * @param taskColor
+     * @param comment
+     * @param validationDate
+     * @param previsionalDate
      */
     function saveStepListTask(subtype, header, description, externalLink, taskColor, comment, validationDate, previsionalDate){
         console.log("Save Step Task : " + header)
+
         try {
             //correspond à un objet AUTHREQUEST
             const requestOptions = {
@@ -263,7 +272,8 @@ export default function AppController() {
                     defaultTask: false,
                     comment : comment,
                     validationDate : validationDate,
-                    previsionalDate : previsionalDate
+                    previsionalDate : previsionalDate,
+                    creationDate: today
                 })
             };
 
@@ -284,7 +294,9 @@ export default function AppController() {
                         taskColor: json.taskColor,
                         defaultTask: true,
                         listType: "StepList",
-                        createdBy: user
+                        createdBy: user,
+                        comment:json.comment,
+                        creationDate: today
                     }))
                 .catch(error => {
                     console.error('An error occurred while fetching the API:', error);
@@ -305,8 +317,6 @@ export default function AppController() {
     return <App style={{maxWidth:1400}}
                 user={user}
                 setUser={setUser}
-
-
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
@@ -316,5 +326,9 @@ export default function AppController() {
                 setStepTasksArray = {(newStepTasks)=>setStepTasksArray(newStepTasks)}
                 addStepTaskDisplay = {(newStepTaskDisplay)=>addStepTaskDisplay(newStepTaskDisplay)}
                 setStepTasksDisplayArray = {setStepTasksDisplayArray}
-                stepTasksDisplay = {stepTasksDisplay}/>
+                stepTasksDisplay = {stepTasksDisplay}
+                updateStepTask = {updateStepTask}
+
+    />
+
 }

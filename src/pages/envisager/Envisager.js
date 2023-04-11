@@ -34,13 +34,14 @@ const Envisager = (props) => {
     </div>
     <div>
         <TaskList
-            stepTasks={props.tasks}
+            stepTasks={props.stepTasks}
             user={props.user} setUser={props.setUser}
             stepTasksDisplay={props.stepTasksDisplay}
             fetchUserStepTasks={props.fetchUserStepTasks}
             fetchDefaultStepTasks={props.fetchDefaultStepTasks}
             saveStepListTasks={props.saveStepListTasks}
             setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+            updateStepTask = {props.updateStepTask}
         />
     </div>
             </>
