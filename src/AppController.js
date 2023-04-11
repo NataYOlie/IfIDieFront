@@ -64,8 +64,9 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
      * @param stepTask
      */
     function updateStepTask(stepTask){
-        let index = stepTasks.findIndex(task => task.id === stepTasks.id)
-        stepTasks[index].modificationDate = Date.now()
+        let index = stepTasks.findIndex(task => task.id_task === stepTask.id_task)
+        console.log("update steptask : task id : " + index + " et steptaskId : " + stepTask.id_task)
+        stepTasks[index].modificationDate = today
         stepTasks[index] = stepTask;
 
         //Trouver la tache dans la liste "stepTasks"
@@ -176,7 +177,9 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                             comment:response[i].comment,
                             creationDate:response[i].creationDate,
                             commentEdit: false,
-                            modificationDate:null
+                            modificationDate:null,
+                            default_task:response[i].defaultTask
+
                         }
                     );
                 }
@@ -220,35 +223,51 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                             comment:response[i].comment,
                             creationDate:response[i].creationDate,
                             commentEdit: false,
-                            modificationDate:null
+                            default_task:response[i].defaultTask,
+                            modificationDate:response[i].modificationDate
                         }
                     );
                 }if (newTasks.length>0){
                     setStepTasksArray(newTasks)
                     console.log("fetchUserStepTasks " + newTasks.length + " tâches")
-                }else saveStepListTasks()
+                }else saveStepListTasks(stepTasks)
 
             })
         return stepTasks
     }
 
-
     function saveStepListTasks (steplisttask){
-        steplisttask.forEach(task => {
-            if (task.modificationDate === null){
-            saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
-                task.comment, task.validationDate, task.previsionalDate);
-            console.log("saving " + task.header + " " + today)
-        }else {
-                updateStepTask(task)
-                console.log("updating " + task.header + " " + today)
-            }
+        console.log("ENTERING SAVE STEPLIST TASK")
+        if (steplisttask){
+            steplisttask.forEach(task => {
+
+                //Si la tâche est nouvelle :
+                if (task.id_task === null) {
+                    saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
+                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
+                    console.log("saving " + task.header + " " + today)
+
+                    //Si la tache est une tache par défaut
+                }else if (task.default_task){
+                    console.log("tache default dans savesteplist")
+                    saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
+                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
+
+                    //Si la tache existe déjà
+                }else {
+                    task.modificationDate = today;
+                    updateStepListTask(task)
+                    console.log("updating " + task.header + " " + today)
+                }
             });
-        console.log("Steplist is saved " + stepTasks.length)
+            fetchUserStepTasks()
+            console.log("Steplist is saved " + stepTasks.length)
+        }
+
     }
 
     /**
-     *
+     *ATTENTION DEFAULT SET TO TRUE
      * @param subtype
      * @param header
      * @param description
@@ -258,7 +277,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
      * @param validationDate
      * @param previsionalDate
      */
-    function saveStepListTask(subtype, header, description, externalLink, taskColor, comment, validationDate, previsionalDate){
+    function saveStepListTask(subtype, header, description, externalLink, taskColor, comment, validationDate, previsionalDate, modificationDate){
         console.log("Save Step Task : " + header)
 
         try {
@@ -275,11 +294,12 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                     description: description,
                     external_link: externalLink,
                     taskColor: taskColor,
-                    defaultTask: false,
+                    // defaultTask: false,
                     comment : comment,
                     validationDate : validationDate,
                     previsionalDate : previsionalDate,
-                    creationDate: today
+                    creationDate: today,
+                    modificationDate : modificationDate
                 })
             };
 
@@ -328,6 +348,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
             const requestOptions = {
                 method: 'PUT',
                 headers: {
+                    'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json'
                 },
 
@@ -335,18 +356,20 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                     subtype: stepTask.subtype,
                     header: stepTask.header,
                     description: stepTask.description,
-                    externalLink: stepTask.externalLink,
-                    taskColor: stepTask.taskColor,
+                    externalLink: stepTask.external_link,
+                    taskColor: stepTask.task_color,
                     defaultTask: false,
                     comment : stepTask.comment,
                     validationDate : stepTask.validationDate,
                     previsionalDate : stepTask.previsionalDate,
-                    creationDate: stepTask.creationDate
+                    creationDate: stepTask.creationDate,
+                    modificationDate : today,
+                    visible : stepTask.visible
                 })
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/savetask/StepList/" + user.id + "/" + stepTask.id, requestOptions)
+            fetch(backUrl + "/updatetask/" + user.id + "/" + stepTask.id_task, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
@@ -364,7 +387,8 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                         listType: "StepList",
                         createdBy: user,
                         comment:json.comment,
-                        creationDate: json.creationDate
+                        creationDate: json.creationDate,
+                        modificationDate: json.modificationDate
                     }))
                 .catch(error => {
                     console.error('An error occurred while fetching the API:', error);
@@ -412,7 +436,8 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                             comment:response[i].comment,
                             creationDate:response[i].creationDate,
                             commentEdit: false,
-                            modificationDate:null
+                            modificationDate:response[i].modificationDate,
+                            default_task:false
                         }
                     );
                 }if (newTasks.length>0){

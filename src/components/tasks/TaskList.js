@@ -41,15 +41,18 @@ export default function TaskList(props) {
     useEffect(() => {
         if (props.stepTasks && props.stepTasks.length >0) {
             stepTasksRender()
-        };
+        }
+
     }, [props.stepTasks]);
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
      * otherwise it fetches DefaultSteptasks
      */
-    useEffect(() => {(props.user ? (props.fetchUserStepTasks()):
+    useEffect(() => {
+        (props.user ? (props.fetchUserStepTasks() ):
         props.fetchDefaultStepTasks());
+
     }, []);
 
 
@@ -109,13 +112,13 @@ export default function TaskList(props) {
             console.log("handleComment TRUE " + props.stepTasks[i].comment)
             stepTasksRender()
         }
-
     }
 
     function handleChangeComment(value, index){
-        let commentTemp = props.stepTasks[index].comment
         console.log("handle Change : " + value)
         setTimeout(() => (props.stepTasks[index].comment = value), 800);
+        props.updateStepTask(props.stepTasks[index])
+        console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id)
 
     }
 
@@ -124,7 +127,9 @@ export default function TaskList(props) {
         if (props.user){
             e.preventDefault();
             props.saveStepListTasks(props.stepTasks)
-            stepTasksRender()
+            console.log("handleDaveList " + props.stepTasks.length)
+            props.fetchUserStepTasks()
+
         }else {
             console.log("pas d'utilisateur")
             setShouldRedirect(true)
