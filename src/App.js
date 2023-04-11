@@ -15,8 +15,9 @@ export default function App(props) {
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
                    element={<Envisager user={props.user} setUser={props.setUser}
-                                       tasks={props.stepTasks}
+                                       stepTasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
+                                       updateStepTask = {props.updateStepTask}
                                        stepTasksRender={()=>props.stepTasksRender()}
                                        stepTasksDisplay={props.stepTasksDisplay}
                                        fetchUserStepTasks={props.fetchUserStepTasks}

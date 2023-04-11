@@ -14,6 +14,7 @@ import {
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {forEach} from "react-bootstrap/ElementChildren";
 import {Link} from "react-router-dom";
+import {Navigate} from "react-router";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus)
 
 
@@ -27,7 +28,12 @@ export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
-    const [comments, setComments] = useState('Hello');
+    // const [comments, setComments] = useState('Hello');
+    const [shouldRedirect, setShouldRedirect] = useState(false);
+
+    //TODAY
+    const todayprepare = new Date;
+    const today = todayprepare.toISOString().slice(0, 10);
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -84,37 +90,45 @@ export default function TaskList(props) {
         if (props.stepTasks[index].validationDate){
             props.stepTasks[index].validationDate = null
         } else{
-                props.stepTasks[index].validationDate = Date.now()
+                props.stepTasks[index].validationDate = today
             }
             stepTasksRender()
         }
 
-    const handleComment = (i) => {
+    const handleComment = (i, value) => {
+        let commentTemp
 
         //Enregistrer le commentaire
         if(props.stepTasks[i].commentEdit){
-            props.stepTasks[i].comment = comments
-            console.log("handleComment FALSE " + comments)
             props.stepTasks[i].commentEdit = false
+            stepTasksRender()
         }
-        //Editer le commentaire
+        //Mon choix
         else{
-            setComments(props.stepTasks[i].comment)
             props.stepTasks[i].commentEdit = true
-            console.log("handleComment TRUE " + comments)
+            console.log("handleComment TRUE " + props.stepTasks[i].comment)
+            stepTasksRender()
         }
-        stepTasksRender()
-    }
-    function handleChangeComment(value){
-        console.log(value)
+
     }
 
+    function handleChangeComment(value, index){
+        let commentTemp = props.stepTasks[index].comment
+        console.log("handle Change : " + value)
+        setTimeout(() => (props.stepTasks[index].comment = value), 800);
+
+    }
 
 
     function handleSaveList(e) {
-        e.preventDefault();
-        props.saveStepListTasks()
-        stepTasksRender()
+        if (props.user){
+            e.preventDefault();
+            props.saveStepListTasks(props.stepTasks)
+            stepTasksRender()
+        }else {
+            console.log("pas d'utilisateur")
+            setShouldRedirect(true)
+        }
     }
 
 
@@ -148,6 +162,8 @@ export default function TaskList(props) {
                     // je l'y mets d'dans
                     for (let i = 0; i < props.stepTasks.length; i++) {
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
+                            let value = "";
+
                             newList.push(
                                 <div className="task" key={nanoid()}>
                                     <div className="task-header"
@@ -171,9 +187,9 @@ export default function TaskList(props) {
                                             className="task-container">
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
                                             {props.stepTasks[i].commentEdit ? <div>
-                                            <textarea key={nanoid()} value={comments} onChange={(e) => handleChangeComment(e.target.value)}></textarea>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>:<div><div className="comment">{props.stepTasks[i].comment}</div>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Mon choix</h2></div>}
+                                            <textarea key={nanoid()} defaultValue={props.stepTasks[i].comment} onChange={(e) => handleChangeComment(e.target.value, i)}></textarea>
+                                                    <h2 onClick={(event)=>handleComment(i, value)}>Enregistrer mon choix </h2></div>:<div><div className="comment">{props.stepTasks[i].comment}</div>
+                                                    <h2 onClick={(event)=>handleComment(i, value)}>Mon choix</h2>{props.stepTasks[i].comment}</div>}
 
                                         </div>
                                     )}
@@ -195,20 +211,24 @@ export default function TaskList(props) {
         }
     }
     return (
-        <div className="tasklist section__padding">
-        <button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>
-            {!props.stepTasks[0].visible ? "Expand All" :  "Collapse All" }
-        </button>
-
-            <div key={nanoid()} className="task-container">
-                {props.stepTasksDisplay}
-                <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
-                    Enregistrer
+        <>
+            {shouldRedirect && <Navigate replace to="/login" />}
+            {/* rest of your component */}
+            <div className="tasklist section__padding">
+                <button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>
+                    {!props.stepTasks[0].visible ? "Expand All" :  "Collapse All" }
                 </button>
+
+                <div key={nanoid()} className="task-container">
+                    {props.stepTasksDisplay}
+                    <button className="save-writeButton" key={nanoid()} onClick={(e)=>handleSaveList(e)}>
+                        Enregistrer
+                    </button>
+                </div>
+
+
             </div>
-
-
-        </div>
+        </>
 
 
     )
