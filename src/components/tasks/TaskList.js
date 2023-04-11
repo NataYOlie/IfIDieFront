@@ -123,8 +123,7 @@ export default function TaskList(props) {
     function handleSaveList(e) {
         if (props.user){
             e.preventDefault();
-            const steptasklisttosave = props.stepTasks
-            props.saveStepListTasks(steptasklisttosave)
+            props.saveStepListTasks(props.stepTasks)
             stepTasksRender()
         }else {
             console.log("pas d'utilisateur")

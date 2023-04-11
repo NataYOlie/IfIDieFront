@@ -54,6 +54,11 @@ export default function AppController() {
         } else setStepTasks([newStepTask])
     }
 
+    /*
+  @PutMapping("/updatetask/{userid}/{taskid}")
+public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, @PathVariable Integer taskid) {
+    return taskService.findById(taskid)
+ */
     /**
      * This function update a StepTask and update StepTask List
      * @param stepTask
@@ -230,17 +235,18 @@ export default function AppController() {
 
     function saveStepListTasks (steplisttask){
         steplisttask.forEach(task => {
+            if (task.modificationDate === null){
             saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
                 task.comment, task.validationDate, task.previsionalDate);
             console.log("saving " + task.header + " " + today)
-        });
+        }else {
+                updateStepTask(task)
+                console.log("updating " + task.header + " " + today)
+            }
+            });
         console.log("Steplist is saved " + stepTasks.length)
     }
-    /*
-      @PutMapping("/updatetask/{userid}/{taskid}")
-    public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, @PathVariable Integer taskid) {
-        return taskService.findById(taskid)
-     */
+
     /**
      *
      * @param subtype
@@ -267,7 +273,7 @@ export default function AppController() {
                     subtype: subtype,
                     header: header,
                     description: description,
-                    externalLink: externalLink,
+                    external_link: externalLink,
                     taskColor: taskColor,
                     defaultTask: false,
                     comment : comment,
@@ -290,7 +296,7 @@ export default function AppController() {
                         subtype: json.subtype,
                         header: json.header,
                         description: json.description,
-                        externalLink: json.externalLink,
+                        external_link: json.externalLink,
                         taskColor: json.taskColor,
                         defaultTask: true,
                         listType: "StepList",
@@ -310,6 +316,113 @@ export default function AppController() {
         }
     }
 
+    /**
+     *
+     * @param stepTask A stepTask
+     */
+    function updateStepListTask(stepTask){
+        console.log("Update Step Task : " + stepTask.header)
+
+        try {
+            //correspond à un objet AUTHREQUEST
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    subtype: stepTask.subtype,
+                    header: stepTask.header,
+                    description: stepTask.description,
+                    externalLink: stepTask.externalLink,
+                    taskColor: stepTask.taskColor,
+                    defaultTask: false,
+                    comment : stepTask.comment,
+                    validationDate : stepTask.validationDate,
+                    previsionalDate : stepTask.previsionalDate,
+                    creationDate: stepTask.creationDate
+                })
+            };
+
+            //correspond à l'AUTHRESPONSE
+            fetch(backUrl + "/savetask/StepList/" + user.id + "/" + stepTask.id, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(json => setNewTask(
+                    {
+                        subtype: json.subtype,
+                        header: json.header,
+                        description: json.description,
+                        externalLink: json.externalLink,
+                        taskColor: json.taskColor,
+                        defaultTask: true,
+                        listType: "StepList",
+                        createdBy: user,
+                        comment:json.comment,
+                        creationDate: json.creationDate
+                    }))
+                .catch(error => {
+                    console.error('An error occurred while fetching the API:', error);
+                    throw new Error("Network error occurred while fetching the API");
+                });
+
+            stepTasksDao.push(newTask)
+            console.log(newTask.header)
+        } catch (error) {
+            console.error('An error occurred while saving the step list task:', error);
+        }
+    }
+
+    /**
+     * This function fetch User StepTasks from ddb and reinitialize StepTasks
+     * @returns {*}
+     */
+    function fetchUserStepTasks() {
+        //correspond à un objet AUTHREQUEST
+        console.log("USER STEPTASK")
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user.token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+
+        const newTasks = []
+        fetch(backUrl + "/mySteplist/" + user.id, requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                for (let i = 0; i < response.length; i++) {
+                    newTasks.push({
+                            id_task: response[i].id_task,
+                            description: response[i].description,
+                            external_link: response[i].externalLink,
+                            header: response[i].header,
+                            previsionalDate: response[i].previsionalDate,
+                            subtype: response[i].subtype,
+                            task_color: response[i].taskColor,
+                            listType: response[i].listType,
+                            validationDate : response[i].validationDate,
+                            visible:response[i].visible,
+                            comment:response[i].comment,
+                            creationDate:response[i].creationDate,
+                            commentEdit: false,
+                            modificationDate:null
+                        }
+                    );
+                }if (newTasks.length>0){
+                    setStepTasksArray(newTasks)
+                    console.log("fetchUserStepTasks " + newTasks.length + " tâches")
+                }else saveStepListTasks()
+
+            })
+        return stepTasks
+    }
 
 
 /////RETURN//////////////////////RETURN////////////////////////RETURN////////////////////////RETURN////////////////////RETURN//////////////////////////
