@@ -1,24 +1,31 @@
 import './adminBoard.css';
 import React, {useState} from "react";
-import {CreateDefaultStepTaskForm, StepTask, TaskList} from '../../components'
+import {CreateDefaultStepTaskForm, CreateFunnyDeathForm, StepTask, TaskList} from '../../components'
 
 export default function AdminBoard(props) {
     const [toggleCreateTask, setToggleCreateTask]=useState(false)
-    const [toggleCreateFunnyDeath, setToggleCreateFunnyDeath]=useState(false)
+    const [toggleCreateFunnyDeath, setToggleCreateFunnyDeath]=useState(true)
     const [toggleTaskList, setToggleTaskList]=useState(false)
+    const [buttonClass, setButtonClass]=useState(["adminBoard-white-writeButton",
+        "adminBoard-white-writeButton-activated"])
 
+    function handleToggle(){
+        setToggleCreateTask(!toggleCreateTask);
+        setToggleCreateFunnyDeath(!toggleCreateFunnyDeath);
+        setButtonClass(buttonClass.reverse())
+    }
 
     function ButtonSet (){
         return (
             <div className="adminBoard-button-container">
-                <button className='adminBoard-white-writeButton'
+                <button className={buttonClass[0]}
                         type="submit"
-                        onClick={()=>setToggleCreateTask(!toggleCreateTask)}>
+                        onClick={handleToggle}>
                     Créer une tache
                 </button>
-                <button className='adminBoard-white-writeButton'
+                <button className={buttonClass[1]}
                         type="submit"
-                        onClick={()=>setToggleCreateFunnyDeath(!toggleCreateFunnyDeath)}>
+                        onClick={handleToggle}>
                 Créer une funnydeath
                 </button>
             </div>
@@ -65,6 +72,21 @@ export default function AdminBoard(props) {
                  setStepTasksDisplayArray={props.setStepTasksDisplayArray}
                 />
             )}
+
+                {toggleCreateFunnyDeath &&(
+                    <>
+                        <CreateFunnyDeathForm
+                            user={props.user}
+                            addStepTask={props.addStepTask}
+                            // createDefaultStepTask={props.createDefaultStepTask}
+                            stepTasks={props.stepTasks}
+                            fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+                            createFunnyDeath={props.createFunnyDeath}
+                            setStepTasks={props.setStepTasks}/>
+
+
+                    </>)
+                }
 
             </div>
         </div>

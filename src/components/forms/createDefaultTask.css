@@ -7,6 +7,7 @@
     width: 100%;
     margin: auto;
 }
+
 .createDefaultTask-container {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
@@ -29,6 +30,17 @@
     padding: 1rem;
     color: whitesmoke;
 }
+
+.createDefaultTask h3 {
+    text-align: center;
+    margin: 2rem auto;
+    font-weight: normal;
+    font-style: italic;
+    color: #007a6a;
+    filter:none;
+    z-index: 1;
+}
+
 
 .error label{
     color: darkorange;

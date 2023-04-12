@@ -22,7 +22,7 @@
 .adminBoard-container h1{
     font-family: var(--font-family);
     font-weight: bolder;
-    color: var(--rouge);
+    color: white;
     font-size: 2.3rem;
     line-height: 42px;
     margin-bottom: 40px;
@@ -45,6 +45,19 @@
 
 .adminBoard-white-writeButton{
     background: whitesmoke;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: var(--bleu);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    margin:2rem;
+    font-family: var(--font-family);
+}
+
+.adminBoard-white-writeButton-activated{
+    background: #0b7ba8;
     border: none;
     border-radius: 10px;
     padding: 12px 30px;
