@@ -105,6 +105,7 @@ export default function TaskList(props) {
         if(props.stepTasks[i].commentEdit){
             props.stepTasks[i].commentEdit = false
             stepTasksRender()
+            console.log("HendleComment if")
         }
         //Mon choix
         else{
@@ -117,8 +118,8 @@ export default function TaskList(props) {
     function handleChangeComment(value, index){
         console.log("handle Change : " + value)
         setTimeout(() => (props.stepTasks[index].comment = value), 800);
-        props.updateStepTask(props.stepTasks[index])
-        console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id)
+        // props.updateStepTask(props.stepTasks[index])
+        console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
 
     }
 

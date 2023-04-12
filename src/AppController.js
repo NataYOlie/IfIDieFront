@@ -30,7 +30,9 @@ export default function AppController() {
     const [newTask, setNewTask] = useState({})
     const [stepTasksDao, setStepTasksDao] = useState([]);
 
-    //for creation date
+    const [funnyDeath, setFunnyDeath] = useState({})
+
+    //TODAY :
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 

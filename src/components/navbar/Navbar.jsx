@@ -10,9 +10,9 @@ const Menu = () => {
 
     return (
     <>
-        <Link to="/envisager" ><p>Envisager</p></Link>
-        <Link to="/" ><p>Services</p></Link>
-        <Link to="/" ><p>Cimetière</p></Link>
+        <Link to="/envisager" ><p>StepList</p></Link>
+        {/*<Link to="/" ><p>Services</p></Link>*/}
+        {/*<Link to="/" ><p>Cimetière</p></Link>*/}
     </>
  )
 }
@@ -43,7 +43,7 @@ const Menu = () => {
 
             {props.user && (
                 <>
-                    <Link to="/space"><p>{props.user.surname} {props.user.lastname}</p></Link>
+                    <Link to={`/space/${props.user.id}`}><p>{props.user.surname} {props.user.lastname}</p></Link>
 
                     {props.user.role === "ROLE_ADMIN" && (
                         <Link to="/adminboard"><p>Admin Board</p></Link>

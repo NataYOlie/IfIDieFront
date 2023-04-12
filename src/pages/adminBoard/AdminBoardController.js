@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {AdminBoard} from "../index";
+import './adminBoard.css';
+
 
 export default function AdminBoardController(props) {
     //
@@ -53,6 +55,43 @@ export default function AdminBoardController(props) {
     //     props.addStepTask(newTask)
     //     console.log(newTask.header)
     // }
+
+    const backUrl = "http://localhost:8081/adminboard";
+    const [newFunnyDeath, setNewFunnyDeath] = useState()
+
+    function createFunnyDeath(deadName, header, content, deadDate){
+        console.log("Create FunnyDeath : " + header)
+    //     //correspond à un objet AUTHREQUEST
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${props.user.token}`,
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                deadName: deadName,
+                header: header,
+                content: content,
+                deadDate: deadDate,
+            })
+        };
+
+        //correspond à l'AUTHRESPONSE
+        fetch(backUrl + "/funnydeath/save", requestOptions)
+            .then(response => response.json())
+            .then(json => setNewFunnyDeath(
+                {
+                    deadName: json.deadName,
+                    header: json.header,
+                    content: json.content,
+                    deadDate: json.deadDate,
+                }));
+
+        console.log(newFunnyDeath.header)
+    }
+
+
 
         return (
             <>
