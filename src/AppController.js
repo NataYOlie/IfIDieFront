@@ -20,17 +20,20 @@ export default function AppController() {
     /**
      * Step Tasks
      */
-    const [stepTasks, setStepTasks] = useState([]);
+    const [stepTasks, setStepTasks] = useState({});
     /**
      * Step Tasks Display, steptasks in their html dress to go party
      */
     const [stepTasksDisplay, setStepTasksDisplay] = useState([]);
 
+    /**
+     * This state is nourrished by getRandomFunnyDeathMethod
+     */
+    const [currentFunnyDeath, setCurrentFunnyDeath] = useState([])
+
     /////A EXPLIQUER
     const [newTask, setNewTask] = useState({})
     const [stepTasksDao, setStepTasksDao] = useState([]);
-
-    const [funnyDeath, setFunnyDeath] = useState({})
 
     //TODAY :
     const todayprepare = new Date;
@@ -44,6 +47,10 @@ export default function AppController() {
         fetchDefaultStepTasks(),
      []);
 
+    useEffect(() => {
+        getRandomFunnyDeath();
+    }, []);
+
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
 
     /**
@@ -56,11 +63,6 @@ export default function AppController() {
         } else setStepTasks([newStepTask])
     }
 
-    /*
-  @PutMapping("/updatetask/{userid}/{taskid}")
-public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, @PathVariable Integer taskid) {
-    return taskService.findById(taskid)
- */
     /**
      * This function update a StepTask and update StepTask List
      * @param stepTask
@@ -105,46 +107,15 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
         console.log("setStepTasksDisplayArray " + stepTasksDisplay.length)
     }
 
-
-    // /**
-    //  * This function Display StepTask in html to be rendered. This should be a component, why is it not ????
-    //  */
-    // function stepTasksRender(){
-    //     console.log("stepTaskRender !")
-    //     const newTaskDisplay = []
-    //     console.log("Step Task Render " + stepTasks.length)
-    //     for (let i=0 ; i < stepTasks.length ; i++){
-    //         newTaskDisplay.push(
-    //                 <div className="task" key={nanoid()}>
-    //                     <div className="task-header"
-    //                          key={nanoid()}
-    //                          onClick={()=>toggleExpand()}>
-    //                     <button className="login-button" key={nanoid()} onClick={()=>toggleExpand()}>
-    //                         {expanded ? "Collapse All" : "Expand All"}
-    //                     </button>
-    //                         <h1>{stepTasks[i].header}</h1>
-    //                     </div>
-    //                     <span key={nanoid()}>{expanded ? '-' : '+'}</span>
-    //                     {expanded && (
-    //                         <div
-    //                             key={nanoid()}
-    //                             className="task-container">
-    //                             <p key={nanoid()}>{stepTasks[i].description}</p>
-    //                         </div>
-    //                     )}
-    //                 </div>
-    //             )
-    //     }
-    //
-    //     setStepTasksDisplay(newTaskDisplay)
-    //     console.log(stepTasksDisplay.length)
-    // }
-    //
+    function refreshFunnyDeath(){
+        setCurrentFunnyDeath(getRandomFunnyDeath())
+        console.log("refresh")
+    }
 
 
 //FETCH TASKS///////////////// FETCH TASKS ////////////////////////////FETCH TASKS////////////////////////////FETCH TASKS///////////////////////////////////////
 
-    const backUrl = "http://localhost:8081/task";
+    const backUrlTask = "http://localhost:8081/task";
 
     /**
      * This function fetch DefaultStepTasks from ddb and reinitialize StepTasks
@@ -161,7 +132,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
         };
 
         const newTasks = []
-        fetch(backUrl + "/steplist", requestOptions)
+        fetch(backUrlTask + "/steplist", requestOptions)
             .then(response => response.json())
             .then(response => {
                 for (let i = 0; i < response.length; i++) {
@@ -191,6 +162,9 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
         return stepTasks
     }
 
+
+
+
     /**
      * This function fetch User StepTasks from ddb and reinitialize StepTasks
      * @returns {*}
@@ -207,7 +181,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
         };
 
         const newTasks = []
-        fetch(backUrl + "/mySteplist/" + user.id, requestOptions)
+        fetch(backUrlTask + "/mySteplist/" + user.id, requestOptions)
             .then(response => response.json())
             .then(response => {
                 for (let i = 0; i < response.length; i++) {
@@ -232,7 +206,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                 }if (newTasks.length>0){
                     setStepTasksArray(newTasks)
                     console.log("fetchUserStepTasks " + newTasks.length + " tâches")
-                }else saveStepListTasks(stepTasks)
+                }else saveStepListTasks(fetchDefaultStepTasks()) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
 
             })
         return stepTasks
@@ -245,13 +219,14 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
 
                 //Si la tâche est nouvelle :
                 if (task.id_task === null) {
+                    task.modificationDate = today;
                     saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
 
                     //Si la tache est une tache par défaut
                 }else if (task.default_task){
-                    console.log("tache default dans savesteplist")
+                    console.log("tache default dans savesteplist") // EST CE QUE C'EST UTILE ? CA FAIT PAS DOUBLON ???
                     saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
 
@@ -306,7 +281,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/savetask/StepList/" + user.id, requestOptions)
+            fetch(backUrlTask + "/savetask/StepList/" + user.id, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
@@ -332,7 +307,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                 });
 
             stepTasksDao.push(newTask)
-            console.log(newTask.header)
+            console.log(newTask.size)
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
@@ -371,7 +346,7 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/updatetask/" + user.id + "/" + stepTask.id_task, requestOptions)
+            fetch(backUrlTask + "/updatetask/" + user.id + "/" + stepTask.id_task, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
@@ -404,59 +379,55 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
         }
     }
 
+//////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH////////////////////////////////////
+    const backUrlFunnyDeath = "http://localhost:8081/funnydeath";
+
+
     /**
      * This function fetch User StepTasks from ddb and reinitialize StepTasks
      * @returns {*}
      */
-    function fetchUserStepTasks() {
-        //correspond à un objet AUTHREQUEST
-        console.log("USER STEPTASK")
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${user.token}`,
-                'Content-Type': 'application/json'
+    async function getRandomFunnyDeath() {
+        try {
+            console.log("RANDOM FUNNYDEATH")
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const newFunnyDeath = {};
+            const response = await fetch(backUrlFunnyDeath, requestOptions);
+            const responseData = await response.json();
+            console.log("responseData"+ responseData.id_funnydeath)
+            if (responseData) {
+                const newFunnyDeath = {
+                    id_funnydeath: responseData.id_funnydeath,
+                    deadName: responseData.deadName,
+                    header: responseData.header,
+                    content: responseData.content,
+                    deadDate: responseData.deadDate
+                };
+                setCurrentFunnyDeath(newFunnyDeath);
+                console.log("fetchFunnyDeath " + newFunnyDeath.length + " FunnyDeath");
+            } else {
+                console.log("Pas de Funny Death en stock");
             }
-        };
 
-        const newTasks = []
-        fetch(backUrl + "/mySteplist/" + user.id, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                for (let i = 0; i < response.length; i++) {
-                    newTasks.push({
-                            id_task: response[i].id_task,
-                            description: response[i].description,
-                            external_link: response[i].externalLink,
-                            header: response[i].header,
-                            previsionalDate: response[i].previsionalDate,
-                            subtype: response[i].subtype,
-                            task_color: response[i].taskColor,
-                            listType: response[i].listType,
-                            validationDate : response[i].validationDate,
-                            visible:response[i].visible,
-                            comment:response[i].comment,
-                            creationDate:response[i].creationDate,
-                            commentEdit: false,
-                            modificationDate:response[i].modificationDate,
-                            default_task:false
-                        }
-                    );
-                }if (newTasks.length>0){
-                    setStepTasksArray(newTasks)
-                    console.log("fetchUserStepTasks " + newTasks.length + " tâches")
-                }else saveStepListTasks()
-
-            })
-        return stepTasks
+            return newFunnyDeath;
+        } catch (error) {
+            console.error(error);
+        }
     }
-
 
 /////RETURN//////////////////////RETURN////////////////////////RETURN////////////////////////RETURN////////////////////RETURN//////////////////////////
 
     return <App style={{maxWidth:1400}}
+                //USER
                 user={user}
                 setUser={setUser}
+                //STEP TASKS
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
@@ -468,6 +439,10 @@ public Task updateTask(@RequestBody Task newTask, @PathVariable Integer userid, 
                 setStepTasksDisplayArray = {setStepTasksDisplayArray}
                 stepTasksDisplay = {stepTasksDisplay}
                 updateStepTask = {updateStepTask}
+                //FUNNYDEATH
+                getRandomFunnyDeath = {getRandomFunnyDeath}
+                refreshFunnyDeath = {refreshFunnyDeath}
+                currentFunnyDeath = {currentFunnyDeath}
 
     />
 

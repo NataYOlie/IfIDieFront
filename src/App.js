@@ -11,7 +11,10 @@ export default function App(props) {
     <>
       <Navbar user={props.user}  setUser={props.setUser} setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home
+                currentFunnyDeath = {props.currentFunnyDeath}
+                refreshFunnyDeath = {props.refreshFunnyDeath}
+                getRandomFunnyDeath={props.getRandomFunnyDeath}/>} />
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
                    element={<Envisager user={props.user} setUser={props.setUser}
