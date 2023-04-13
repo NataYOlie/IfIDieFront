@@ -10,9 +10,9 @@ const FunnyDeath = (props) => {
 
 
     return(
-        <div className="funny-content section__padding" onClick={props.getRandomFunnyDeath}>
-        <div className="funny-content">
-            <div className="funny-content">
+        <div className="funny-content " onClick={props.getRandomFunnyDeath}>
+        <div className="funny-pascontent">
+            <div className="funny-pasdutoutcontent">
                 <h1>{props.currentFunnyDeath.header}</h1>
             </div>
             <div className="funny-div">
@@ -25,9 +25,6 @@ const FunnyDeath = (props) => {
             </div>
         </div>
         </div>
-
-)
-
-};
+        )};
 
 export default FunnyDeath
