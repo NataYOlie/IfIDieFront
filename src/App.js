@@ -9,7 +9,7 @@ export default function App(props) {
 
   return (
     <>
-      <Navbar user={props.user}  setUser={props.setUser} setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>
+      <Navbar logout={props.logout} user={props.user}  setUser={props.setUser} setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>
           <Routes>
             <Route path="/" element={<Home
                 currentFunnyDeath = {props.currentFunnyDeath}
@@ -21,6 +21,7 @@ export default function App(props) {
                                        stepTasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
                                        updateStepTask = {props.updateStepTask}
+                                       updateStepTaskComment = {props.updateStepTaskComment}
                                        stepTasksRender={()=>props.stepTasksRender()}
                                        stepTasksDisplay={props.stepTasksDisplay}
                                        fetchUserStepTasks={props.fetchUserStepTasks}

@@ -50,9 +50,11 @@ export default function TaskList(props) {
      * otherwise it fetches DefaultSteptasks
      */
     useEffect(() => {
-        (props.user ? (props.fetchUserStepTasks() ):
-        props.fetchDefaultStepTasks());
-
+        if (props.user) {
+            props.fetchUserStepTasks();
+        } else {
+            props.fetchDefaultStepTasks();
+        }
     }, []);
 
 
@@ -104,8 +106,9 @@ export default function TaskList(props) {
         //Enregistrer le commentaire
         if(props.stepTasks[i].commentEdit){
             props.stepTasks[i].commentEdit = false
+            // props.stepTasks[i].comment = value
             stepTasksRender()
-            console.log("HendleComment if")
+            console.log("HandleComment if, comment : " + props.stepTasks[i].comment + " et value du form : " + value)
         }
         //Mon choix
         else{
@@ -117,23 +120,28 @@ export default function TaskList(props) {
 
     function handleChangeComment(value, index){
         console.log("handle Change : " + value)
-        setTimeout(() => (props.stepTasks[index].comment = value), 800);
+        setTimeout(() => (props.updateStepTaskComment(index,value), 800));
         // props.updateStepTask(props.stepTasks[index])
         console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
-
     }
 
-
+    /**
+     * This function is launched when saving steptasks
+     * @param e is event triggered by save button
+     */
     function handleSaveList(e) {
-        if (props.user){
-            e.preventDefault();
-            props.saveStepListTasks(props.stepTasks)
-            console.log("handleDaveList " + props.stepTasks.length)
-            props.fetchUserStepTasks()
-
-        }else {
-            console.log("pas d'utilisateur")
-            setShouldRedirect(true)
+        if (props.user) {
+            const newTask = [];
+            props.stepTasks.forEach(task => {
+                if (!task.default_task) {
+                    newTask.push(task);
+                    props.saveStepListTasks(newTask);
+                }
+            });
+            console.log("handleSaveList " + props.stepTasks.length);
+        } else {
+            console.log("pas d'utilisateur");
+            setShouldRedirect(true);
         }
     }
 
@@ -153,19 +161,22 @@ export default function TaskList(props) {
                 subtypeList.add(steptasksMirror[i].subtype)
                 console.log(steptasksMirror[i].subtype + " taille de mon set " + subtypeList.size + " est de type " + typeof steptasksMirror[i].subtype)
             }
+
             //je passe mon set en array parce que je suis plus à l'aise pour la suite pour le manipuler
             setSubtypeListState(Array.from(subtypeList))
-            console.log(subtypeListState.length)
+            console.log("set to array" + subtypeListState.length)
 
             if (subtypeListState.length > 0) {
                 //Enregistrer les tâches dans chacune de leur catégorie
                 const newList = []
-                console.log(newList)
+                console.log("new List : " + newList)
                 for (let n = 0; n < subtypeListState.length; n++) {
                     //Créer une liste du nom de la catégorie et y coller le début du bloc :
                     newList.push(<div className="task-category" key={nanoid()}><h1 key={nanoid()}>{(subtypeListState[n])}</h1></div>)
                     //Je boucle sur ma liste de tache et si le nom de la liste equals celui de la catégorie de la tache,
                     // je l'y mets d'dans
+                    console.log("Je met mon div de titre de la catégorie dans ma newList, lenght : " + newList.length
+                        + " je vais boucler sur mes stepTasks length : " + props.stepTasks.length)
                     for (let i = 0; i < props.stepTasks.length; i++) {
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
                             let value = "";
@@ -216,6 +227,7 @@ export default function TaskList(props) {
             }
         }
     }
+
     return (
         <>
             {shouldRedirect && <Navigate replace to="/login" />}

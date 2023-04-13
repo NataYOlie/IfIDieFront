@@ -22,7 +22,7 @@ const Menu = () => {
      // const [user,setUser] = useState(false) // On va le récupérer en props donc à priori plus besoin
 
   const handleLogout = () => {
-    props.setUser(null);
+    props.logout();
     props.setStepTasksDisplayArray([])
 
   }

@@ -20,7 +20,7 @@ export default function AppController() {
     /**
      * Step Tasks
      */
-    const [stepTasks, setStepTasks] = useState({});
+    const [stepTasks, setStepTasks] = useState([]);
     /**
      * Step Tasks Display, steptasks in their html dress to go party
      */
@@ -50,6 +50,14 @@ export default function AppController() {
     useEffect(() => {
         getRandomFunnyDeath();
     }, []);
+//////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function logout(){
+        setUser(null)
+        setStepTasksArray(fetchDefaultStepTasks())
+    }
+
+
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +85,12 @@ export default function AppController() {
         //remplacer la tâche
         //mettre à jour la liste
 
+    }
+
+    function updateStepTaskComment(index, comment){
+        stepTasks[index].comment = comment
+        // stepTasks[index] = { ...stepTasksDao[index], comment: comment };
+        console.log(stepTasksDao[index].header + "new comment is " +stepTasksDao[index].comment )
     }
 
     /**
@@ -180,12 +194,12 @@ export default function AppController() {
             }
         };
 
-        const newTasks = []
+        const newTasksUser = []
         fetch(backUrlTask + "/mySteplist/" + user.id, requestOptions)
             .then(response => response.json())
             .then(response => {
                 for (let i = 0; i < response.length; i++) {
-                    newTasks.push({
+                    newTasksUser.push({
                             id_task: response[i].id_task,
                             description: response[i].description,
                             external_link: response[i].externalLink,
@@ -203,9 +217,9 @@ export default function AppController() {
                             modificationDate:response[i].modificationDate
                         }
                     );
-                }if (newTasks.length>0){
-                    setStepTasksArray(newTasks)
-                    console.log("fetchUserStepTasks " + newTasks.length + " tâches")
+                }if (newTasksUser.length>0){
+                    setStepTasksArray(newTasksUser)
+                    console.log("fetchUserStepTasks " + newTasksUser.length + " tâches")
                 }else saveStepListTasks(fetchDefaultStepTasks()) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
 
             })
@@ -224,9 +238,13 @@ export default function AppController() {
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
 
-                    //Si la tache est une tache par défaut
+                //Si la tache est une tache par défaut
                 }else if (task.default_task){
                     console.log("tache default dans savesteplist") // EST CE QUE C'EST UTILE ? CA FAIT PAS DOUBLON ???
+                    // let newTask = [...task]
+                    // newTask.default_task = (false)
+                    // newTask.id=null
+                    // stepTasks.push(newTask)
                     saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
 
@@ -427,10 +445,12 @@ export default function AppController() {
                 //USER
                 user={user}
                 setUser={setUser}
+                logout={logout}
                 //STEP TASKS
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
+                updateStepTaskComment = {updateStepTaskComment}
                 saveStepListTasks={saveStepListTasks}
                 fetchDefaultStepTasks={fetchDefaultStepTasks}
                 fetchUserStepTasks={fetchUserStepTasks}
