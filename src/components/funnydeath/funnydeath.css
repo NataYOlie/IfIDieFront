@@ -13,9 +13,29 @@
     font-family: var(--font-family);
 }
 
+
 .funny-content h1{
     font-family: var(--font-titles);
     color: var(--ternary-color);
+}
+
+.funny-div{
+    display: block;
+    position: relative;
+    clear: left;
+    width:60%;
+}
+
+.funny-divdeux{
+    display: block;
+    width:100%
+}
+.funny-div h2{
+    font-family: var(--font-family);
+    font-weight: normal;
+    font-style: italic;
+    color: var(--orange);
+    min-width:100%;
 }
 
 .funny-content{

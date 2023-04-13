@@ -407,7 +407,7 @@ export default function AppController() {
                     deadName: responseData.deadName,
                     header: responseData.header,
                     content: responseData.content,
-                    deadDate: responseData.deadDate
+                    deadDate: responseData.deadDate.slice(0, 10)
                 };
                 setCurrentFunnyDeath(newFunnyDeath);
                 console.log("fetchFunnyDeath " + newFunnyDeath.length + " FunnyDeath");

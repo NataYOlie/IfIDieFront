@@ -5,6 +5,9 @@ import * as yup from "yup";
 import React, {useState} from "react";
 
 export default function CreateFunnyDeathForm(props) {
+    //TODAY :
+    const todayprepare = new Date;
+    const today = todayprepare.toISOString().slice(0, 10);
 
 
 /////////SAVE CONTROLLER//////////////////////////////////////////////////////////////
@@ -58,12 +61,18 @@ export default function CreateFunnyDeathForm(props) {
         deadName: yup.string().required("Ce champs est obligatoire"),
         header: yup.string().required("Ce champs est obligatoire"),
         content: yup.string().required("Ce champs est obligatoire"),
-        deadDate: yup.date().required("Ce champs est obligatoire"),
-    });
+        deadDate: yup.date()
+            // .transform(value => {
+            //     value.toISOString().slice(0, 10);
+            // })
+            .required("Ce champs est obligatoire")
+            .max(today, "Les morts sont nécessairement situées dans le passé")}
+    );
+
+
 
     const {
         register,
-        reset,
         formState: {errors},
         handleSubmit,
     } = useForm({
@@ -71,18 +80,19 @@ export default function CreateFunnyDeathForm(props) {
     });
 
     function onSubmit(data){
-
         console.log("bouton " + data.header)
+        console.log(data.deadDate)
         if(data){
             setLabel("Mort ajoutée !")
             createFunnyDeath(data.deadName, data.header, data.content, data.deadDate);
+            // eraseLabel()
 
         }else {
             alert("pas de data !");
         }
-        reset(data)
-        setTimeout(window.location.reload(false), 3000)
-    }
+        document.getElementById("funnyForm").reset(); // C'est mal mais ça marche et avec les states j'avais un pb de refresh, avec reset ça le faisait pas...
+            }
+
 
 return (
     <div className='createDefaultTask section__padding'>
@@ -90,7 +100,8 @@ return (
             <h1>Créer une FunnyDeath ! </h1>
             <h2>Cette FunnyDeath sera ajouté à la liste des FunnyDeath Random affichées en Homepage</h2>
             <div className="createDefaultTaskFormContainer">
-            <form className='createDefaultTask-writeForm' autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <form id="funnyForm" className='createDefaultTask-writeForm' autoComplete='off'
+                  onSubmit={handleSubmit (async (data) => await onSubmit(data))}>
                 <div className="createDefaultTask-formGroup">
                     <label>Nom du defunt</label>
                     <input type="text"
