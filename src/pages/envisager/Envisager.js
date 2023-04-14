@@ -44,6 +44,8 @@ const Envisager = (props) => {
             setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
             updateStepTask = {props.updateStepTask}
             updateStepTaskComment = {props.updateStepTaskComment}
+            updateStepTaskVisible={props.updateStepTaskVisible}
+            updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
         />
     </div>
             </>

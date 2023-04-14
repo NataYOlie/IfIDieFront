@@ -76,21 +76,34 @@ export default function AppController() {
      * @param stepTask
      */
     function updateStepTask(stepTask){
+        //Trouver la tache dans la liste "stepTasks"
         let index = stepTasks.findIndex(task => task.id_task === stepTask.id_task)
         console.log("update steptask : task id : " + index + " et steptaskId : " + stepTask.id_task)
-        stepTasks[index].modificationDate = today
-        stepTasks[index] = stepTask;
 
-        //Trouver la tache dans la liste "stepTasks"
         //remplacer la tâche
-        //mettre à jour la liste
+        stepTasks[index].modificationDate = today
 
+        //mettre à jour la liste
+        stepTasks[index] = stepTask;
     }
 
     function updateStepTaskComment(index, comment){
         stepTasks[index].comment = comment
+        stepTasks[index].modificationDate = today
         // stepTasks[index] = { ...stepTasksDao[index], comment: comment };
-        console.log(stepTasksDao[index].header + "new comment is " +stepTasksDao[index].comment )
+        console.log(stepTasks[index].header + "new comment is " +stepTasks[index].comment )
+    }
+
+    function updateStepTaskVisible(index, boolean){
+        stepTasks[index].visible = boolean
+        stepTasks[index].modificationDate = today
+        console.log(stepTasks[index].header + "visible status " +stepTasks[index].visible )
+    }
+
+    function updateStepTaskValidationDate(index, validationDate){
+        stepTasks[index].validationDate = validationDate
+        stepTasks[index].modificationDate = today
+        console.log(stepTasks[index].header + "validationDate APP CONTROLLER " +stepTasks[index].validationDate )
     }
 
     /**
@@ -165,7 +178,8 @@ export default function AppController() {
                             creationDate:response[i].creationDate,
                             commentEdit: false,
                             modificationDate:null,
-                            default_task:response[i].defaultTask
+                            default_task:response[i].defaultTask,
+                            user:response[i].user
 
                         }
                     );
@@ -214,14 +228,28 @@ export default function AppController() {
                             creationDate:response[i].creationDate,
                             commentEdit: false,
                             default_task:response[i].defaultTask,
-                            modificationDate:response[i].modificationDate
+                            modificationDate:response[i].modificationDate,
+                            user:user
                         }
                     );
                 }if (newTasksUser.length>0){
                     setStepTasksArray(newTasksUser)
                     console.log("fetchUserStepTasks " + newTasksUser.length + " tâches")
-                }else saveStepListTasks(fetchDefaultStepTasks()) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
 
+                    //C'est ici que je crée mes tâches user si c'est la première fois
+                }else {
+                    let userDefaultTasks = [];
+                    userDefaultTasks = fetchDefaultStepTasks();
+                    userDefaultTasks.forEach(
+                        task=>( task.default_task = false,
+                                task.creationDate = today,
+                                task.user = user,
+                                task.id_task=null
+                        )
+                    )
+                    saveStepListTasks(userDefaultTasks) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
+                    console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ")
+                }
             })
         return stepTasks
     }
@@ -234,7 +262,8 @@ export default function AppController() {
                 //Si la tâche est nouvelle :
                 if (task.id_task === null) {
                     task.modificationDate = today;
-                    saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
+                    console.log("today is : " + today)
+                    saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
 
@@ -245,8 +274,8 @@ export default function AppController() {
                     // newTask.default_task = (false)
                     // newTask.id=null
                     // stepTasks.push(newTask)
-                    saveStepListTask(task.subtype, task.header, task.description, task.externalLink, task.task_color,
-                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
+                    saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
+                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate, task.user);
 
                     //Si la tache existe déjà
                 }else {
@@ -272,7 +301,7 @@ export default function AppController() {
      * @param validationDate
      * @param previsionalDate
      */
-    function saveStepListTask(subtype, header, description, externalLink, taskColor, comment, validationDate, previsionalDate, modificationDate){
+    function saveStepListTask(subtype, header, description, external_link, taskColor, comment, validationDate, previsionalDate, modificationDate,user){
         console.log("Save Step Task : " + header)
 
         try {
@@ -280,6 +309,7 @@ export default function AppController() {
             const requestOptions = {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${user.token}`,
                     'Content-Type': 'application/json'
                 },
 
@@ -287,14 +317,15 @@ export default function AppController() {
                     subtype: subtype,
                     header: header,
                     description: description,
-                    external_link: externalLink,
+                    externalLink: external_link,
                     taskColor: taskColor,
                     // defaultTask: false,
                     comment : comment,
                     validationDate : validationDate,
                     previsionalDate : previsionalDate,
+                    modificationDate : modificationDate,
                     creationDate: today,
-                    modificationDate : modificationDate
+
                 })
             };
 
@@ -311,13 +342,15 @@ export default function AppController() {
                         subtype: json.subtype,
                         header: json.header,
                         description: json.description,
-                        external_link: json.externalLink,
+                        external_link: json.external_link,
                         taskColor: json.taskColor,
-                        defaultTask: true,
+                        defaultTask: json.defaultTask,
                         listType: "StepList",
-                        createdBy: user,
                         comment:json.comment,
-                        creationDate: today
+                        modificationDate : json.modificationDate,
+                        validationDate : json.validationDate,
+                        creationDate: today,
+                        user:user
                     }))
                 .catch(error => {
                     console.error('An error occurred while fetching the API:', error);
@@ -343,7 +376,7 @@ export default function AppController() {
             const requestOptions = {
                 method: 'PUT',
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${user.token}`,
                     'Content-Type': 'application/json'
                 },
 
@@ -359,7 +392,8 @@ export default function AppController() {
                     previsionalDate : stepTask.previsionalDate,
                     creationDate: stepTask.creationDate,
                     modificationDate : today,
-                    visible : stepTask.visible
+                    visible : stepTask.visible,
+                    user : stepTask.user
                 })
             };
 
@@ -380,10 +414,10 @@ export default function AppController() {
                         taskColor: json.taskColor,
                         defaultTask: true,
                         listType: "StepList",
-                        createdBy: user,
+                        user: user,
                         comment:json.comment,
                         creationDate: json.creationDate,
-                        modificationDate: json.modificationDate
+                        modificationDate: today
                     }))
                 .catch(error => {
                     console.error('An error occurred while fetching the API:', error);
@@ -451,6 +485,7 @@ export default function AppController() {
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}
                 updateStepTaskComment = {updateStepTaskComment}
+                updateStepTaskVisible={updateStepTaskVisible}
                 saveStepListTasks={saveStepListTasks}
                 fetchDefaultStepTasks={fetchDefaultStepTasks}
                 fetchUserStepTasks={fetchUserStepTasks}
@@ -459,6 +494,8 @@ export default function AppController() {
                 setStepTasksDisplayArray = {setStepTasksDisplayArray}
                 stepTasksDisplay = {stepTasksDisplay}
                 updateStepTask = {updateStepTask}
+                updateStepTaskValidationDate = {updateStepTaskValidationDate}
+
                 //FUNNYDEATH
                 getRandomFunnyDeath = {getRandomFunnyDeath}
                 refreshFunnyDeath = {refreshFunnyDeath}

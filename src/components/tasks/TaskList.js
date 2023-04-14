@@ -35,15 +35,15 @@ export default function TaskList(props) {
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 
-    /**
-     * This useEffect updates my rendered task everytime steptasks state changes
-     */
-    useEffect(() => {
-        if (props.stepTasks && props.stepTasks.length >0) {
-            stepTasksRender()
-        }
-
-    }, [props.stepTasks]);
+    // /**
+    //  * This useEffect updates my rendered task everytime steptasks state changes
+    //  */
+    // useEffect(() => {
+    //     if (props.stepTasks && props.stepTasks.length >0) {
+    //         stepTasksRender()
+    //     }
+    //
+    // }, [props.stepTasks]);
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
@@ -80,9 +80,12 @@ export default function TaskList(props) {
         console.log('Toggle task called with index:', index);
         if (props.stepTasks[index].visible){
             props.stepTasks[index].visible = false
+            props.updateStepTaskVisible(index, false)
         } else{
             props.stepTasks[index].visible = true
+            props.updateStepTaskVisible(index, true)
         }
+
         stepTasksRender()
     };
 
@@ -92,12 +95,17 @@ export default function TaskList(props) {
      * @param index index of the task is the list (stepTasks)
      */
     const checkTask = (index) => {
+        console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
         if (props.stepTasks[index].validationDate){
-            props.stepTasks[index].validationDate = null
-        } else{
-                props.stepTasks[index].validationDate = today
-            }
+            props.updateStepTaskValidationDate(index, null)
+            console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
             stepTasksRender()
+        } else{
+            props.updateStepTaskValidationDate(index, today)
+            console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
+            stepTasksRender()
+            }
+
         }
 
     const handleComment = (i, value) => {
@@ -132,13 +140,15 @@ export default function TaskList(props) {
     function handleSaveList(e) {
         if (props.user) {
             const newTask = [];
+            //j'ai tenté un filtre mais il ne regle pas mon problème de tâches 2 fois enregistrées
             props.stepTasks.forEach(task => {
                 if (!task.default_task) {
+                    console.log("handleSavelist a user is connected and I am saving " + task.header)
                     newTask.push(task);
                     props.saveStepListTasks(newTask);
-                }
+                } else console.log("handleSaveList " + props.stepTasks.length + " mais j'ai rien fait");
             });
-            console.log("handleSaveList " + props.stepTasks.length);
+
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
@@ -193,8 +203,8 @@ export default function TaskList(props) {
                                             <h1>{props.stepTasks[i].header}</h1></div>
 
                                         {props.stepTasks[i].validationDate ? (
-                                            <FontAwesomeIcon icon="fa-circle" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
-                                        ) : (<FontAwesomeIcon icon="fa-circle-check" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
+                                            <FontAwesomeIcon icon="fa-circle-check" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
+                                        ) : (<FontAwesomeIcon icon="fa-circle" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
 
                                     </div>
 
