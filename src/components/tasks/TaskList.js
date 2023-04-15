@@ -35,15 +35,15 @@ export default function TaskList(props) {
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 
-    // /**
-    //  * This useEffect updates my rendered task everytime steptasks state changes
-    //  */
-    // useEffect(() => {
-    //     if (props.stepTasks && props.stepTasks.length >0) {
-    //         stepTasksRender()
-    //     }
-    //
-    // }, [props.stepTasks]);
+    /**
+     * This useEffect updates my rendered task everytime steptasks state changes
+     */
+    useEffect(() => {
+        if (props.stepTasks && props.stepTasks.length >0) {
+            stepTasksRender()
+        }
+
+    }, [props.stepTasks]);
 
     /**
      * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
@@ -57,6 +57,14 @@ export default function TaskList(props) {
         }
     }, []);
 
+    function refreshTasks(){
+        if (props.user) {
+            props.fetchUserStepTasks();
+        } else {
+            props.fetchDefaultStepTasks();
+        }
+    }
+
 
     /**
      * toggle expand ALL tasks
@@ -68,8 +76,8 @@ export default function TaskList(props) {
         }else {
             props.stepTasks.forEach((task) => {task.visible = true})
             setExpanded(true)
+            stepTasksRender()
         }
-        stepTasksRender()
     }
 
     /**
@@ -85,8 +93,8 @@ export default function TaskList(props) {
             props.stepTasks[index].visible = true
             props.updateStepTaskVisible(index, true)
         }
-
         stepTasksRender()
+
     };
 
     /**
@@ -137,18 +145,9 @@ export default function TaskList(props) {
      * This function is launched when saving steptasks
      * @param e is event triggered by save button
      */
-    function handleSaveList(e) {
+    function handleSaveList() {
         if (props.user) {
-            const newTask = [];
-            //j'ai tenté un filtre mais il ne regle pas mon problème de tâches 2 fois enregistrées
-            props.stepTasks.forEach(task => {
-                if (!task.default_task) {
-                    console.log("handleSavelist a user is connected and I am saving " + task.header)
-                    newTask.push(task);
-                    props.saveStepListTasks(newTask);
-                } else console.log("handleSaveList " + props.stepTasks.length + " mais j'ai rien fait");
-            });
-
+                    props.saveStepListTasks(props.stepTasks);
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
@@ -157,6 +156,7 @@ export default function TaskList(props) {
 
 
     function stepTasksRender() {
+
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
@@ -249,7 +249,7 @@ export default function TaskList(props) {
 
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
-                    <button className="save-writeButton" key={nanoid()} onClick={(e)=>handleSaveList(e)}>
+                    <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
                         Enregistrer
                     </button>
                 </div>

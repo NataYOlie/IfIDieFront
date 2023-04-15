@@ -50,6 +50,8 @@ export default function AppController() {
     useEffect(() => {
         getRandomFunnyDeath();
     }, []);
+
+
 //////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
 
     function logout(){
@@ -133,6 +135,14 @@ export default function AppController() {
         setStepTasksDisplay(newStepTasksDisplays)
         console.log("setStepTasksDisplayArray " + stepTasksDisplay.length)
     }
+    //
+    // function refreshTasks(){
+    //     if (user) {
+    //         fetchUserStepTasks();
+    //     } else {
+    //         fetchDefaultStepTasks();
+    //     }
+    // }
 
     function refreshFunnyDeath(){
         setCurrentFunnyDeath(getRandomFunnyDeath())
@@ -185,6 +195,7 @@ export default function AppController() {
                     );
                 }
                 setStepTasksArray(newTasks)
+                // refreshTasks()
                 console.log("fetchDefaultStepTasks " + newTasks.length + " tâches")
             })
         return stepTasks
@@ -234,21 +245,23 @@ export default function AppController() {
                     );
                 }if (newTasksUser.length>0){
                     setStepTasksArray(newTasksUser)
+                    // refreshTasks()
                     console.log("fetchUserStepTasks " + newTasksUser.length + " tâches")
 
                     //C'est ici que je crée mes tâches user si c'est la première fois
                 }else {
-                    let userDefaultTasks = [];
-                    userDefaultTasks = fetchDefaultStepTasks();
-                    userDefaultTasks.forEach(
-                        task=>( task.default_task = false,
-                                task.creationDate = today,
-                                task.user = user,
-                                task.id_task=null
-                        )
-                    )
-                    saveStepListTasks(userDefaultTasks) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
-                    console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ")
+                    // let userDefaultTasks = [];
+                    // //Je fais une copie de la liste stepTasks qui doit être composée des tâches par défaut
+                    // userDefaultTasks = [...stepTasks];
+                    // userDefaultTasks.forEach(
+                    //     task=>( task.default_task = false,
+                    //             task.creationDate = today,
+                    //             task.id_task=null
+                    //     )
+                    // )
+                    // setStepTasksArray(userDefaultTasks)
+                    // saveStepListTasks(userDefaultTasks) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
+                    // console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ")
                 }
             })
         return stepTasks
@@ -260,22 +273,23 @@ export default function AppController() {
             steplisttask.forEach(task => {
 
                 //Si la tâche est nouvelle :
-                if (task.id_task === null) {
+                if (task.default_task === true) {
                     task.modificationDate = today;
                     console.log("today is : " + today)
+                    updateStepListTask(task)
                     saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
 
                 //Si la tache est une tache par défaut
-                }else if (task.default_task){
-                    console.log("tache default dans savesteplist") // EST CE QUE C'EST UTILE ? CA FAIT PAS DOUBLON ???
+                // }else if (task.default_task){
+                //     console.log("tache default dans savesteplist") // EST CE QUE C'EST UTILE ? CA FAIT PAS DOUBLON ???
                     // let newTask = [...task]
                     // newTask.default_task = (false)
                     // newTask.id=null
                     // stepTasks.push(newTask)
-                    saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
-                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate, task.user);
+                    // saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
+                    //     task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
 
                     //Si la tache existe déjà
                 }else {
@@ -285,23 +299,26 @@ export default function AppController() {
                 }
             });
             fetchUserStepTasks()
+            // refreshTasks()
             console.log("Steplist is saved " + stepTasks.length)
         }
 
     }
 
     /**
-     *ATTENTION DEFAULT SET TO TRUE
+     *
      * @param subtype
      * @param header
      * @param description
-     * @param externalLink
+     * @param external_link
      * @param taskColor
      * @param comment
      * @param validationDate
      * @param previsionalDate
+     * @param modificationDate
+     * @param user
      */
-    function saveStepListTask(subtype, header, description, external_link, taskColor, comment, validationDate, previsionalDate, modificationDate,user){
+    function saveStepListTask(subtype, header, description, external_link, taskColor, comment, validationDate, previsionalDate, modificationDate){
         console.log("Save Step Task : " + header)
 
         try {
@@ -319,7 +336,7 @@ export default function AppController() {
                     description: description,
                     externalLink: external_link,
                     taskColor: taskColor,
-                    // defaultTask: false,
+                    defaultTask: false,
                     comment : comment,
                     validationDate : validationDate,
                     previsionalDate : previsionalDate,
@@ -359,6 +376,8 @@ export default function AppController() {
 
             stepTasksDao.push(newTask)
             console.log(newTask.size)
+            fetchUserStepTasks()
+            // refreshTasks()
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
@@ -426,6 +445,7 @@ export default function AppController() {
 
             stepTasksDao.push(newTask)
             console.log(newTask.header)
+            // refreshTasks()
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
