@@ -35,6 +35,9 @@ export default function TaskList(props) {
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 
+    //Pour les commentaires, je créé une liste qui a la taille des step tasks
+    const [comments, setComments] = useState(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})));
+
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
      */
@@ -70,13 +73,16 @@ export default function TaskList(props) {
      * toggle expand ALL tasks
      */
     function toggleExpand() {
-        if (props.stepTasks[0].visible){
-            props.stepTasks.forEach((task) => {task.visible = false});
-            setExpanded(false)
-        }else {
-            props.stepTasks.forEach((task) => {task.visible = true})
-            setExpanded(true)
-            stepTasksRender()
+        if (props.stepTasks){
+            if (props.stepTasks[0].visible){
+                props.stepTasks.forEach((task) => {task.visible = false});
+                setExpanded(false)
+                stepTasksRender()
+            }else {
+                props.stepTasks.forEach((task) => {task.visible = true})
+                setExpanded(true)
+                stepTasksRender()
+            }
         }
     }
 
@@ -117,14 +123,25 @@ export default function TaskList(props) {
         }
 
     const handleComment = (i, value) => {
-        let commentTemp
+        // let commentTemp = props.stepTasks[i].commentEdit
+        console.log("handle Comment : " + i)
 
         //Enregistrer le commentaire
         if(props.stepTasks[i].commentEdit){
             props.stepTasks[i].commentEdit = false
+            let index
+            if (comments.comment_id !== null){
+                index = props.stepTasks.findIndex(task => task.id_task === comments.comment_id)
+                props.updateStepTaskComment(index,comments[i].comment)
+                console.log("IF index : " + index)
+            }else{ index = props.stepTasks.findIndex(task => task.header === comments.comment_header)
+                props.updateStepTaskComment(index,comments[i].comment)
+                console.log("ELSE index : " + index)
+            }
+
             // props.stepTasks[i].comment = value
             stepTasksRender()
-            console.log("HandleComment if, comment : " + props.stepTasks[i].comment + " et value du form : " + value)
+            // console.log("HandleComment if, comment : " + props.stepTasks[i].comment + " et commentTemp " + commentTemp)
         }
         //Mon choix
         else{
@@ -134,9 +151,19 @@ export default function TaskList(props) {
         }
     }
 
-    function handleChangeComment(value, index){
-        console.log("handle Change : " + value)
-        setTimeout(() => (props.updateStepTaskComment(index,value), 800));
+    const handleChangeComment = (index, value) => {
+    //     console.log(value)
+    //     setComments(prevComments => {
+    //         const updatedComments = [...prevComments];
+    //         updatedComments[index] = value;
+    //         return updatedComments;
+    //     });
+    // };
+
+
+        console.log("handle Change : " + comments[index])
+        // props.updateStepTaskComment(index,value)
+        setTimeout(() => (comments[index]=value, 800));
         // props.updateStepTask(props.stepTasks[index])
         console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
@@ -147,11 +174,13 @@ export default function TaskList(props) {
      */
     function handleSaveList() {
         if (props.user) {
-                    props.saveStepListTasks(props.stepTasks);
+            const updatedStepTasks = [...props.stepTasks]
+                    props.saveStepListTasks(updatedStepTasks);
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
         }
+        window.location.reload();
     }
 
 
@@ -213,13 +242,19 @@ export default function TaskList(props) {
                                             key={nanoid()}
                                             className="task-container">
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
-                                            {props.stepTasks[i].commentEdit ? <div>
-                                            <textarea key={nanoid()} defaultValue={props.stepTasks[i].comment} onChange={(e) => handleChangeComment(e.target.value, i)}></textarea>
-                                                    <h2 onClick={(event)=>handleComment(i, value)}>Enregistrer mon choix </h2></div>:<div><div className="comment">{props.stepTasks[i].comment}</div>
-                                                    <h2 onClick={(event)=>handleComment(i, value)}>Mon choix</h2>{props.stepTasks[i].comment}</div>}
+                                                {props.stepTasks[i].commentEdit ?
+                                                    (<div>
+                                                    <textarea key={nanoid()}
+                                                      defaultValue={comments[i]}
+                                                              onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
+                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>)
+                                                :
+                                                    (<div>
+                                                    <div className="comment">{props.stepTasks[i].comment}</div>
+                                                    <h2 onClick={(event)=>handleComment(i)}>Mon choix</h2></div>)}
+                                                </div>
+                                                )}
 
-                                        </div>
-                                    )}
                                     {props.stepTasks[i].external_link  ? (
                                     <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}
                                 </div>
@@ -243,9 +278,18 @@ export default function TaskList(props) {
             {shouldRedirect && <Navigate replace to="/login" />}
             {/* rest of your component */}
             <div className="tasklist section__padding">
-                <button className="expand-writeButton" key={nanoid()} onClick={toggleExpand}>
-                    {!props.stepTasks[0].visible ? "Expand All" :  "Collapse All" }
-                </button>
+                {props.stepTasks ? (
+                    <button className="expand-writeButton"
+                            key={nanoid()}
+                            onClick={toggleExpand}>
+                            {props.stepTasks ? "Toggle" :  "Chargez les tâches"}
+                    </button>)
+                    : (
+                        <button className="expand-writeButton"
+                                key={nanoid()}
+                                onClick={stepTasksRender}>
+                                {props.stepTasks ? "Toggle" :  "Chargez les tâches"}
+                        </button>)}
 
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}

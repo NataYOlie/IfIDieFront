@@ -16,11 +16,17 @@ export default function AppController() {
     /**
      * Connected User
      */
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
+    const storedUser = localStorage.getItem('user');
+    const [user, setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
     /**
      * Step Tasks
      */
-    const [stepTasks, setStepTasks] = useState([]);
+    const [stepTasks, setStepTasks] = useState(() => {
+        const storedStepTasks = localStorage.getItem('stepTasks');
+        return storedStepTasks ? JSON.parse(storedStepTasks) : [];
+        console.log("USE STATE STEPTASKS IS MODIFIED, lenght of stored steptasks : " + storedStepTasks.length)
+    });
     /**
      * Step Tasks Display, steptasks in their html dress to go party
      */
@@ -60,6 +66,10 @@ export default function AppController() {
         localStorage.removeItem(JSON.stringify(user))
     }
 
+    function setUserNew(newUser){
+        setUser(newUser)
+    }
+
 
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
@@ -79,33 +89,49 @@ export default function AppController() {
      * @param stepTask
      */
     function updateStepTask(stepTask){
+        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
         //Trouver la tache dans la liste "stepTasks"
-        let index = stepTasks.findIndex(task => task.id_task === stepTask.id_task)
+        let index = updatedStepTasks.findIndex(task => task.id_task === stepTask.id_task)
         console.log("update steptask : task id : " + index + " et steptaskId : " + stepTask.id_task)
-
-        //remplacer la tâche
-        stepTasks[index].modificationDate = today
-
-        //mettre à jour la liste
-        stepTasks[index] = stepTask;
+        if (index !== -1) {
+            updatedStepTasks[index] = {...stepTask, modificationDate: today}; // Update the task object with new data
+            setStepTasks(updatedStepTasks); // Update the stepTasks state
+            localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
+        }
     }
 
     function updateStepTaskComment(index, comment){
-        stepTasks[index].comment = comment
-        stepTasks[index].modificationDate = today
-        // stepTasks[index] = { ...stepTasksDao[index], comment: comment };
-        console.log(stepTasks[index].header + "new comment is " +stepTasks[index].comment )
+        //SI on a un index (vu qu'on le cherche avec l'id de la tache, si on n'a pas encore enregistrer il n'y a pas d'index
+        if (index){
+            stepTasks[index].comment = comment
+            stepTasks[index].modificationDate = today
+            // stepTasks[index] = { ...stepTasks[index], comment: comment };
+            console.log(stepTasks[index].header + "new comment is " +stepTasks[index].comment )
+        }else {
+
+        }
+
+
+        // const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+        // updatedStepTasks[index] = {...stepTasks[index], comment: comment}; // Update the task object with new data
+        // setStepTasks(updatedStepTasks); // Update the stepTasks state
+        // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
     }
 
+
     function updateStepTaskVisible(index, boolean){
-        stepTasks[index].visible = boolean
-        stepTasks[index].modificationDate = today
+        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+        updatedStepTasks[index] = {...stepTasks[index], visible: boolean}; // Update the task object with new data
+        setStepTasks(updatedStepTasks); // Update the stepTasks state
+        localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
         console.log(stepTasks[index].header + "visible status " +stepTasks[index].visible )
     }
 
     function updateStepTaskValidationDate(index, validationDate){
-        stepTasks[index].validationDate = validationDate
-        stepTasks[index].modificationDate = today
+        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+        updatedStepTasks[index] = {...stepTasks[index], validationDate: validationDate}; // Update the task object with new data
+        setStepTasks(updatedStepTasks); // Update the stepTasks state
+        localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
         console.log(stepTasks[index].header + "validationDate APP CONTROLLER " +stepTasks[index].validationDate )
     }
 
@@ -115,7 +141,9 @@ export default function AppController() {
      */
     function setStepTasksArray(newStepTasks) {
         setStepTasks(newStepTasks)
+        localStorage.setItem('stepTasks', JSON.stringify(newStepTasks));
         console.log("steptasks Array " + stepTasks.length)
+        console.log("steptasks Array lenght of stored steptasks : " + localStorage.getItem('stepTasks').length)
     }
 
     /**
@@ -251,6 +279,15 @@ export default function AppController() {
 
                     //C'est ici que je crée mes tâches user si c'est la première fois
                 }else {
+                    const defaultTasks = stepTasks.filter(task => task.default_task);
+                    const userDefaultTasks = defaultTasks.map(task => ({
+                        ...task,
+                        default_task: false,
+                        creationDate: today,
+                        id_task: null
+                    }));
+                    setStepTasksArray(userDefaultTasks);
+                    console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ");
                     // let userDefaultTasks = [];
                     // //Je fais une copie de la liste stepTasks qui doit être composée des tâches par défaut
                     // userDefaultTasks = [...stepTasks];
@@ -274,10 +311,10 @@ export default function AppController() {
             steplisttask.forEach(task => {
 
                 //Si la tâche est nouvelle :
-                if (task.default_task === true) {
+                if (task.id_task == null) {
                     task.modificationDate = today;
                     console.log("today is : " + today)
-                    updateStepListTask(task)
+                    // updateStepListTask(task)
                     saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
@@ -499,7 +536,7 @@ export default function AppController() {
     return <App style={{maxWidth:1400}}
                 //USER
                 user={user}
-                setUser={setUser}
+                setUser={setUserNew}
                 logout={logout}
                 //STEP TASKS
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}

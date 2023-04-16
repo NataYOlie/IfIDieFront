@@ -28,15 +28,15 @@ export default function SecurityController(props) {
                 return response.json();
             })
             .then(json => {
-                props.setUser(prevState => ({
-                    ...prevState,
+                const newUser = ({
                     token: json.token,
                     id: json.user.id_user,
                     surname: json.user.surname,
                     lastname: json.user.lastname,
                     role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
-                }));
-                localStorage.setItem('user', JSON.stringify(props.user))
+                });
+                props.setUser(newUser)
+                localStorage.setItem('user', JSON.stringify(newUser))
             })
             .catch(error => {
                 console.error(error);
