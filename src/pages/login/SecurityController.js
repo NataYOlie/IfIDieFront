@@ -6,7 +6,6 @@ export default function SecurityController(props) {
 
     const backUrl = "http://localhost:8081/security";
 
-
     /**
      * This method fetch user and gives them a token + affect a role.
      * @param login is email
@@ -37,12 +36,14 @@ export default function SecurityController(props) {
                     lastname: json.user.lastname,
                     role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
                 }));
+                localStorage.setItem('user', JSON.stringify(props.user))
             })
             .catch(error => {
                 console.error(error);
                 // handle error
                 alert("Login et/ou Mot de passe incorrect(s)");
             });
+
     }
 
 

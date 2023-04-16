@@ -57,6 +57,7 @@ export default function AppController() {
     function logout(){
         setUser(null)
         setStepTasksArray(fetchDefaultStepTasks())
+        localStorage.removeItem(JSON.stringify(user))
     }
 
 
