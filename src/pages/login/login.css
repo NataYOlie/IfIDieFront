@@ -114,6 +114,21 @@
   line-height: 21px;
 }
 
+.login-label{
+  margin: auto;
+  max-width: 70%;
+}
+
+.login-label p {
+  font-family: var(--font-family);
+  color: var(--rouge);
+  font-size: 1rem;
+  text-align: center;
+  font-style: italic;
+
+}
+
+
 
 @media screen and (max-width: 550px){
   .login{
@@ -132,5 +147,6 @@
     font-size: 20px;
     line-height: 30px;
   }
-  
+
+
 }

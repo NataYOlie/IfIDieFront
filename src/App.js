@@ -18,6 +18,7 @@ export default function App(props) {
             <Route path=":item/:id" element={<Item />} />
             <Route path="/envisager"
                    element={<Envisager user={props.user} setUser={props.setUser}
+                                       setLoginRedirectMessage={props.setLoginRedirectMessage}
                                        stepTasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
                                        updateStepTask = {props.updateStepTask}
@@ -32,7 +33,8 @@ export default function App(props) {
                                        setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
                                        setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>} />
             <Route path="/space/:id" element={<Space />} />
-            <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}/>} />
+            <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}
+                                                              login_label={props.login_label} setLoginRedirectMessage={props.setLoginRedirectMessage}/>} />
             <Route path="/register" element={ <RegisterController user={props.user} setUser={props.setUser}/>} />
             <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>}
             <Route path="/adminboard" element={<AdminBoardController user={props.user}

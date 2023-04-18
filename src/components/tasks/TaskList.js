@@ -28,7 +28,6 @@ export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
-    // const [comments, setComments] = useState('Hello');
     const [shouldRedirect, setShouldRedirect] = useState(false);
 
     //TODAY
@@ -36,38 +35,31 @@ export default function TaskList(props) {
     const today = todayprepare.toISOString().slice(0, 10);
 
     //Pour les commentaires, je créé une liste qui a la taille des step tasks
-    const [comments, setComments] = useState(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})));
+    const [comments, setComments] =
+        useState(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})));
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
      */
     useEffect(() => {
-        if (props.stepTasks && props.stepTasks.length >0) {
+        if (localStorage.getItem('steptasks') && JSON.parse('steptasks').length >0){
             stepTasksRender()
         }
 
-    }, [props.stepTasks]);
+    }, [props.stepTasks, props.setStepTasksDisplayArray, props.setStepTasksArray,
+        props.updateStepTaskComment, props.updateStepTaskValidationDate]);
 
     /**
-     * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
-     * otherwise it fetches DefaultSteptasks
+     * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
+     * otherwise it fetches DefaultSteptasks and comments default useState is what is used (empty strings).
      */
     useEffect(() => {
-        if (props.user) {
-            props.fetchUserStepTasks();
+        if (localStorage.getItem('user')) {
+            setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
         } else {
             props.fetchDefaultStepTasks();
         }
     }, []);
-
-    function refreshTasks(){
-        if (props.user) {
-            props.fetchUserStepTasks();
-        } else {
-            props.fetchDefaultStepTasks();
-        }
-    }
-
 
     /**
      * toggle expand ALL tasks
@@ -109,42 +101,48 @@ export default function TaskList(props) {
      * @param index index of the task is the list (stepTasks)
      */
     const checkTask = (index) => {
-        console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
+        console.log("index : " + index)
+        // console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
         if (props.stepTasks[index].validationDate){
+            console.log("IF validation date : " + props.stepTasks[index].validationDate + " // index : "+ index)
             props.updateStepTaskValidationDate(index, null)
-            console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
-            stepTasksRender()
         } else{
+            console.log("ELSE validation date : " + props.stepTasks[index].validationDate + " // index : "+ index)
             props.updateStepTaskValidationDate(index, today)
-            console.log("validation date : " + props.stepTasks[index].validationDate + " // today : "+ today)
-            stepTasksRender()
             }
-
         }
 
-    const handleComment = (i, value) => {
+
+    const handleComment = (i) => {
         // let commentTemp = props.stepTasks[i].commentEdit
         console.log("handle Comment : " + i)
-
         //Enregistrer le commentaire
-        if(props.stepTasks[i].commentEdit){
-            props.stepTasks[i].commentEdit = false
-            let index
-            if (comments.comment_id !== null){
-                index = props.stepTasks.findIndex(task => task.id_task === comments.comment_id)
-                props.updateStepTaskComment(index,comments[i].comment)
-                console.log("IF index : " + index)
-            }else{ index = props.stepTasks.findIndex(task => task.header === comments.comment_header)
-                props.updateStepTaskComment(index,comments[i].comment)
-                console.log("ELSE index : " + index)
+        if (props.stepTasks[i].commentEdit) {
+            //Si pas de user je demande de login
+            if (localStorage.getItem('user') != null) {
+                props.stepTasks[i].commentEdit = false
+                let index
+                if (comments[i].comment_id) {
+                    index = props.stepTasks.findIndex(task => task.id_task === comments[i].comment_id)
+                    console.log("IF index : " + index + " et le commentsID : " + comments[i].comment_id)
+                    props.updateStepTaskComment(index, comments[i].comment)
+
+                } else {
+                    index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
+                    console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
+                    // props.updateStepTaskComment(index, comments[i].comment)
+                }
+                // props.stepTasks[i].comment = value
+                stepTasksRender()
+
+            } else {
+                console.log("pas de user")
+                props.setLoginRedirectMessage("Il faut se connecter pour enregistrer une liste de tâches")
+                setShouldRedirect(true)
             }
 
-            // props.stepTasks[i].comment = value
-            stepTasksRender()
-            // console.log("HandleComment if, comment : " + props.stepTasks[i].comment + " et commentTemp " + commentTemp)
-        }
-        //Mon choix
-        else{
+            //Mon choix
+        } else {
             props.stepTasks[i].commentEdit = true
             console.log("handleComment TRUE " + props.stepTasks[i].comment)
             stepTasksRender()
@@ -152,20 +150,10 @@ export default function TaskList(props) {
     }
 
     const handleChangeComment = (index, value) => {
-    //     console.log(value)
-    //     setComments(prevComments => {
-    //         const updatedComments = [...prevComments];
-    //         updatedComments[index] = value;
-    //         return updatedComments;
-    //     });
-    // };
-
-
-        console.log("handle Change : " + comments[index])
-        // props.updateStepTaskComment(index,value)
-        setTimeout(() => (comments[index]=value, 800));
-        // props.updateStepTask(props.stepTasks[index])
-        console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
+            console.log("handle Change : " + comments[index].comment)
+            // props.updateStepTaskComment(index,value)
+            setTimeout(() => (comments[index].comment = value), 800);
+            console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
 
     /**
@@ -173,9 +161,10 @@ export default function TaskList(props) {
      * @param e is event triggered by save button
      */
     function handleSaveList() {
-        if (props.user) {
+        if (localStorage.getItem('user')) {
             const updatedStepTasks = [...props.stepTasks]
                     props.saveStepListTasks(updatedStepTasks);
+            stepTasksRender()
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
@@ -185,37 +174,29 @@ export default function TaskList(props) {
 
 
     function stepTasksRender() {
-
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
         if (props.stepTasks && props.stepTasks.length > 0) {
             const steptasksMirror = props.stepTasks
-            console.log("Step Task Render " + props.stepTasks.length + " et son miroir " + steptasksMirror.length)
 
             //Créer une liste de catégorie (subtype) - j'utilise un set pour éviter les doublons
             let subtypeList = new Set();
             for (let i = 0; i < props.stepTasks.length; i++) {
-                console.log("boucle 1 " + i)
                 subtypeList.add(steptasksMirror[i].subtype)
-                console.log(steptasksMirror[i].subtype + " taille de mon set " + subtypeList.size + " est de type " + typeof steptasksMirror[i].subtype)
             }
 
             //je passe mon set en array parce que je suis plus à l'aise pour la suite pour le manipuler
             setSubtypeListState(Array.from(subtypeList))
-            console.log("set to array" + subtypeListState.length)
 
             if (subtypeListState.length > 0) {
                 //Enregistrer les tâches dans chacune de leur catégorie
                 const newList = []
-                console.log("new List : " + newList)
                 for (let n = 0; n < subtypeListState.length; n++) {
                     //Créer une liste du nom de la catégorie et y coller le début du bloc :
                     newList.push(<div className="task-category" key={nanoid()}><h1 key={nanoid()}>{(subtypeListState[n])}</h1></div>)
                     //Je boucle sur ma liste de tache et si le nom de la liste equals celui de la catégorie de la tache,
                     // je l'y mets d'dans
-                    console.log("Je met mon div de titre de la catégorie dans ma newList, lenght : " + newList.length
-                        + " je vais boucler sur mes stepTasks length : " + props.stepTasks.length)
                     for (let i = 0; i < props.stepTasks.length; i++) {
                         if (props.stepTasks[i].subtype === subtypeListState[n]) {
                             let value = "";
@@ -245,28 +226,30 @@ export default function TaskList(props) {
                                                 {props.stepTasks[i].commentEdit ?
                                                     (<div>
                                                     <textarea key={nanoid()}
-                                                      defaultValue={comments[i]}
+                                                              defaultValue={comments[i].comment}
                                                               onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
                                                     <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>)
                                                 :
-                                                    (<div>
-                                                    <div className="comment">{props.stepTasks[i].comment}</div>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Mon choix</h2></div>)}
-                                                </div>
+                                                    (<div key={nanoid()}
+                                                          className="comment-container">
+                                                    <div className="comment"><p>{comments[i].comment}</p></div>
+                                                    <h2 onClick={(event)=>handleComment(i)}>Modifier</h2>
+                                                    </div>
+                                                    )}
+                                                    </div>
                                                 )}
 
                                     {props.stepTasks[i].external_link  ? (
                                     <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}
                                 </div>
                             )
-                            console.log("task pushed " + props.stepTasks[i].header + " on en est à " + newList.length)
                             //A chaque tâche traitée je l'ajoute à la liste entière
                         }
                     }
                 }
                 //J'ai fait une catégorie, je passe à la suivante
                 newTaskDisplay.push(newList)
-                console.log(newList.length + " en tout : " + newTaskDisplay.length)
+
                 //Pis je met à jour mon props quoi en lui collant ma liste de travail
                 props.setStepTasksDisplayArray(newTaskDisplay)
             }
@@ -282,7 +265,7 @@ export default function TaskList(props) {
                     <button className="expand-writeButton"
                             key={nanoid()}
                             onClick={toggleExpand}>
-                            {props.stepTasks ? "Toggle" :  "Chargez les tâches"}
+                            {props.stepTasksDisplay[0] ? "Toggle" :  "Chargez les tâches"}
                     </button>)
                     : (
                         <button className="expand-writeButton"

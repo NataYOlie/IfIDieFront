@@ -36,6 +36,7 @@ const Envisager = (props) => {
         <TaskList
             stepTasks={props.stepTasks}
             user={props.user} setUser={props.setUser}
+            setLoginRedirectMessage={props.setLoginRedirectMessage}
             stepTasksDisplay={props.stepTasksDisplay}
             fetchUserStepTasks={props.fetchUserStepTasks}
             fetchDefaultStepTasks={props.fetchDefaultStepTasks}

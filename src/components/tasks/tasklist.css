@@ -31,15 +31,32 @@
 
 }
 
-
+.comment-container{
+    padding: 1rem;
+    display: flex;
+    width: 80%;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    text-align: left !important;
+    justify-content: left;
+    white-space: pre-line;
+}
 
 .comment{
-    background: rgba(133, 133, 133, 0.17);
+    /*background: rgba(133, 133, 133, 0.17);*/
+    background: var(--jaune);
     border-radius: 20px;
-    /*padding: 2rem;*/
-    /*margin: 2rem auto;*/
+    padding: 2rem;
+    margin: 2rem auto;
     width: 80%;
 
+}
+
+.comment p{
+    text-align: center;
+    text-justify: newspaper;
+    color: darkblue;
 }
 
 

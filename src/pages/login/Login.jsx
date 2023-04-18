@@ -12,9 +12,11 @@ const Login = (props) => {
     };
     const [fields, setFields] = useState({ login: "", password: "" }); //Objet qui contients les différents field de la page
   return (
+
     <div className='login section__padding'>
         <img src={clouds} alt={clouds}/>
       <div className="login-container">
+          <div name="login-message" className="login-label"><p>{props.login_label}</p> </div>
         <h1>Se connecter</h1>
         <form className='login-writeForm' autoComplete='off'>
 

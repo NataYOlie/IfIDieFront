@@ -13,19 +13,21 @@ import {forEach} from "react-bootstrap/ElementChildren";
  */
 export default function AppController() {
 
+///////CONSTANTES///////////////////////CONSTANTES//////////////////////CONSTANTES//////////////////////////CONSTANTES/////////////
+
     /**
      * Connected User
      */
-    // const [user, setUser] = useState(null);
     const storedUser = localStorage.getItem('user');
     const [user, setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
+
     /**
      * Step Tasks
      */
+    const storedStepTasks = localStorage.getItem('stepTasks');
     const [stepTasks, setStepTasks] = useState(() => {
-        const storedStepTasks = localStorage.getItem('stepTasks');
+        console.log("USE STATE STEPTASKS IS MODIFIED, lenght of stored steptasks : " + JSON.parse(storedStepTasks).length)
         return storedStepTasks ? JSON.parse(storedStepTasks) : [];
-        console.log("USE STATE STEPTASKS IS MODIFIED, lenght of stored steptasks : " + storedStepTasks.length)
     });
     /**
      * Step Tasks Display, steptasks in their html dress to go party
@@ -45,32 +47,80 @@ export default function AppController() {
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 
+    /**
+     * This label display on the login page and message is customed depending on redirects
+     */
+    const [login_label, setLogin_label] = useState("")
 
+/////USE EFFECTS//////////////////USE EFFECTS///////////////USE EFFECTS////////////////////////////////USE EFFECTS/////////////////////////////
     /**
      * This useEffect fetch StepTasks from ddb when launching app
      */
-    useEffect(() =>
-        fetchDefaultStepTasks(),
-     []);
+    useEffect(() => {
+        if (!user) {
+            fetchDefaultStepTasks();
+        }
+    }, [user]);
 
+    /**
+     * This useEffect fetch random funnyDeath when launching app
+     */
     useEffect(() => {
         getRandomFunnyDeath();
     }, []);
+
+
+    /**
+     * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
+     * otherwise it fetches DefaultSteptasks
+     */
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            fetchUserStepTasks();
+        } else {
+           fetchDefaultStepTasks();
+        }
+    }, []);
+
+
+    /**
+     * This use Effect persist changes made on tasks in database
+     */
+    useEffect (()=>{
+        if (localStorage.getItem('user')) {
+            saveStepListTasks(stepTasks);}
+    }, [setStepTasks, updateStepTaskComment()]);
 
 
 //////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
 
     function logout(){
         setUser(null)
-        setStepTasksArray(fetchDefaultStepTasks())
+        // setStepTasksArray(fetchDefaultStepTasks())
         localStorage.removeItem(JSON.stringify(user))
+        localStorage.clear()
     }
 
+    //juste utilisée dans la nav bar, ça renvoie sur le login, je me demande si ça peut foutre la merde vis a vis du localstorage
     function setUserNew(newUser){
         setUser(newUser)
     }
 
+    /**
+     * This function updates login label which informs user why they need to login
+     * @param newLoginMessage
+     */
+    function setLoginRedirectMessage(newLoginMessage){
+        setLogin_label(newLoginMessage)
+    }
 
+
+/////////FUNNY DEATH////////////////////////FUNNY DEATH//////////////////////////////////FUNNY DEATH//////////////FUNNY DEATH///////////////////////////////
+
+    function refreshFunnyDeath(){
+        setCurrentFunnyDeath(getRandomFunnyDeath())
+        console.log("refresh")
+    }
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
 
@@ -79,9 +129,11 @@ export default function AppController() {
      * @param newStepTask
      */
     function addStepTask(newStepTask) {
-        if (stepTasks && stepTasks.length > 0) {
+        if (storedStepTasks && storedStepTasks.length > 0) {
             setStepTasks([...stepTasks, newStepTask]);
         } else setStepTasks([newStepTask])
+        console.log(JSON.parse(storedStepTasks).length)
+
     }
 
     /**
@@ -100,39 +152,49 @@ export default function AppController() {
         }
     }
 
+    /**
+     * this function is called to update comment of a task of stepTasks
+     * @param index is the index of the task to update in the stepTasks list
+     * @param comment is the new value for comment attribute
+     */
     function updateStepTaskComment(index, comment){
+        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+
         //SI on a un index (vu qu'on le cherche avec l'id de la tache, si on n'a pas encore enregistrer il n'y a pas d'index
-        if (index){
-            stepTasks[index].comment = comment
-            stepTasks[index].modificationDate = today
-            // stepTasks[index] = { ...stepTasks[index], comment: comment };
-            console.log(stepTasks[index].header + "new comment is " +stepTasks[index].comment )
+        if (index != null){
+            updatedStepTasks[index] = { ...updatedStepTasks[index], comment: comment};
+            console.log(updatedStepTasks[index].header + "new comment is " + updatedStepTasks[index].comment )
+            setStepTasksArray(updatedStepTasks)
+            // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
         }else {
-
+            console.log("comment pas d'index")
         }
-
-
-        // const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
-        // updatedStepTasks[index] = {...stepTasks[index], comment: comment}; // Update the task object with new data
-        // setStepTasks(updatedStepTasks); // Update the stepTasks state
-        // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
     }
 
-
+    /**
+     * this function is called to update visible state of a task of stepTasks
+     * @param index is the index of the task to update in the stepTasks list
+     * @param boolean is the new value for visible attribute
+     */
     function updateStepTaskVisible(index, boolean){
-        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
-        updatedStepTasks[index] = {...stepTasks[index], visible: boolean}; // Update the task object with new data
+        // Make a copy of the stepTasks array
+        const updatedStepTasks = [...stepTasks];
+        // Update the task object with new data
+        updatedStepTasks[index] = {...updatedStepTasks[index], visible: boolean};
         setStepTasks(updatedStepTasks); // Update the stepTasks state
         localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
         console.log(stepTasks[index].header + "visible status " +stepTasks[index].visible )
     }
 
     function updateStepTaskValidationDate(index, validationDate){
-        const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
-        updatedStepTasks[index] = {...stepTasks[index], validationDate: validationDate}; // Update the task object with new data
-        setStepTasks(updatedStepTasks); // Update the stepTasks state
-        localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
-        console.log(stepTasks[index].header + "validationDate APP CONTROLLER " +stepTasks[index].validationDate )
+        if (index != null) {
+            const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+            updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate}; // Update the task object with new data
+            setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+            // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
+            console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
+            saveStepListTask(updatedStepTasks[index])
+        }else console.log("check pas d'index")
     }
 
     /**
@@ -141,9 +203,10 @@ export default function AppController() {
      */
     function setStepTasksArray(newStepTasks) {
         setStepTasks(newStepTasks)
+        localStorage.removeItem('stepTasks')
         localStorage.setItem('stepTasks', JSON.stringify(newStepTasks));
         console.log("steptasks Array " + stepTasks.length)
-        console.log("steptasks Array lenght of stored steptasks : " + localStorage.getItem('stepTasks').length)
+        console.log("steptasks Array lenght of stored steptasks : " + JSON.parse(storedStepTasks).length)
     }
 
     /**
@@ -157,26 +220,14 @@ export default function AppController() {
     }
 
     /**
-     * This function is just a setStepTask to be use in all the components
+     * This function is just a setStepTasksDisplay to be use in all the components
      * @param newStepTasksDisplays
      */
     function setStepTasksDisplayArray(newStepTasksDisplays) {
         setStepTasksDisplay(newStepTasksDisplays)
         console.log("setStepTasksDisplayArray " + stepTasksDisplay.length)
     }
-    //
-    // function refreshTasks(){
-    //     if (user) {
-    //         fetchUserStepTasks();
-    //     } else {
-    //         fetchDefaultStepTasks();
-    //     }
-    // }
 
-    function refreshFunnyDeath(){
-        setCurrentFunnyDeath(getRandomFunnyDeath())
-        console.log("refresh")
-    }
 
 
 //FETCH TASKS///////////////// FETCH TASKS ////////////////////////////FETCH TASKS////////////////////////////FETCH TASKS///////////////////////////////////////
@@ -288,22 +339,11 @@ export default function AppController() {
                     }));
                     setStepTasksArray(userDefaultTasks);
                     console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ");
-                    // let userDefaultTasks = [];
-                    // //Je fais une copie de la liste stepTasks qui doit être composée des tâches par défaut
-                    // userDefaultTasks = [...stepTasks];
-                    // userDefaultTasks.forEach(
-                    //     task=>( task.default_task = false,
-                    //             task.creationDate = today,
-                    //             task.id_task=null
-                    //     )
-                    // )
-                    // setStepTasksArray(userDefaultTasks)
-                    // saveStepListTasks(userDefaultTasks) // AVANT CA ENVOYAIT newTasks MAIS J'AI CHANGE SANS VERIFIE
-                    // console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ")
                 }
             })
         return stepTasks
     }
+
 
     function saveStepListTasks (steplisttask){
         console.log("ENTERING SAVE STEPLIST TASK")
@@ -319,17 +359,7 @@ export default function AppController() {
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
 
-                //Si la tache est une tache par défaut
-                // }else if (task.default_task){
-                //     console.log("tache default dans savesteplist") // EST CE QUE C'EST UTILE ? CA FAIT PAS DOUBLON ???
-                    // let newTask = [...task]
-                    // newTask.default_task = (false)
-                    // newTask.id=null
-                    // stepTasks.push(newTask)
-                    // saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
-                    //     task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
-
-                    //Si la tache existe déjà
+                //Si la tache existe déjà
                 }else {
                     task.modificationDate = today;
                     updateStepListTask(task)
@@ -337,7 +367,6 @@ export default function AppController() {
                 }
             });
             fetchUserStepTasks()
-            // refreshTasks()
             console.log("Steplist is saved " + stepTasks.length)
         }
 
@@ -458,7 +487,7 @@ export default function AppController() {
             fetch(backUrlTask + "/updatetask/" + user.id + "/" + stepTask.id_task, requestOptions)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Network response was not ok");
+                        throw new Error("updateStepListTask : Network response was not ok");
                     }
                     return response.json();
                 })
@@ -483,7 +512,7 @@ export default function AppController() {
 
             stepTasksDao.push(newTask)
             console.log(newTask.header)
-            // refreshTasks()
+
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
@@ -538,6 +567,8 @@ export default function AppController() {
                 user={user}
                 setUser={setUserNew}
                 logout={logout}
+                setLoginRedirectMessage={setLoginRedirectMessage}
+                login_label={login_label}
                 //STEP TASKS
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}

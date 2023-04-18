@@ -53,7 +53,7 @@ export default function SecurityController(props) {
         return <Navigate replace to="/"/>;
     } else {
         return (
-            <Login fetchUser={(login, password) => fetchUser(login, password)}/>
+            <Login fetchUser={(login, password) => fetchUser(login, password)} login_label={props.login_label}/>
         );
     }
 }
