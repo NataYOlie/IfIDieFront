@@ -21,6 +21,7 @@ export default function App(props) {
                                        setLoginRedirectMessage={props.setLoginRedirectMessage}
                                        stepTasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
+                                       refresh={props.refresh}
                                        updateStepTask = {props.updateStepTask}
                                        updateStepTaskComment = {props.updateStepTaskComment}
                                        updateStepTaskVisible={props.updateStepTaskVisible}

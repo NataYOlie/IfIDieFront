@@ -45,6 +45,7 @@ const Envisager = (props) => {
             saveStepListTasks={props.saveStepListTasks}
             setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
             setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+            refresh={props.refresh}
             updateStepTask = {props.updateStepTask}
             updateStepTaskComment = {props.updateStepTaskComment}
             updateStepTaskVisible={props.updateStepTaskVisible}

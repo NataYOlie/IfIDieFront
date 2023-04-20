@@ -87,8 +87,8 @@ export default function AppController() {
     // useEffect (()=>{
     //     if (user) {
     //         saveStepListTasks(stepTasks);}
-    // }, []);
-
+    // }, [stepTasks]);
+    //
 
 //////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,6 +121,10 @@ export default function AppController() {
     }
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
+
+    function refresh(){
+        window.location.reload()
+    }
 
     /**
      * This function add a StepTask and update StepTask List
@@ -333,31 +337,42 @@ export default function AppController() {
     }
 
 
-    function saveStepListTasks (steplisttask){
-        console.log("ENTERING SAVE STEPLIST TASK")
-        if (steplisttask){
-            steplisttask.forEach(task => {
-
-                //Si la tâche est nouvelle :
+    /**
+     * This function saves or updates tasklist depending on if they are new or known. It refreshes the page after
+     * execution (full refresh) that ensure the update of the states, because I am new to React and couldn't do better
+     * Don't be to harsh. It's hard enough around here.
+     * @returns {Promise<void>}
+     */
+    async function saveStepListTasks() {
+        console.log("ENTERING SAVE STEPLIST TASK");
+        if (stepTasks) {
+            await Promise.all(stepTasks.map(async (task) => {
                 if (task.id_task == null) {
                     task.modificationDate = today;
-                    console.log("today is : " + today)
-                    saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
-                        task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
-                    console.log("saving " + task.header + " " + today)
-
-                //Si la tache existe déjà
-                }else {
+                    console.log("today is : " + today);
+                    await saveStepListTask(
+                        task.subtype,
+                        task.header,
+                        task.description,
+                        task.external_link,
+                        task.task_color,
+                        task.comment,
+                        task.validationDate,
+                        task.previsionalDate,
+                        task.modificationDate
+                    );
+                    console.log("saving " + task.header + " " + today);
+                } else {
                     task.modificationDate = today;
-                    updateStepListTask(task)
-                    console.log("updating " + task.header + " " + today)
+                    await updateStepListTask(task);
+                    console.log("updating " + task.header + " " + today);
                 }
-            });
-
-            fetchUserStepTasks()
-            console.log("Steplist is saved " + stepTasks.length)
+            }));
+            console.log("Steplist is saved " + stepTasks.length);
         }
 
+        //C'est mal mais ça marche et j'ai pas trouvé mieux les promises et await ça marche pas
+        setTimeout(() => refresh(), 1000);
     }
 
     /**
@@ -431,7 +446,6 @@ export default function AppController() {
 
             stepTasksDao.push(newTask)
             console.log(newTask.size)
-            fetchUserStepTasks()
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
@@ -557,6 +571,7 @@ export default function AppController() {
                 setLoginRedirectMessage={setLoginRedirectMessage}
                 login_label={login_label}
                 //STEP TASKS
+                refresh={refresh}
                 addStepTask={(newStepTask)=>addStepTask(newStepTask)}
                 stepTasks={stepTasks}
                 setStepTasks={setStepTasks}

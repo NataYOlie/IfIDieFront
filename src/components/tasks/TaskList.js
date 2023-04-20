@@ -43,7 +43,6 @@ export default function TaskList(props) {
         if (props.stepTasks && props.stepTasks.length >0){
             stepTasksRender()
         }
-
     }, [props.stepTasks, props.setStepTasksDisplayArray, props.setStepTasksArray,
         props.updateStepTaskComment, props.updateStepTaskValidationDate]);
 
@@ -112,7 +111,7 @@ export default function TaskList(props) {
         }
 
 
-    const handleComment = (i) => {
+    function handleComment(i){
         // let commentTemp = props.stepTasks[i].commentEdit
         console.log("handle Comment : " + i)
         //Enregistrer le commentaire
@@ -132,7 +131,7 @@ export default function TaskList(props) {
                     console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
                     props.updateStepTaskComment(index, comments[i].comment)
                 }
-                stepTasksRender()
+
 
             } else {
                 console.log("pas de user")
@@ -157,8 +156,9 @@ export default function TaskList(props) {
     }
 
     function updateComments (){
-        setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
-
+        setComments((prevComments) =>props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header,
+            comment:task.comment})));
+        stepTasksRender()
     }
 
     /**
@@ -166,9 +166,9 @@ export default function TaskList(props) {
      */
     function handleSaveList() {
         const updatedStepTasks = [...props.stepTasks]
+        console.log(updatedStepTasks[0].comment)
         if (props.user) {
-                    props.saveStepListTasks(updatedStepTasks);
-            stepTasksRender()
+            props.saveStepListTasks();
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
@@ -180,11 +180,8 @@ export default function TaskList(props) {
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
-
         if (props.stepTasks && props.stepTasks.length > 0) {
             const steptasksMirror = props.stepTasks
-            updateComments()
-
 
             //Créer une liste de catégorie (subtype) - j'utilise un set pour éviter les doublons
             let subtypeList = new Set();
