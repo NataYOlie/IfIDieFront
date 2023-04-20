@@ -19,7 +19,7 @@ const Menu = () => {
 
  const Navbar = (props) => {
      const [toggleMenu,setToggleMenu] = useState(false)
-     // const [user,setUser] = useState(false) // On va le récupérer en props donc à priori plus besoin
+
 
   const handleLogout = () => {
     props.logout();
@@ -81,16 +81,13 @@ const Menu = () => {
             <div className="navbar-menu_container-links-sign">
             {props.user ? (
               <>
-              <Link to="/create"> 
-                <button type='button' className='primary-btn' >Create</button>
-              </Link>
-              <button type='button' className='secondary-btn'>Connect</button>
+                  <Link to="/"><p onClick={handleLogout}>Logout</p></Link>
               </>
             ): (
               <>
-              <Link to="/login"> 
-              <button type='button' className='primary-btn' onClick={handleLogin} >Sign In</button>
-              </Link>
+                  <Link to="/login">
+                      <p onClick={handleLogin} >Connection</p>
+                  </Link>
               <Link to="/register"> 
                 <button type='button' className='secondary-btn'>Sign Up</button>
               </Link>

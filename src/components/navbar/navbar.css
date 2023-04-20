@@ -29,6 +29,7 @@
   font-size: 40px;
   line-height: 17px;
 }
+
 .navbar-links_logo img{
   margin-right: 15px;
 }
@@ -108,7 +109,7 @@ input::placeholder {
   align-items: flex-end;
   flex-direction: column;
   text-align: end;
-  background: var(--color-footer);
+  background: var(--jaune);
   padding: 2rem;
   position: absolute;
   top: 40px;
@@ -140,10 +141,28 @@ input::placeholder {
  .navbar{
    padding: 2rem 4rem;
  }
+
+  .navbar-links_container{
+    display: block;
+  }
+
+  .navbar-links_logo{
+    display:block;
+  }
+
+  .navbar-links_logo h1{
+    font-size: 25px;
+  }
 }
 @media screen and (max-width:550px) {
   .navbar{
     padding: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .navbar-links_logo h1{
+    font-size: 20px;
   }
 
   .navbar-sign{

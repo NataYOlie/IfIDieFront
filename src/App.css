@@ -123,13 +123,13 @@ a{
 .task-container textarea{
     outline: none !important;
     font-family: var(--font-family);
-    width : 80%;
-    margin : 2rem auto;
+    max-width : 120%;
+    margin : 10% 0;
     box-sizing: border-box;
     background-color: #f8f8f8;
-    resize: none;
+    resize: vertical;
     border: 2px solid #ccc;
-    border-radius: 4px;
+    border-radius: 15px;
 }
 
 .task-container textarea :focus{

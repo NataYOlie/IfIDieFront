@@ -151,7 +151,7 @@ export default function TaskList(props) {
     const handleChangeComment = (index, value) => {
             console.log("handle Change : " + comments[index].comment)
             // props.updateStepTaskComment(index,value)
-            setTimeout(() => (comments[index].comment = value), 800);
+            setTimeout(() => (comments[index].comment = value), 500);
             console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
 
@@ -230,13 +230,15 @@ export default function TaskList(props) {
                                                     (<div>
                                                     <textarea key={nanoid()}
                                                               defaultValue={props.stepTasks[i].comment}
+                                                              placeholder="Ajouter un commentaire"
                                                               onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
                                                     <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>)
                                                 :
                                                     (<div key={nanoid()}
-                                                          className="comment-container">
+                                                          className="comment-container"
+                                                          onClick={(event)=>handleComment(i)}>
                                                     <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Modifier</h2>
+                                                    {/*<h2 onClick={(event)=>handleComment(i)}>Modifier</h2>*/}
                                                     </div>
                                                     )}
                                                     </div>
