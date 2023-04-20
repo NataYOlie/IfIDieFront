@@ -38,8 +38,7 @@ export default function AdminBoard(props) {
         <div className="adminBoard section__padding">
             <div>
                 <div className="adminBoard-container">
-                <h1>Bienvenue cher Administratrice ! </h1>
-
+                <h1>Bienvenue cher Administratrice !</h1>
                 <div className="button-centered">
                 <p>Que souhaitez vous faire ?</p>
                 <ButtonSet />
@@ -47,7 +46,7 @@ export default function AdminBoard(props) {
             </div>
 
             {toggleCreateTask &&(
-                <>
+                <div>
                 <CreateDefaultStepTaskForm
                     user={props.user}
                     addStepTask={props.addStepTask}
@@ -55,23 +54,37 @@ export default function AdminBoard(props) {
                     stepTasks={props.stepTasks}
                     fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                     setStepTasks={props.setStepTasks}/>
-
+                <div className="adminBoard-button-container">
                 <button className='adminBoard-white-writeButton'
                         type="submit"
                         onClick={()=> setToggleTaskList(!toggleTaskList)}>
                     Voir les tâches
                 </button>
-                </>)
+                </div>
+
+                    {toggleTaskList && (
+                        <TaskList
+                            stepTasks={props.stepTasks}
+                            user={props.user} setUser={props.setUser}
+                            setLoginRedirectMessage={props.setLoginRedirectMessage}
+                            stepTasksDisplay={props.stepTasksDisplay}
+                            fetchUserStepTasks={props.fetchUserStepTasks}
+                            fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+                            saveStepListTasks={props.saveStepListTasks}
+                            setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
+                            setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+                            refresh={props.refresh}
+                            updateStepTask = {props.updateStepTask}
+                            updateStepTaskComment = {props.updateStepTaskComment}
+                            updateStepTaskVisible={props.updateStepTaskVisible}
+                            updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                            updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
+                        />
+                    )}
+                </div>
+            )
             }
 
-            {toggleTaskList && (
-             <TaskList
-                 stepTasks={props.tasks}
-                 user={props.user} setUser={props.setUser}
-                 stepTasksDisplay={props.stepTasksDisplay}
-                 setStepTasksDisplayArray={props.setStepTasksDisplayArray}
-                />
-            )}
 
                 {toggleCreateFunnyDeath &&(
                     <>
@@ -83,8 +96,6 @@ export default function AdminBoard(props) {
                             fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                             createFunnyDeath={props.createFunnyDeath}
                             setStepTasks={props.setStepTasks}/>
-
-
                     </>)
                 }
 

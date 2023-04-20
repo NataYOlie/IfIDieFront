@@ -106,6 +106,7 @@ a{
 
 .task-container p {
     font-family: var(--font-family);
+    color : black;
 }
 
 .task-container h2 {

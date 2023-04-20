@@ -39,13 +39,21 @@ export default function App(props) {
                                                               login_label={props.login_label} setLoginRedirectMessage={props.setLoginRedirectMessage}/>} />
             <Route path="/register" element={ <RegisterController user={props.user} setUser={props.setUser}/>} />
             <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>}
-            <Route path="/adminboard" element={<AdminBoardController user={props.user}
-                                                                     setUser={props.setUser}
-                                                                     fetchDefaultStepTasks={props.fetchDefaultStepTasks}
-                                                                     addStepTask={(newStepTask)=>props.addStepTask(newStepTask)}
-                                                                     stepTasks={props.stepTasks}
-                                                                     setStepTasksDisplayArray={props.setStepTasksDisplayArray}
-                                                                     stepTasksDisplay={props.stepTasksDisplay} />}
+            <Route path="/adminboard" element={<AdminBoardController             stepTasks={props.stepTasks}
+                                                                                 user={props.user} setUser={props.setUser}
+                                                                                 setLoginRedirectMessage={props.setLoginRedirectMessage}
+                                                                                 stepTasksDisplay={props.stepTasksDisplay}
+                                                                                 fetchUserStepTasks={props.fetchUserStepTasks}
+                                                                                 fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+                                                                                 saveStepListTasks={props.saveStepListTasks}
+                                                                                 setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
+                                                                                 setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+                                                                                 refresh={props.refresh}
+                                                                                 updateStepTask = {props.updateStepTask}
+                                                                                 updateStepTaskComment = {props.updateStepTaskComment}
+                                                                                 updateStepTaskVisible={props.updateStepTaskVisible}
+                                                                                 updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                                                                                 updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate} />}
             />
           </Routes>
     </>

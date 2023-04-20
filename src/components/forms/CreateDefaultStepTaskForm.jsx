@@ -62,7 +62,7 @@ export default function CreateDefaultStepTaskForm(props) {
         console.log(newTask.header)
     }
 
-////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const schema = yup.object().shape({
         subtype: yup.string().required("Catégorie : Famille, Administratif, Santé, Transmission, Obsèques, Un proche est décédé ? "),
@@ -82,11 +82,10 @@ export default function CreateDefaultStepTaskForm(props) {
         console.log("bouton " + data.header)
         if(data){
             createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
-            props.fetchDefaultStepTasks();
         }else {
             props.fetchDefaultStepTasks();
         }
-
+        props.fetchDefaultStepTasks();
     }
 
 return (
@@ -98,11 +97,17 @@ return (
             <form className='createDefaultTask-writeForm' autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <div className="createDefaultTask-formGroup">
                     <label>Catégorie</label>
-                    <p>Famille, Administratif, Santé, Transmission, Obsèques, Un proche est décédé ? </p>
-                    <input type="text"
-                           placeholder='Catégorie'
-                           {...register("subtype")}
-                    />
+                    <select
+                        name="Catégorie"
+                        multiple={false}
+                        {...register("subtype")}>
+                        <option value="Famille">Famille</option>
+                        <option value="Administratif">Administratif</option>
+                        <option value="Sante">Santé</option>
+                        <option value="Transmission">Transmission</option>
+                        <option value="Divers">Divers</option>
+                    </select>
+
                     <p>{errors.subtype?.message}</p>
                 </div>
 

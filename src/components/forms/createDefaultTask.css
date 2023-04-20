@@ -27,6 +27,7 @@
     filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
 }
 
+
 .createDefaultTask-container p{
     padding: 1rem;
     color: whitesmoke;
@@ -80,6 +81,19 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
+}
+
+.createDefaultTask-Radio {
+    text-align: left;
+}
+
+.createDefaultTask-Radio h3{
+    font-family: var(--font-family);
+    text-align: left;
+    color: white;
+    font-style: normal;
+    font-weight: bold;
+    margin: 2rem 0 auto;
 }
 
 .createDefaultTask-Radio label{
