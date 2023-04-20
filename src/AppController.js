@@ -89,8 +89,12 @@ export default function AppController() {
     //         saveStepListTasks(stepTasks);}
     // }, [stepTasks]);
     //
+///////////////GLOBAL TRAITMENTS////////////////////////GLOBAL TRAITMENTS/////////////////////GLOBAL TRAITMENTS/////////////////////////
+    function refresh(){
+        window.location.reload()
+    }
 
-//////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////USER////////////////USER/////////////////USER//////////////////////////////////////////USER///////////////////////
 
     function logout(){
         setUser(null)
@@ -122,9 +126,7 @@ export default function AppController() {
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
 
-    function refresh(){
-        window.location.reload()
-    }
+
 
     /**
      * This function add a StepTask and update StepTask List
@@ -190,6 +192,15 @@ export default function AppController() {
             updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate}; // Update the task object with new data
             setStepTasksArray(updatedStepTasks); // Update the stepTasks state
             console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
+        }else console.log("check pas d'index")
+    }
+
+    function updateStepTaskPrevisionalDate(index, previsionalDate){
+        if (index != null) {
+            const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
+            updatedStepTasks[index] = {...updatedStepTasks[index], previsionalDate: previsionalDate}; // Update the task object with new data
+            setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+            console.log(stepTasks[index].header + "previsionalDate APP CONTROLLER " + updatedStepTasks[index].previsionalDate)
         }else console.log("check pas d'index")
     }
 
@@ -586,6 +597,7 @@ export default function AppController() {
                 stepTasksDisplay = {stepTasksDisplay}
                 updateStepTask = {updateStepTask}
                 updateStepTaskValidationDate = {updateStepTaskValidationDate}
+                updateStepTaskPrevisionalDate = {updateStepTaskPrevisionalDate}
 
                 //FUNNYDEATH
                 getRandomFunnyDeath = {getRandomFunnyDeath}

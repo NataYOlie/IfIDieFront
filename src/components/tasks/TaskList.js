@@ -175,6 +175,11 @@ export default function TaskList(props) {
         }
     }
 
+    const handleChangePrevDate = (index) => (event) => {
+        const previsionalDate = event.target.value;
+        props.updateStepTaskPrevisionalDate(index, previsionalDate)
+    };
+
 
     function stepTasksRender() {
         console.log("stepTaskRender !")
@@ -209,19 +214,38 @@ export default function TaskList(props) {
                                     <div className="task-header"
                                          key={nanoid()}>
                                         {props.stepTasks[i].visible ? (
-                                            <FontAwesomeIcon icon="fa-square-minus" size="lg" style={{color: "#12a3df"}} onClick={() => toggleTask(i)}/>
-                                        ) : (<FontAwesomeIcon icon="fa-square-plus" size="lg" style={{color: "#12a3df"}} onClick={() => toggleTask(i)}/> )}
+                                            <FontAwesomeIcon icon="fa-square-minus"
+                                                             size="lg" style={{color: "#12a3df"}}
+                                                             onClick={() => toggleTask(i)}/>
+                                        ) : (<FontAwesomeIcon icon="fa-square-plus" size="lg"
+                                                              style={{color: "#12a3df"}}
+                                                              onClick={() => toggleTask(i)}/> )}
                                         <div key={nanoid()} onClick={() => toggleTask(i)}>
 
                                             <h1>{props.stepTasks[i].header}</h1></div>
 
                                         {props.stepTasks[i].validationDate ? (
-                                            <FontAwesomeIcon icon="fa-circle-check" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/>
-                                        ) : (<FontAwesomeIcon icon="fa-circle" size="xl" className={props.stepTasks[i].task_color} onClick={()=>checkTask(i)}/> )}
+                                            <div className="task-done">
+                                                <FontAwesomeIcon icon="fa-circle-check"
+                                                                 size="xl"
+                                                                 className={props.stepTasks[i].task_color}
+                                                                 onClick={()=>checkTask(i)}/>
+                                                <h4>OK</h4>
+                                            </div>
+
+                                        ) : (
+                                            <div className="task-done">
+                                            <FontAwesomeIcon icon="fa-circle"
+                                                              size="xl"
+                                                              className={props.stepTasks[i].task_color}
+                                                              onClick={()=>checkTask(i)}/>
+                                                <h4>En attente</h4>
+                                            </div>
+                                                )}
 
                                     </div>
 
-                                    {props.stepTasks[i].visible  && (
+                                    {props.stepTasks[i].visible && (
                                         <div
                                             key={nanoid()}
                                             className="task-container">
@@ -241,8 +265,17 @@ export default function TaskList(props) {
                                                     {/*<h2 onClick={(event)=>handleComment(i)}>Modifier</h2>*/}
                                                     </div>
                                                     )}
+                                            <div>
+                                                <p>Prévu pour le :</p>
+                                                <input type="date"
+                                                       className="task-previsionnalDate"
+                                                       defaultValue={props.stepTasks[i].previsionalDate}
+                                                       onChange={handleChangePrevDate(i)}
+                                                       placeholder='date'/>
+                                            </div>
                                                     </div>
                                                 )}
+
 
                                     {props.stepTasks[i].external_link  ? (
                                     <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}

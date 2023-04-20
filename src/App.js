@@ -26,6 +26,7 @@ export default function App(props) {
                                        updateStepTaskComment = {props.updateStepTaskComment}
                                        updateStepTaskVisible={props.updateStepTaskVisible}
                                        updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                                       updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
                                        stepTasksRender={()=>props.stepTasksRender()}
                                        stepTasksDisplay={props.stepTasksDisplay}
                                        fetchUserStepTasks={props.fetchUserStepTasks}

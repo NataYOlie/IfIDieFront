@@ -50,6 +50,7 @@ const Envisager = (props) => {
             updateStepTaskComment = {props.updateStepTaskComment}
             updateStepTaskVisible={props.updateStepTaskVisible}
             updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+            updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
         />
     </div>
             </>

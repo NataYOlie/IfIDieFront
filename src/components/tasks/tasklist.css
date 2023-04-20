@@ -103,3 +103,8 @@
 .save-writeButton:active {
     background: rgb(183, 51, 0);
 }
+
+.task-previsionnalDate{
+    font-family: var(--font-family);
+
+}
