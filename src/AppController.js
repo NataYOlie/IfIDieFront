@@ -25,10 +25,8 @@ export default function AppController() {
      * Step Tasks
      */
     const storedStepTasks = localStorage.getItem('stepTasks');
-    const [stepTasks, setStepTasks] = useState(() => {
-        console.log("USE STATE STEPTASKS IS MODIFIED, lenght of stored steptasks : " + JSON.parse(storedStepTasks).length)
-        return storedStepTasks ? JSON.parse(storedStepTasks) : [];
-    });
+    const [stepTasks, setStepTasks] = useState(storedStepTasks ? JSON.parse(storedStepTasks) : []);
+
     /**
      * Step Tasks Display, steptasks in their html dress to go party
      */
@@ -60,7 +58,7 @@ export default function AppController() {
         if (!user) {
             fetchDefaultStepTasks();
         }
-    }, [user]);
+    }, []);
 
     /**
      * This useEffect fetch random funnyDeath when launching app
@@ -75,21 +73,21 @@ export default function AppController() {
      * otherwise it fetches DefaultSteptasks
      */
     useEffect(() => {
-        if (localStorage.getItem('user')) {
+        if (user) {
             fetchUserStepTasks();
         } else {
            fetchDefaultStepTasks();
         }
-    }, []);
+    }, [user]);
 
 
-    /**
-     * This use Effect persist changes made on tasks in database
-     */
-    useEffect (()=>{
-        if (localStorage.getItem('user')) {
-            saveStepListTasks(stepTasks);}
-    }, [setStepTasks, updateStepTaskComment()]);
+    // /**
+    //  * This use Effect persist changes made on tasks in database
+    //  */
+    // useEffect (()=>{
+    //     if (user) {
+    //         saveStepListTasks(stepTasks);}
+    // }, []);
 
 
 //////////USER//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +130,6 @@ export default function AppController() {
         if (storedStepTasks && storedStepTasks.length > 0) {
             setStepTasks([...stepTasks, newStepTask]);
         } else setStepTasks([newStepTask])
-        console.log(JSON.parse(storedStepTasks).length)
-
     }
 
     /**
@@ -165,7 +161,6 @@ export default function AppController() {
             updatedStepTasks[index] = { ...updatedStepTasks[index], comment: comment};
             console.log(updatedStepTasks[index].header + "new comment is " + updatedStepTasks[index].comment )
             setStepTasksArray(updatedStepTasks)
-            // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
         }else {
             console.log("comment pas d'index")
         }
@@ -193,12 +188,12 @@ export default function AppController() {
             setStepTasksArray(updatedStepTasks); // Update the stepTasks state
             // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
             console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
-            saveStepListTask(updatedStepTasks[index])
+            // saveStepListTask(updatedStepTasks[index])
         }else console.log("check pas d'index")
     }
 
     /**
-     * This function is just a setStepTask to be use in all the components
+     * This function is just a setStepTask to be use in all the components, it sets and updates tasks in localstorage
      * @param newStepTasks
      */
     function setStepTasksArray(newStepTasks) {
@@ -206,7 +201,6 @@ export default function AppController() {
         localStorage.removeItem('stepTasks')
         localStorage.setItem('stepTasks', JSON.stringify(newStepTasks));
         console.log("steptasks Array " + stepTasks.length)
-        console.log("steptasks Array lenght of stored steptasks : " + JSON.parse(storedStepTasks).length)
     }
 
     /**
@@ -280,8 +274,6 @@ export default function AppController() {
             })
         return stepTasks
     }
-
-
 
 
     /**

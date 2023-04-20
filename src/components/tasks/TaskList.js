@@ -18,8 +18,6 @@ import {Navigate} from "react-router";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus)
 
 
-
-
 /**
  * This function Display StepTask in html to be rendered.
  */
@@ -42,7 +40,7 @@ export default function TaskList(props) {
      * This useEffect updates my rendered task everytime steptasks state changes
      */
     useEffect(() => {
-        if (localStorage.getItem('steptasks') && JSON.parse('steptasks').length >0){
+        if (props.stepTasks && props.stepTasks.length >0){
             stepTasksRender()
         }
 
@@ -54,7 +52,7 @@ export default function TaskList(props) {
      * otherwise it fetches DefaultSteptasks and comments default useState is what is used (empty strings).
      */
     useEffect(() => {
-        if (localStorage.getItem('user')) {
+        if (props.user) {
             setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
         } else {
             props.fetchDefaultStepTasks();
@@ -130,7 +128,7 @@ export default function TaskList(props) {
                 } else {
                     index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
                     console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
-                    // props.updateStepTaskComment(index, comments[i].comment)
+                    props.updateStepTaskComment(index, comments[i].comment)
                 }
                 // props.stepTasks[i].comment = value
                 stepTasksRender()

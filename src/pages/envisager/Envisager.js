@@ -20,6 +20,7 @@ const Envisager = (props) => {
             <br/>
             Naturellement, nous ne formulons ces questions que pour vous inviter à un cheminement personnel.
             Vous pouvez aussi en discuter avec vos proches s’ils sont prêts à le faire.
+            <div>
             <ul>
                 <li>Quel regard portez-vous sur le chemin parcouru et les événements majeurs de votre vie ?</li>
                 <li>Quelles valeurs essentielles souhaitez-vous transmettre à vos proches ?</li>
@@ -29,6 +30,7 @@ const Envisager = (props) => {
                 <li>Quelles sont vos convictions quant au sens de la vie et de la mort ?</li>
                 <li>Comment envisagez-vous les années à venir et qu’aimeriez-vous vivre avant votre départ ?</li>
             </ul>
+            </div>
         </p>
         </div>
     </div>
