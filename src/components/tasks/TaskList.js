@@ -57,7 +57,8 @@ export default function TaskList(props) {
         } else {
             props.fetchDefaultStepTasks();
         }
-    }, []);
+    }, [props.user, props.updateStepTaskComment, props.stepTasks]);
+
 
     /**
      * toggle expand ALL tasks
@@ -117,7 +118,7 @@ export default function TaskList(props) {
         //Enregistrer le commentaire
         if (props.stepTasks[i].commentEdit) {
             //Si pas de user je demande de login
-            if (localStorage.getItem('user') != null) {
+            if (props.user) {
                 props.stepTasks[i].commentEdit = false
                 let index
                 if (comments[i].comment_id) {
@@ -125,12 +126,12 @@ export default function TaskList(props) {
                     console.log("IF index : " + index + " et le commentsID : " + comments[i].comment_id)
                     props.updateStepTaskComment(index, comments[i].comment)
 
+
                 } else {
                     index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
                     console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
                     props.updateStepTaskComment(index, comments[i].comment)
                 }
-                // props.stepTasks[i].comment = value
                 stepTasksRender()
 
             } else {
@@ -138,6 +139,7 @@ export default function TaskList(props) {
                 props.setLoginRedirectMessage("Il faut se connecter pour enregistrer une liste de tâches")
                 setShouldRedirect(true)
             }
+
 
             //Mon choix
         } else {
@@ -154,20 +156,23 @@ export default function TaskList(props) {
             console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
 
+    function updateComments (){
+        setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
+
+    }
+
     /**
      * This function is launched when saving steptasks
-     * @param e is event triggered by save button
      */
     function handleSaveList() {
-        if (localStorage.getItem('user')) {
-            const updatedStepTasks = [...props.stepTasks]
+        const updatedStepTasks = [...props.stepTasks]
+        if (props.user) {
                     props.saveStepListTasks(updatedStepTasks);
             stepTasksRender()
         } else {
             console.log("pas d'utilisateur");
             setShouldRedirect(true);
         }
-        window.location.reload();
     }
 
 
@@ -175,8 +180,11 @@ export default function TaskList(props) {
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
+
         if (props.stepTasks && props.stepTasks.length > 0) {
             const steptasksMirror = props.stepTasks
+            updateComments()
+
 
             //Créer une liste de catégorie (subtype) - j'utilise un set pour éviter les doublons
             let subtypeList = new Set();
@@ -224,13 +232,13 @@ export default function TaskList(props) {
                                                 {props.stepTasks[i].commentEdit ?
                                                     (<div>
                                                     <textarea key={nanoid()}
-                                                              defaultValue={comments[i].comment}
+                                                              defaultValue={props.stepTasks[i].comment}
                                                               onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
                                                     <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>)
                                                 :
                                                     (<div key={nanoid()}
                                                           className="comment-container">
-                                                    <div className="comment"><p>{comments[i].comment}</p></div>
+                                                    <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
                                                     <h2 onClick={(event)=>handleComment(i)}>Modifier</h2>
                                                     </div>
                                                     )}

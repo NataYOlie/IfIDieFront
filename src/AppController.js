@@ -176,8 +176,7 @@ export default function AppController() {
         const updatedStepTasks = [...stepTasks];
         // Update the task object with new data
         updatedStepTasks[index] = {...updatedStepTasks[index], visible: boolean};
-        setStepTasks(updatedStepTasks); // Update the stepTasks state
-        localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
+        setStepTasksArray(updatedStepTasks); // Update the stepTasks state
         console.log(stepTasks[index].header + "visible status " +stepTasks[index].visible )
     }
 
@@ -186,9 +185,7 @@ export default function AppController() {
             const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
             updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate}; // Update the task object with new data
             setStepTasksArray(updatedStepTasks); // Update the stepTasks state
-            // localStorage.setItem('stepTasks', JSON.stringify(updatedStepTasks)); // Save the updated stepTasks data to local storage
             console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
-            // saveStepListTask(updatedStepTasks[index])
         }else console.log("check pas d'index")
     }
 
@@ -316,9 +313,8 @@ export default function AppController() {
                         }
                     );
                 }if (newTasksUser.length>0){
-                    setStepTasksArray(newTasksUser)
-                    // refreshTasks()
                     console.log("fetchUserStepTasks " + newTasksUser.length + " tâches")
+                    setStepTasksArray(newTasksUser)
 
                     //C'est ici que je crée mes tâches user si c'est la première fois
                 }else {
@@ -346,7 +342,6 @@ export default function AppController() {
                 if (task.id_task == null) {
                     task.modificationDate = today;
                     console.log("today is : " + today)
-                    // updateStepListTask(task)
                     saveStepListTask(task.subtype, task.header, task.description, task.external_link, task.task_color,
                         task.comment, task.validationDate, task.previsionalDate, task.modificationDate);
                     console.log("saving " + task.header + " " + today)
@@ -358,6 +353,7 @@ export default function AppController() {
                     console.log("updating " + task.header + " " + today)
                 }
             });
+
             fetchUserStepTasks()
             console.log("Steplist is saved " + stepTasks.length)
         }
@@ -436,7 +432,6 @@ export default function AppController() {
             stepTasksDao.push(newTask)
             console.log(newTask.size)
             fetchUserStepTasks()
-            // refreshTasks()
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
