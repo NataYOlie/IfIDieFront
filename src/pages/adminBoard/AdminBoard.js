@@ -53,7 +53,22 @@ export default function AdminBoard(props) {
                     // createDefaultStepTask={props.createDefaultStepTask}
                     stepTasks={props.stepTasks}
                     fetchDefaultStepTasks={props.fetchDefaultStepTasks}
-                    setStepTasks={props.setStepTasks}/>
+                    setStepTasks={props.setStepTasks}
+                    setLoginRedirectMessage={props.setLoginRedirectMessage}
+                    stepTasksDisplay={props.stepTasksDisplay}
+                    fetchUserStepTasks={props.fetchUserStepTasks}
+                    saveStepListTasks={props.saveStepListTasks}
+                    setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
+                    setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+                    refresh={props.refresh}
+                    updateStepTask = {props.updateStepTask}
+                    updateStepListTask = {props.updateStepListTask}
+                    updateStepTaskComment = {props.updateStepTaskComment}
+                    updateStepTaskVisible={props.updateStepTaskVisible}
+                    updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                    updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
+
+                />
                 <div className="adminBoard-button-container">
                 <button className='adminBoard-white-writeButton'
                         type="submit"

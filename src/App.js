@@ -50,6 +50,7 @@ export default function App(props) {
                                                                                  setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
                                                                                  refresh={props.refresh}
                                                                                  updateStepTask = {props.updateStepTask}
+                                                                                 updateStepListTask = {props.updateStepListTask}
                                                                                  updateStepTaskComment = {props.updateStepTaskComment}
                                                                                  updateStepTaskVisible={props.updateStepTaskVisible}
                                                                                  updateStepTaskValidationDate = {props.updateStepTaskValidationDate}

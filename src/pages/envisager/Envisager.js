@@ -13,9 +13,8 @@ const Envisager = (props) => {
         <h1 >StepList</h1>
         <h2>Mes démarches</h2>
         <div className="steplist-intro">
-        <p>Avant d’envisager de régler les détails de vos propres obsèques, nous vous invitons à engager une réflexion
-            sur les valeurs et convictions qui sont les vôtres à ce moment précis de votre vie, en esquissant des
-            réponses aux questions ci-dessous.
+        <p>Il vous faudra naturellement bien moins de temps pour mourir que pour préparer votre mort, c'est pourquoi nous
+            vous conseillons de vous y mettre le plus tôt possible !
             <br/>
             <br/>
             Naturellement, nous ne formulons ces questions que pour vous inviter à un cheminement personnel.

@@ -2,7 +2,8 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import './createDefaultTask.css';
 import * as yup from "yup";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {nanoid} from "nanoid";
 
 
 export default function CreateDefaultStepTaskForm(props) {
@@ -12,6 +13,7 @@ export default function CreateDefaultStepTaskForm(props) {
 
     const backUrl = "http://localhost:8081/adminboard";
     const [newTask, setNewTask] = useState({})
+
 
 
     /**
@@ -63,6 +65,28 @@ export default function CreateDefaultStepTaskForm(props) {
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // define state to keep track of whether to show new field or not
+    const [searchTask, setSearchTask] = useState("Créer");
+
+    //store the selected task from the form
+    const [taskForm, setTaskForm]=useState({})
+    const [tempTask, setTempTask] = useState({...taskForm})
+    const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Divers" ])
+    const [taskColor, setTaskColor] = useState([
+        {colorName:"Bleu", colorValue:"pastille-bleu"},
+        {colorName:"Vert", colorValue:"pastille-vert"},
+        {colorName:"Jaune", colorValue:"pastille-jaune"},
+        {colorName:"Rouge", colorValue:"pastille-rouge"},
+        {colorName:"Aucune", colorValue:""},
+    ])
+    const [taskColorsDisplay, setTaskColorsDisplay] = useState(taskColor.map(color => (
+        <option key={nanoid()} value={color.colorValue}>
+            {color.colorName}
+        </option>
+    )));
+    const [taskCategoryDisplay, setTaskCategoryDisplay] = useState(taskCategory.map(category => (
+        <option key={nanoid()} value={category}>{category}</option>
+    )))
 
     const schema = yup.object().shape({
         subtype: yup.string().required("Catégorie : Famille, Administratif, Santé, Transmission, Obsèques, Un proche est décédé ? "),
@@ -78,15 +102,73 @@ export default function CreateDefaultStepTaskForm(props) {
         resolver: yupResolver(schema),
     });
 
+    useEffect(() => {
+        getTaskFormColor()
+    }, [setTaskForm]);
+
+    const getTaskFormColor = () => {
+        if (taskForm.task_color){
+            let taskColorDisplayTemp =[]
+            console.log(taskColor[0].colorValue + " et taskform : " + taskForm.task_color)
+            taskColor.forEach((color, i) => {
+                console.log("i : " + i)
+                if (taskForm.task_color !== color.colorValue) {
+                    // Display taskColor as an option if it is not the selected color
+                    taskColorDisplayTemp.push(<option key={nanoid()} value={color.colorValue}>{color.colorName}</option>);
+                } else {
+                    // Display selected taskColor as the default value
+                    console.log("colorvalue match : " + color.colorValue)
+                    taskColorDisplayTemp.push(
+                        <option key={nanoid()} value={color.colorValue} selected>
+                            {color.colorName}
+                        </option>
+                    );
+                }
+                setTaskColorsDisplay(taskColorDisplayTemp);
+            });
+        }else {
+            console.log("no taskform")
+        }
+    };
+
     function onSubmit(data){
         console.log("bouton " + data.header)
+
+
         if(data){
-            createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
+            switch (searchTask){
+                case "Créer" :  createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
+                    break
+
+                case "Modifier":
+                    // setTempTask(prevTempTask => ({
+                    //     ...prevTempTask,
+                    //     ...data
+                    // }));
+
+                    //ATTENTION defaultTask	false !!!!!!!
+                    props.updateStepListTask(taskForm => ({
+                        ...taskForm,
+                        ...data
+                    }));
+                    break;
+
+                case "Supprimer" :
+                    //ICI IL FAUT POPPER UN MODAL QUI RECAP LA TACHE ET QUI DEMANDE SI ON EST SUR OUI VRAIMENT ?
+                    break
+
+                default :
+                    console.log("Ne correspond à aucun cas connu")
+                    break
+            }
         }else {
             props.fetchDefaultStepTasks();
         }
         props.fetchDefaultStepTasks();
     }
+
+    //Peut être il faut que mon formulaire soit dans un genre de stepTaskRender, pb re refresh par exemple les
+    //defaultValue de la taskForm
 
 return (
     <div className='createDefaultTask section__padding'>
@@ -96,18 +178,47 @@ return (
             <div className="createDefaultTaskFormContainer">
             <form className='createDefaultTask-writeForm' autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <div className="createDefaultTask-formGroup">
-                    <label>Catégorie</label>
+                    <label>Action</label>
+                    <select
+                        name="Action"
+                        multiple={false}
+                        onChange={(e) => setSearchTask(e.target.value)}
+                    >
+                        <option value="Créer" defaultValue="true">Créer</option>
+                        <option value="Modifier">Modifier</option>
+                        <option value="Supprimer">Supprimer</option>
+                    </select>
+                    {(searchTask == "Modifier"||searchTask == "Supprimer") && (
+                        <>
+                            <label style={{margin: '2rem 0'}}>Sélectionner la tâche</label>
+                            <select
+                                name="SelectTask"
+                                multiple={false}
+                                value={JSON.stringify(taskForm)} // stringify the steptask
+                                placeholder="Sectionner une tâche"
+                                onChange={e => setTaskForm(JSON.parse(e.target.value))} // parse the JSON string
+                            >
+                                <option value="">-- Sectionner une tâche --</option>
+                                {
+                                    props.stepTasks.map(task=><option key={task.id_task} value={JSON.stringify(task)}>{task.header}</option>)
+                                }
+                            </select>
+                        </>
+                    )}
+
+                    <label style={{margin: '2rem 0'}} >Catégorie</label>
                     <select
                         name="Catégorie"
                         multiple={false}
+                        defaultValue={taskForm.subtype}
                         {...register("subtype")}>
-                        <option value="Famille">Famille</option>
-                        <option value="Administratif">Administratif</option>
-                        <option value="Sante">Santé</option>
-                        <option value="Transmission">Transmission</option>
-                        <option value="Divers">Divers</option>
+                        {taskCategoryDisplay}
+                        {/*<option value="Famille">Famille</option>*/}
+                        {/*<option value="Administratif">Administratif</option>*/}
+                        {/*<option value="Sante">Santé</option>*/}
+                        {/*<option value="Transmission">Transmission</option>*/}
+                        {/*<option value="Divers">Divers</option>*/}
                     </select>
-
                     <p>{errors.subtype?.message}</p>
                 </div>
 
@@ -115,6 +226,7 @@ return (
                     <label>Titre de la tâche</label>
                     <input type="text"
                            placeholder='Titre'
+                           defaultValue={taskForm.header}
                            {...register("header")}
                     />
                     <p>{errors.header?.message}</p>
@@ -125,6 +237,7 @@ return (
                     <textarea type="text"
                            className="large_input"
                            placeholder='description'
+                           defaultValue={taskForm.description}
                            {...register("description")}
                     />
                     <p>{errors.description?.message}</p>
@@ -134,19 +247,13 @@ return (
                     <label>Ressource extérieure</label>
                     <input type="text"
                            placeholder='externalLink'
+                           defaultValue={taskForm.external_link}
                            {...register("externalLink")}
                     />
                 </div>
 
                 <div className="createDefaultTask-Radio">
                     <h3>Couleur de la tâche</h3><br />
-                    {/*bleu  	 #12a3df
-                        rouge   	#ff4800
-                        jaune   	#fcd200
-                        vert    	#46d308
-                        marron	#6d5839
-                        orange   #c89345
-                        */}
                     <input type="radio" id="none" name="none" value="" defaultChecked="true" {...register("taskColor")}/>
                     <label htmlFor="none">Aucune</label><br />
                     <input type="radio" id="bleu" name="bleu" value="pastille-bleu" {...register("taskColor")}/>
@@ -158,6 +265,16 @@ return (
                     <input type="radio" id="vert" name="vert" value="pastille-vert" {...register("taskColor")}/>
                     <label htmlFor="vert">Verte</label><br />
                 </div>
+                <label>Couleur</label>
+                <select
+                    name="SelectTask"
+                    multiple={false}
+                    value={JSON.stringify(taskColor)} // stringify the steptask
+                    onChange={e => setTaskColor(JSON.parse(e.target.value))} // parse the JSON string
+                    {...register("taskColor")}
+                >
+                    {taskColorsDisplay}
+                </select>
                 <div className="createDefaultTask-button">
                     <button className='createDefaultTask-writeButton' type="submit">
                         Créer une tache

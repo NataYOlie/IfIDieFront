@@ -596,6 +596,7 @@ export default function AppController() {
                 setStepTasksDisplayArray = {setStepTasksDisplayArray}
                 stepTasksDisplay = {stepTasksDisplay}
                 updateStepTask = {updateStepTask}
+                updateStepListTask = {updateStepListTask}
                 updateStepTaskValidationDate = {updateStepTaskValidationDate}
                 updateStepTaskPrevisionalDate = {updateStepTaskPrevisionalDate}
 
