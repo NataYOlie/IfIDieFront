@@ -484,7 +484,7 @@ export default function AppController() {
                     description: stepTask.description,
                     externalLink: stepTask.external_link,
                     taskColor: stepTask.task_color,
-                    defaultTask: false,
+                    defaultTask: stepTask.default_task,
                     comment : stepTask.comment,
                     validationDate : stepTask.validationDate,
                     previsionalDate : stepTask.previsionalDate,

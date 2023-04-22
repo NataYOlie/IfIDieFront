@@ -6,14 +6,15 @@ import {useEffect, useState} from "react";
 import {nanoid} from "nanoid";
 
 
+
+
 export default function CreateDefaultStepTaskForm(props) {
 
 
-///////////////////////////////////////////////////////////////////////
+/////////////////CONTROLLER///////////////////////CONTROLLER///////////CONTROLLER/////////////CONTROLLER///////
 
     const backUrl = "http://localhost:8081/adminboard";
     const [newTask, setNewTask] = useState({})
-
 
 
     /**
@@ -66,11 +67,13 @@ export default function CreateDefaultStepTaskForm(props) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // define state to keep track of whether to show new field or not
-    const [searchTask, setSearchTask] = useState("Créer");
+    const [searchTask, setSearchTask] = useState(["Créer"]);
+
+    const [data, setData] = useState(null);
+
 
     //store the selected task from the form
     const [taskForm, setTaskForm]=useState({})
-    const [tempTask, setTempTask] = useState({...taskForm})
     const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Divers" ])
     const [taskColor, setTaskColor] = useState([
         {colorName:"Bleu", colorValue:"pastille-bleu"},
@@ -80,12 +83,12 @@ export default function CreateDefaultStepTaskForm(props) {
         {colorName:"Aucune", colorValue:""},
     ])
     const [taskColorsDisplay, setTaskColorsDisplay] = useState(taskColor.map(color => (
-        <option key={nanoid()} value={color.colorValue}>
+        <option key={nanoid()} value={color.colorValue} selected={taskForm.task_color === color.colorValue}>
             {color.colorName}
         </option>
     )));
     const [taskCategoryDisplay, setTaskCategoryDisplay] = useState(taskCategory.map(category => (
-        <option key={nanoid()} value={category}>{category}</option>
+        <option key={nanoid()} value={category} selected={taskForm.subtype === category.toString()}>{category}</option>
     )))
 
     const schema = yup.object().shape({
@@ -103,37 +106,60 @@ export default function CreateDefaultStepTaskForm(props) {
     });
 
     useEffect(() => {
-        getTaskFormColor()
-    }, [setTaskForm]);
+        if (taskForm){
+            setTaskColorsDisplay(taskColor.map(color => (
+                <option key={nanoid()} value={color.colorValue} selected={taskForm.task_color == color.colorValue.toString()}>
+                    {color.colorName}
+                </option>
+            )));
 
-    const getTaskFormColor = () => {
-        if (taskForm.task_color){
-            let taskColorDisplayTemp =[]
-            console.log(taskColor[0].colorValue + " et taskform : " + taskForm.task_color)
-            taskColor.forEach((color, i) => {
-                console.log("i : " + i)
-                if (taskForm.task_color !== color.colorValue) {
-                    // Display taskColor as an option if it is not the selected color
-                    taskColorDisplayTemp.push(<option key={nanoid()} value={color.colorValue}>{color.colorName}</option>);
-                } else {
-                    // Display selected taskColor as the default value
-                    console.log("colorvalue match : " + color.colorValue)
-                    taskColorDisplayTemp.push(
-                        <option key={nanoid()} value={color.colorValue} selected>
-                            {color.colorName}
-                        </option>
-                    );
-                }
-                setTaskColorsDisplay(taskColorDisplayTemp);
-            });
-        }else {
-            console.log("no taskform")
+            setTaskCategoryDisplay(taskCategory.map(category => (
+                <option key={nanoid()} value={category} selected={taskForm.subtype === category.toString()}>{category}</option>
+            )))
         }
-    };
+        console.log(taskForm.task_color + " " + taskForm.subtype)
+    }, [taskForm]);
+
+
+
+    // const getTaskFormColor = () => {
+    //     if (taskForm.task_color){
+    //         let taskColorDisplayTemp =[]
+    //         console.log(taskColor[0].colorValue + " et taskform : " + taskForm.task_color)
+    //         taskColor.forEach((color, i) => {
+    //             console.log("i : " + i)
+    //             if (taskForm.task_color !== color.colorValue) {
+    //                 // Display taskColor as an option if it is not the selected color
+    //                 taskColorDisplayTemp.push(<option key={nanoid()} value={color.colorValue}>{color.colorName}</option>);
+    //             } else {
+    //                 // Display selected taskColor as the default value
+    //                 console.log("colorvalue match : " + color.colorValue)
+    //                 taskColorDisplayTemp.push(
+    //                     <option key={nanoid()} value={color.colorValue} defaultValue={true}>
+    //                         {color.colorName}
+    //                     </option>
+    //                 );
+    //             }
+    //             setTaskColorsDisplay(taskColorDisplayTemp);
+    //         });
+    //     }else {
+    //         console.log("no taskform")
+    //     }
+    // };
+
+
 
     function onSubmit(data){
         console.log("bouton " + data.header)
+        // Set the data state variable to the data object
+        const tempTask = {...taskForm};
+        tempTask.subtype = data.subtype;
+        tempTask.header = data.header;
+        tempTask.description = data.description;
+        tempTask.external_link = data.externalLink;
+        tempTask.task_color = data.taskColor;
 
+        console.log("setTaskform : " + taskForm.header)
 
         if(data){
             switch (searchTask){
@@ -141,16 +167,9 @@ export default function CreateDefaultStepTaskForm(props) {
                     break
 
                 case "Modifier":
-                    // setTempTask(prevTempTask => ({
-                    //     ...prevTempTask,
-                    //     ...data
-                    // }));
-
-                    //ATTENTION defaultTask	false !!!!!!!
-                    props.updateStepListTask(taskForm => ({
-                        ...taskForm,
-                        ...data
-                    }));
+                    console.log("Modifier !")
+                    console.log("tempTask is : " +tempTask.header)
+                    props.updateStepListTask(tempTask)
                     break;
 
                 case "Supprimer" :
@@ -165,12 +184,24 @@ export default function CreateDefaultStepTaskForm(props) {
             props.fetchDefaultStepTasks();
         }
         props.fetchDefaultStepTasks();
+
     }
 
     //Peut être il faut que mon formulaire soit dans un genre de stepTaskRender, pb re refresh par exemple les
-    //defaultValue de la taskForm
+    //defaultValue de la taskFo
 
-return (
+
+//////RETURN///////////////RETURN///////////////////////RETURN/////////////////////RETURN////////////////RETURN/////////////////////////////
+
+
+    async function handleChange(e) {
+        await setTaskForm(JSON.parse(e.target.value))
+        // await setTaskCategoryDisplay(taskCategory.map(category => (
+        //     <option key={nanoid()} value={category} selected={taskForm.subtype === category.toString()}>{category}</option>
+        // )))
+    }
+
+    return (
     <div className='createDefaultTask section__padding'>
         <div className="createDefaultTask-container">
             <h1>Créer une tâche Step par défaut </h1>
@@ -196,7 +227,7 @@ return (
                                 multiple={false}
                                 value={JSON.stringify(taskForm)} // stringify the steptask
                                 placeholder="Sectionner une tâche"
-                                onChange={e => setTaskForm(JSON.parse(e.target.value))} // parse the JSON string
+                                onChange={e => handleChange(e)} // parse the JSON string
                             >
                                 <option value="">-- Sectionner une tâche --</option>
                                 {
@@ -213,13 +244,19 @@ return (
                         defaultValue={taskForm.subtype}
                         {...register("subtype")}>
                         {taskCategoryDisplay}
-                        {/*<option value="Famille">Famille</option>*/}
-                        {/*<option value="Administratif">Administratif</option>*/}
-                        {/*<option value="Sante">Santé</option>*/}
-                        {/*<option value="Transmission">Transmission</option>*/}
-                        {/*<option value="Divers">Divers</option>*/}
                     </select>
                     <p>{errors.subtype?.message}</p>
+
+                <label style={{margin: '2rem 0'}}>Couleur</label>
+                <select
+                    name="SelectTaskColor"
+                    multiple={false}
+                    defaultValue={taskForm.task_color}
+                    onChange={e => setTaskColor(JSON.parse(e.target.value))} // parse the JSON string
+                    {...register("taskColor")}
+                >
+                    {taskColorsDisplay}
+                </select>
                 </div>
 
                 <div className="createDefaultTask-formGroup">
@@ -252,37 +289,32 @@ return (
                     />
                 </div>
 
-                <div className="createDefaultTask-Radio">
-                    <h3>Couleur de la tâche</h3><br />
-                    <input type="radio" id="none" name="none" value="" defaultChecked="true" {...register("taskColor")}/>
-                    <label htmlFor="none">Aucune</label><br />
-                    <input type="radio" id="bleu" name="bleu" value="pastille-bleu" {...register("taskColor")}/>
-                    <label htmlFor="bleu">Bleue</label><br />
-                    <input type="radio" id="jaune" name="jaune" value="pastille-jaune" {...register("taskColor")}/>
-                    <label htmlFor="jaune">Jaune</label><br />
-                    <input type="radio" id="rouge" name="rouge" value="pastille-rouge" {...register("taskColor")}/>
-                    <label htmlFor="rouge">Rouge</label><br />
-                    <input type="radio" id="vert" name="vert" value="pastille-vert" {...register("taskColor")}/>
-                    <label htmlFor="vert">Verte</label><br />
-                </div>
-                <label>Couleur</label>
-                <select
-                    name="SelectTask"
-                    multiple={false}
-                    value={JSON.stringify(taskColor)} // stringify the steptask
-                    onChange={e => setTaskColor(JSON.parse(e.target.value))} // parse the JSON string
-                    {...register("taskColor")}
-                >
-                    {taskColorsDisplay}
-                </select>
+                {/*<div className="createDefaultTask-Radio">*/}
+                {/*    <h3>Couleur de la tâche</h3><br />*/}
+                {/*    <input type="radio" id="none" name="none" value="" defaultChecked="true" {...register("taskColor")}/>*/}
+                {/*    <label htmlFor="none">Aucune</label><br />*/}
+                {/*    <input type="radio" id="bleu" name="bleu" value="pastille-bleu" {...register("taskColor")}/>*/}
+                {/*    <label htmlFor="bleu">Bleue</label><br />*/}
+                {/*    <input type="radio" id="jaune" name="jaune" value="pastille-jaune" {...register("taskColor")}/>*/}
+                {/*    <label htmlFor="jaune">Jaune</label><br />*/}
+                {/*    <input type="radio" id="rouge" name="rouge" value="pastille-rouge" {...register("taskColor")}/>*/}
+                {/*    <label htmlFor="rouge">Rouge</label><br />*/}
+                {/*    <input type="radio" id="vert" name="vert" value="pastille-vert" {...register("taskColor")}/>*/}
+                {/*    <label htmlFor="vert">Verte</label><br />*/}
+                {/*</div>*/}
+
+
                 <div className="createDefaultTask-button">
                     <button className='createDefaultTask-writeButton' type="submit">
-                        Créer une tache
+                        {searchTask} une tache
                     </button>
                 </div>
             </form>
+
             </div>
+
         </div>
+
     </div>
 
     )
