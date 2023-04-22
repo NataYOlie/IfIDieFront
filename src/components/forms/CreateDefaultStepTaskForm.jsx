@@ -5,9 +5,6 @@ import * as yup from "yup";
 import {useEffect, useState} from "react";
 import {nanoid} from "nanoid";
 
-
-
-
 export default function CreateDefaultStepTaskForm(props) {
 
 
@@ -105,6 +102,16 @@ export default function CreateDefaultStepTaskForm(props) {
         resolver: yupResolver(schema),
     });
 
+    /**
+     * this useEffect charges default Step Task when loading component
+     */
+    useEffect(() => {
+        props.fetchDefaultStepTasks();
+    },[])
+
+    /**
+     * this useEffect adapt color and category field to the selected task
+     */
     useEffect(() => {
         if (taskForm){
             setTaskColorsDisplay(taskColor.map(color => (
@@ -121,34 +128,10 @@ export default function CreateDefaultStepTaskForm(props) {
     }, [taskForm]);
 
 
-
-    // const getTaskFormColor = () => {
-    //     if (taskForm.task_color){
-    //         let taskColorDisplayTemp =[]
-    //         console.log(taskColor[0].colorValue + " et taskform : " + taskForm.task_color)
-    //         taskColor.forEach((color, i) => {
-    //             console.log("i : " + i)
-    //             if (taskForm.task_color !== color.colorValue) {
-    //                 // Display taskColor as an option if it is not the selected color
-    //                 taskColorDisplayTemp.push(<option key={nanoid()} value={color.colorValue}>{color.colorName}</option>);
-    //             } else {
-    //                 // Display selected taskColor as the default value
-    //                 console.log("colorvalue match : " + color.colorValue)
-    //                 taskColorDisplayTemp.push(
-    //                     <option key={nanoid()} value={color.colorValue} defaultValue={true}>
-    //                         {color.colorName}
-    //                     </option>
-    //                 );
-    //             }
-    //             setTaskColorsDisplay(taskColorDisplayTemp);
-    //         });
-    //     }else {
-    //         console.log("no taskform")
-    //     }
-    // };
-
-
-
+    /**
+     * This function create, modify or delete task depending on the action field value
+     * @param data extracted from the form
+     */
     function onSubmit(data){
         console.log("bouton " + data.header)
         // Set the data state variable to the data object
@@ -173,6 +156,12 @@ export default function CreateDefaultStepTaskForm(props) {
                     break;
 
                 case "Supprimer" :
+                    console.log("Supprimer !")
+                    console.log("tempTask is : " +tempTask.header)
+                    if (window.confirm("Etes vous sur de vouloir supprimer la  tâche " +  tempTask.header + " ?")){
+                        props.deleteTask(tempTask)
+                    }
+
                     //ICI IL FAUT POPPER UN MODAL QUI RECAP LA TACHE ET QUI DEMANDE SI ON EST SUR OUI VRAIMENT ?
                     break
 

@@ -67,7 +67,7 @@ export default function AdminBoard(props) {
                     updateStepTaskVisible={props.updateStepTaskVisible}
                     updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
                     updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
-
+                    deleteTask={props.deleteTask}
                 />
                 <div className="adminBoard-button-container">
                 <button className='adminBoard-white-writeButton'
@@ -94,6 +94,7 @@ export default function AdminBoard(props) {
                             updateStepTaskVisible={props.updateStepTaskVisible}
                             updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
                             updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
+                            setToggleTaskList={setToggleTaskList}
                         />
                     )}
                 </div>

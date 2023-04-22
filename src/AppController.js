@@ -463,7 +463,7 @@ export default function AppController() {
     }
 
     /**
-     *
+     * This controller update a stepTask
      * @param stepTask A stepTask
      */
     function updateStepListTask(stepTask){
@@ -529,6 +529,51 @@ export default function AppController() {
             console.error('An error occurred while saving the step list task:', error);
         }
     }
+
+
+    //    @DeleteMapping("/delete/{task_id}")
+    //     public void deleteTask(@PathVariable Integer task_id) {
+    //         taskService.deleteTaskById(task_id);
+    //     }
+
+    function deleteTask(task){
+        console.log("Delete Step Task : " + task.header)
+
+        try {
+            //correspond à un objet AUTHREQUEST
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                },
+            };
+
+            //correspond à l'AUTHRESPONSE
+            fetch(backUrlTask + "/delete/"  + task.id_task, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("updateStepListTask : Network response was not ok");
+                    }
+                    return response.json();
+                })
+
+                .catch(error => {
+                    console.error('An error occurred while fetching the API:', error);
+                    throw new Error("Network error occurred while fetching the API");
+                });
+
+
+        } catch (error) {
+            console.error('An error occurred while suppressing the step list task:', error);
+        }
+
+        setTimeout(() => refresh(), 1000);
+    }
+
+
+
+
 
 //////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH////////////////////////////////////
     const backUrlFunnyDeath = "http://localhost:8081/funnydeath";
@@ -599,6 +644,7 @@ export default function AppController() {
                 updateStepListTask = {updateStepListTask}
                 updateStepTaskValidationDate = {updateStepTaskValidationDate}
                 updateStepTaskPrevisionalDate = {updateStepTaskPrevisionalDate}
+                deleteTask={deleteTask}
 
                 //FUNNYDEATH
                 getRandomFunnyDeath = {getRandomFunnyDeath}

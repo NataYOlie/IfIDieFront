@@ -54,6 +54,7 @@ export default function App(props) {
                                                                                  updateStepTaskComment = {props.updateStepTaskComment}
                                                                                  updateStepTaskVisible={props.updateStepTaskVisible}
                                                                                  updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                                                                                 deleteTask={props.deleteTask}
                                                                                  updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate} />}
             />
           </Routes>
