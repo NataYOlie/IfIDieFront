@@ -35,9 +35,11 @@ export default function AppController() {
     /**
      * This state is nourrished by getRandomFunnyDeathMethod
      */
-    const [currentFunnyDeath, setCurrentFunnyDeath] = useState([])
+    const [currentFunnyDeath, setCurrentFunnyDeath] = useState({})
 
-    /////A EXPLIQUER
+    /**
+     * used in update and save controller method for tasks
+     */
     const [newTask, setNewTask] = useState({})
     const [stepTasksDao, setStepTasksDao] = useState([]);
 
@@ -531,11 +533,6 @@ export default function AppController() {
     }
 
 
-    //    @DeleteMapping("/delete/{task_id}")
-    //     public void deleteTask(@PathVariable Integer task_id) {
-    //         taskService.deleteTaskById(task_id);
-    //     }
-
     function deleteTask(task){
         console.log("Delete Step Task : " + task.header)
 
@@ -578,9 +575,8 @@ export default function AppController() {
 //////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH////////////////////////////////////
     const backUrlFunnyDeath = "http://localhost:8081/funnydeath";
 
-
     /**
-     * This function fetch User StepTasks from ddb and reinitialize StepTasks
+     * This function fetch a random funnyDeath from ddb
      * @returns {*}
      */
     async function getRandomFunnyDeath() {
@@ -616,6 +612,9 @@ export default function AppController() {
             console.error(error);
         }
     }
+
+
+
 
 /////RETURN//////////////////////RETURN////////////////////////RETURN////////////////////////RETURN////////////////////RETURN//////////////////////////
 

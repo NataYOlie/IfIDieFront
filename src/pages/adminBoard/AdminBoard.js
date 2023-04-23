@@ -107,7 +107,6 @@ export default function AdminBoard(props) {
                         <CreateFunnyDeathForm
                             user={props.user}
                             addStepTask={props.addStepTask}
-                            // createDefaultStepTask={props.createDefaultStepTask}
                             stepTasks={props.stepTasks}
                             fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                             createFunnyDeath={props.createFunnyDeath}

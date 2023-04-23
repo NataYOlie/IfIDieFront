@@ -66,9 +66,6 @@ export default function CreateDefaultStepTaskForm(props) {
     // define state to keep track of whether to show new field or not
     const [searchTask, setSearchTask] = useState(["Créer"]);
 
-    const [data, setData] = useState(null);
-
-
     //store the selected task from the form
     const [taskForm, setTaskForm]=useState({})
     const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Divers" ])
@@ -89,9 +86,9 @@ export default function CreateDefaultStepTaskForm(props) {
     )))
 
     const schema = yup.object().shape({
-        subtype: yup.string().required("Catégorie : Famille, Administratif, Santé, Transmission, Obsèques, Un proche est décédé ? "),
-        header: yup.string().required("Ce champs est obligatoire"),
-        description: yup.string().required("Ce champs est obligatoire")
+        subtype: yup.string(),
+        header: yup.string(),
+        description: yup.string()
     });
 
     const {
@@ -110,7 +107,7 @@ export default function CreateDefaultStepTaskForm(props) {
     },[])
 
     /**
-     * this useEffect adapt color and category field to the selected task
+     * this useEffect fill color and category fields with the selected task data
      */
     useEffect(() => {
         if (taskForm){
@@ -161,8 +158,6 @@ export default function CreateDefaultStepTaskForm(props) {
                     if (window.confirm("Etes vous sur de vouloir supprimer la  tâche " +  tempTask.header + " ?")){
                         props.deleteTask(tempTask)
                     }
-
-                    //ICI IL FAUT POPPER UN MODAL QUI RECAP LA TACHE ET QUI DEMANDE SI ON EST SUR OUI VRAIMENT ?
                     break
 
                 default :
@@ -278,32 +273,14 @@ export default function CreateDefaultStepTaskForm(props) {
                     />
                 </div>
 
-                {/*<div className="createDefaultTask-Radio">*/}
-                {/*    <h3>Couleur de la tâche</h3><br />*/}
-                {/*    <input type="radio" id="none" name="none" value="" defaultChecked="true" {...register("taskColor")}/>*/}
-                {/*    <label htmlFor="none">Aucune</label><br />*/}
-                {/*    <input type="radio" id="bleu" name="bleu" value="pastille-bleu" {...register("taskColor")}/>*/}
-                {/*    <label htmlFor="bleu">Bleue</label><br />*/}
-                {/*    <input type="radio" id="jaune" name="jaune" value="pastille-jaune" {...register("taskColor")}/>*/}
-                {/*    <label htmlFor="jaune">Jaune</label><br />*/}
-                {/*    <input type="radio" id="rouge" name="rouge" value="pastille-rouge" {...register("taskColor")}/>*/}
-                {/*    <label htmlFor="rouge">Rouge</label><br />*/}
-                {/*    <input type="radio" id="vert" name="vert" value="pastille-vert" {...register("taskColor")}/>*/}
-                {/*    <label htmlFor="vert">Verte</label><br />*/}
-                {/*</div>*/}
-
-
                 <div className="createDefaultTask-button">
                     <button className='createDefaultTask-writeButton' type="submit">
                         {searchTask} une tache
                     </button>
                 </div>
             </form>
-
             </div>
-
         </div>
-
     </div>
 
     )
