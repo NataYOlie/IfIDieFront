@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import App from "./App";
 import './App.css'
+import jwt_decode from 'jwt-decode';
 import {forEach} from "react-bootstrap/ElementChildren";
 
 /**
@@ -109,6 +110,32 @@ export default function AppController() {
     function setUserNew(newUser){
         setUser(newUser)
     }
+
+    /**
+     * This use Effect check if user token is still valid, if not it forces a logout
+     */
+    useEffect(() => {
+        if(user) {
+            const token = user.token;
+            if (token) {
+                const decodedToken = jwt_decode(token);
+                if (decodedToken.exp * 1000 < Date.now()) {
+                    // Token has expired
+                    logout();
+                } else {
+                    // Set an interval to check if the token has expired
+                    const intervalId = setInterval(() => {
+                        if (decodedToken.exp * 1000 < Date.now()) {
+                            // Token has expired, clear the interval and logout
+                            clearInterval(intervalId);
+                            logout();
+                        }
+                    }, 60000); // Check every minute
+                }
+            }
+        }
+
+    }, []);
 
     /**
      * This function updates login label which informs user why they need to login

@@ -3,6 +3,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import './createDefaultTask.css';
 import * as yup from "yup";
 import React, {useEffect, useState} from "react";
+import {log} from "util";
 
 export default function CreateFunnyDeathForm(props) {
     //TODAY :
@@ -55,7 +56,8 @@ export default function CreateFunnyDeathForm(props) {
                     header: json.header,
                     content: json.content,
                     deadDate: json.deadDate.slice(0, 10)
-                }));
+                }) );
+            resetFdForm()
 
         }catch (error) {
             console.error(error);
@@ -65,8 +67,10 @@ export default function CreateFunnyDeathForm(props) {
         setTimeout(()=>setLabel(""), 5000)
         console.log("A funny Death was created ! " + newFunnyDeath.header)
 
-        setTimeout(window.location.reload(), 1000)
-        // resetFdForm()
+
+
+        setTimeout(()=>window.location.reload(), 1000)
+
 
     }
 
@@ -113,7 +117,9 @@ export default function CreateFunnyDeathForm(props) {
                                 "\r\n content : " + json.content +
                                 "\r\ndeadDate : " + json.deadDate.slice(0, 10)
                             )
-                            const promise = resetFdForm();
+
+
+                            resetFdForm();
                         }
                     )
 
@@ -129,8 +135,8 @@ export default function CreateFunnyDeathForm(props) {
 
 
 
-    function deleteFunnyDeath(funnyDeath){
-        console.log("Delete funnyDeath : " + funnyDeath.header)
+    function deleteFunnyDeath(funnyDeath_id){
+        console.log("Delete funnyDeath : " + funnyDeath_id)
 
         try {
             //correspond à un objet AUTHREQUEST
@@ -143,7 +149,7 @@ export default function CreateFunnyDeathForm(props) {
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/funnydeath/delete/"  + funnyDeath.id_funnydeath, requestOptions)
+            fetch(backUrl + "/funnydeath/delete/"  + funnyDeath_id, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("updateStepListTask : Network response was not ok");
@@ -162,7 +168,6 @@ export default function CreateFunnyDeathForm(props) {
         }
         setTimeout(()=>setLabel(""), 5000)
         resetFdForm()
-        setTimeout(window.location.reload(), 1000)
     }
 
     /**
@@ -242,6 +247,17 @@ export default function CreateFunnyDeathForm(props) {
         displayFunnyForm()
     },[])
 
+    const getFunnyDeathContent = ()=> {
+        return funnyDeathForm.content
+    }
+    const getFunnyDeathTitle = ()=> {
+        return funnyDeathForm.header
+    }
+    const getFunnyDeathDeadName = ()=> {
+        console.log("get deadName " + funnyDeathForm.deadName)
+        return funnyDeathForm.deadName
+    }
+
 
     const getFunnyDeathFormDate = ()=> {
         if (funnyDeathForm.deadDate) {
@@ -265,11 +281,35 @@ export default function CreateFunnyDeathForm(props) {
         register,
         formState: {errors},
         handleSubmit,
+        reset
     } = useForm({
         resolver: yupResolver(schema),
+        defaultValues:{
+                deadName: funnyDeathForm.deadName,
+                header: funnyDeathForm.header,
+                content: funnyDeathForm.content,
+                deadDate: getFunnyDeathFormDate(),
+            }
+
+        // defaultValues:(searchFunnyDeath == "Modifier"||searchFunnyDeath == "Supprimer") ? {
+        //         deadName: funnyDeathForm.deadName,
+        //         header: funnyDeathForm.header,
+        //         content: funnyDeathForm.content,
+        //         deadDate: getFunnyDeathFormDate(),
+        //     }
+        //     : {
+        //         deadName: "caca",
+        //         header: "",
+        //         content: "",
+        //         deadDate: null,
+        //     },
     });
 
-    async function resetFdForm(){
+    function refresh(){
+        window.location.reload()
+    }
+
+   function resetFdForm(){
         console.log("RESET FD FORM")
         const tempFd = {
             id_funnydeath : null,
@@ -279,15 +319,16 @@ export default function CreateFunnyDeathForm(props) {
             deadDate : null
         }
         setFunnyDeathForm(tempFd);
+        reset()
         // document.getElementById("histoire").value="";
         console.log(tempFd)
-        window.location.reload()
-
+       refresh()
     }
 
     function onSubmit(data){
         console.log("bouton " + data.header)
-        console.log(data.deadDate)
+        console.log(data);
+        reset();
 
         // Set the data state variable to the data object
         const tempFd = {...funnyDeathForm};
@@ -312,14 +353,17 @@ export default function CreateFunnyDeathForm(props) {
                 case "Modifier":
                     setLabel
                     ("Mort modifiée !")
+
+                    console.log("Modifier "+ tempFd)
                     updateFunnyDeath(tempFd)
                     break
 
                 case "Supprimer" :
                     setLabel
                     ("Mort supprimée ! (ahahah)")
+                    const id = funnyDeathForm.id_funnydeath
                     if (window.confirm("Etes vous sur de vouloir supprimer la  funnyDeath " +  tempFd.header + " ?")){
-                        deleteFunnyDeath(tempFd)
+                        deleteFunnyDeath(id)
                     }
                     break
 
@@ -332,7 +376,7 @@ export default function CreateFunnyDeathForm(props) {
             alert("pas de data !");
         }
         // 👇️ clear all input values in the form
-        // reset form data
+        reset()
 
         setTimeout(()=>setLabel(""), 5000)
     }
@@ -346,10 +390,11 @@ export default function CreateFunnyDeathForm(props) {
         e.preventDefault();
         const tempFd = JSON.parse(e.target.value)
         setFunnyDeathForm(tempFd)
-        console.log(tempFd)
+        console.log("tempFd handle change :" + tempFd.header)
+        reset()
     }
 
-    async function displayFunnyForm(){
+    function displayFunnyForm(){
         console.log("DISPLAY FD FORM")
 
         setFunnyDeathRender ([
@@ -361,6 +406,8 @@ export default function CreateFunnyDeathForm(props) {
                         <select
                             name="Action"
                             multiple={false}
+                            {...register("Action")}
+                            value={searchFunnyDeath}
                             onChange={(e) => setSearchFunnyDeath(e.target.value)}
                         >
                             <option value="Créer" defaultValue="true">Créer</option>
