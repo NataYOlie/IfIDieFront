@@ -75,54 +75,58 @@ export default function CreateFunnyDeathForm(props) {
      * This controller update a funnyDeath
      * @param funnyDeath A funnyDeath
      */
-    function updateFunnyDeath(){
-        console.log("Update funnyDeath : " + funnyDeathForm.header)
+    function updateFunnyDeath(funnyDeath){
+        console.log("Update funnyDeath : " + funnyDeath.header)
 
-        try {
-            //correspond à un objet AUTHREQUEST
-            const requestOptions = {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${props.user.token}`,
-                    'Content-Type': 'application/json'
-                },
+            try {
+                //correspond à un objet AUTHREQUEST
+                const requestOptions = {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${props.user.token}`,
+                        'Content-Type': 'application/json'
+                    },
 
-                body: JSON.stringify({
-                    id_funnydeath: funnyDeathForm.id_funnydeath,
-                    deadName: funnyDeathForm.deadName,
-                    header: funnyDeathForm.header,
-                    content: funnyDeathForm.content,
-                    deadDate: getFunnyDeathFormDate()
-                })
-            };
+                    body: JSON.stringify({
+                        id_funnydeath: funnyDeath.id_funnydeath,
+                        deadName: funnyDeath.deadName,
+                        header: funnyDeath.header,
+                        content: funnyDeath.content,
+                        deadDate: getFunnyDeathFormDate()
+                    })
+                };
 
-            //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/funnydeath/update/" + funnyDeathForm.id_funnydeath, requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("updateStepListTask : Network response was not ok");
-                    }
-                    return response.json();
-                })
+                //correspond à l'AUTHRESPONSE
+                fetch(backUrl + "/funnydeath/update/" + funnyDeathForm.id_funnydeath, requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("updateStepListTask : Network response was not ok");
+                        }
+                        return response.json();
+                    })
 
-                .then(json => console.log( "Funny Death updated in ddb as follow : \r\n" +
-                        "id_funnydeath : " + json.id_funnydeath +
-                        " \r\n deadName : " + json.deadName +
-                        "\r\n header : " + json.header +
-                        "\r\n content : " + json.content +
-                        "\r\ndeadDate : " + json.deadDate.slice(0, 10)
-                    ))
+                    .then(json => {
+                            console.log("Funny Death updated in ddb as follow : \r\n" +
+                                "id_funnydeath : " + json.id_funnydeath +
+                                " \r\n deadName : " + json.deadName +
+                                "\r\n header : " + json.header +
+                                "\r\n content : " + json.content +
+                                "\r\ndeadDate : " + json.deadDate.slice(0, 10)
+                            )
+                            const promise = resetFdForm();
+                        }
+                    )
 
-                .catch(error => {
-                    console.error('An error occurred while fetching the API:', error);
-                    throw new Error("Network error occurred while fetching the API");
-                });
+                    .catch(error => {
+                        console.error('An error occurred while fetching the API:', error);
+                        throw new Error("Network error occurred while fetching the API");
+                    });
 
-        } catch (error) {
-            console.error('An error occurred while saving the step list task:', error);
+            } catch (error) {
+                console.error('An error occurred while saving the step list task:', error);
+            }
         }
-        // setTimeout(window.location.reload(), 1000)
-    }
+
 
 
     function deleteFunnyDeath(funnyDeath){
@@ -212,9 +216,9 @@ export default function CreateFunnyDeathForm(props) {
         deadDate : null
     })
 
-    useEffect(()=>{
-        resetFdForm()
-    }, [searchFunnyDeath, setSearchFunnyDeath])
+    // useEffect(()=>{
+    //     resetFdForm()
+    // }, [searchFunnyDeath, setSearchFunnyDeath])
 
 
     useEffect(()=>{
@@ -265,7 +269,7 @@ export default function CreateFunnyDeathForm(props) {
         resolver: yupResolver(schema),
     });
 
-    function resetFdForm(){
+    async function resetFdForm(){
         console.log("RESET FD FORM")
         const tempFd = {
             id_funnydeath : null,
@@ -277,6 +281,8 @@ export default function CreateFunnyDeathForm(props) {
         setFunnyDeathForm(tempFd);
         // document.getElementById("histoire").value="";
         console.log(tempFd)
+        window.location.reload()
+
     }
 
     function onSubmit(data){
@@ -293,7 +299,6 @@ export default function CreateFunnyDeathForm(props) {
         console.log("data.deadName : " + data.deadName)
         tempFd.deadDate = data.deadDate;
         console.log("data.deadDate : " + data.deadDate)
-        setFunnyDeathForm(tempFd)
 
         if(data) {
             switch (searchFunnyDeath) {
@@ -307,7 +312,7 @@ export default function CreateFunnyDeathForm(props) {
                 case "Modifier":
                     setLabel
                     ("Mort modifiée !")
-                    updateFunnyDeath()
+                    updateFunnyDeath(tempFd)
                     break
 
                 case "Supprimer" :
@@ -329,9 +334,6 @@ export default function CreateFunnyDeathForm(props) {
         // 👇️ clear all input values in the form
         // reset form data
 
-
-
-
         setTimeout(()=>setLabel(""), 5000)
     }
 
@@ -347,9 +349,8 @@ export default function CreateFunnyDeathForm(props) {
         console.log(tempFd)
     }
 
-    function displayFunnyForm(){
+    async function displayFunnyForm(){
         console.log("DISPLAY FD FORM")
-
 
         setFunnyDeathRender ([
             <div className="createDefaultTaskFormContainer">
@@ -395,7 +396,6 @@ export default function CreateFunnyDeathForm(props) {
                                 <input type="text"
                                        placeholder='Nom du défunt'
                                        defaultValue={funnyDeathForm.deadName}
-                                       value={funnyDeathForm.deadName}
                                        {...register("deadName")}
                                 />
                                 <p>{errors.deadName?.message}</p>
@@ -406,7 +406,6 @@ export default function CreateFunnyDeathForm(props) {
                                 <input type="text"
                                        placeholder='Titre'
                                        defaultValue={funnyDeathForm.header}
-                                       value={funnyDeathForm.header}
                                        {...register("header")}
                                 />
                                 <p>{errors.header?.message}</p>
@@ -419,7 +418,6 @@ export default function CreateFunnyDeathForm(props) {
                                           className="large_input"
                                           placeholder='histoire'
                                           defaultValue={funnyDeathForm.content}
-                                          value={funnyDeathForm.content}
                                           {...register("content")}
                                 />
                                 <p>{errors.content?.message}</p>
@@ -429,8 +427,7 @@ export default function CreateFunnyDeathForm(props) {
                                 <label>Date</label>
                                 <input type="date"
                                        placeholder='date'
-                                       defaultValue={funnyDeathForm.deadDate}
-                                       value={funnyDeathForm.deadDate}
+                                       defaultValue={getFunnyDeathFormDate()}
                                        {...register("deadDate")}
                                 />
                             </div>

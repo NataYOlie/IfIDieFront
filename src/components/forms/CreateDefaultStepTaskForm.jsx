@@ -100,14 +100,14 @@ export default function CreateDefaultStepTaskForm(props) {
     });
 
     /**
-     * this useEffect charges default Step Task when loading component
+     * this useEffect.js charges default Step Task when loading component
      */
     useEffect(() => {
         props.fetchDefaultStepTasks();
     },[])
 
     /**
-     * this useEffect fill color and category fields with the selected task data
+     * this useEffect.js fill color and category fields with the selected task data
      */
     useEffect(() => {
         if (taskForm){

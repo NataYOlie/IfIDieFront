@@ -54,7 +54,7 @@ export default function AppController() {
 
 /////USE EFFECTS//////////////////USE EFFECTS///////////////USE EFFECTS////////////////////////////////USE EFFECTS/////////////////////////////
     /**
-     * This useEffect fetch StepTasks from ddb when launching app
+     * This useEffect.js fetch StepTasks from ddb when launching app
      */
     useEffect(() => {
         if (!user) {
@@ -63,7 +63,7 @@ export default function AppController() {
     }, []);
 
     /**
-     * This useEffect fetch random funnyDeath when launching app
+     * This useEffect.js fetch random funnyDeath when launching app
      */
     useEffect(() => {
         getRandomFunnyDeath();
@@ -71,7 +71,7 @@ export default function AppController() {
 
 
     /**
-     * This useEffect fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
+     * This useEffect.js fetch StepTasks from ddb when launching app. If a user is connected, it fetches user tasks
      * otherwise it fetches DefaultSteptasks
      */
     useEffect(() => {
@@ -86,7 +86,7 @@ export default function AppController() {
     // /**
     //  * This use Effect persist changes made on tasks in database
     //  */
-    // useEffect (()=>{
+    // useEffect.js (()=>{
     //     if (user) {
     //         saveStepListTasks(stepTasks);}
     // }, [stepTasks]);

@@ -37,7 +37,7 @@ export default function TaskList(props) {
         useState(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})));
 
     /**
-     * This useEffect updates my rendered task everytime steptasks state changes
+     * This useEffect.js updates my rendered task everytime steptasks state changes
      */
     useEffect(() => {
         if (props.stepTasks && props.stepTasks.length >0){
@@ -47,7 +47,7 @@ export default function TaskList(props) {
         props.updateStepTaskComment, props.updateStepTaskValidationDate]);
 
     /**
-     * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
+     * This useEffect.js sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
      * otherwise it fetches DefaultSteptasks and comments default useState is what is used (empty strings).
      */
     useEffect(() => {

@@ -36,7 +36,7 @@ export default function TasksComp(props){
     const isSmallScreen = window.innerWidth <= 768;
 
     // const [isSmallScreen, setIsSmallScreen] = useState(false);
-    // useEffect(() => {
+    // useEffect.js(() => {
     //     function handleResize() {
     //         setIsSmallScreen(window.innerWidth <= 768);
     //     }
