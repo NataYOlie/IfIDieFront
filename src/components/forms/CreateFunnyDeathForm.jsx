@@ -19,6 +19,7 @@ export default function CreateFunnyDeathForm(props) {
 
 
 
+
 /////////FUNNYDEATH CONTROLLER///////FUNNYDEATH CONTROLLER/////////////////////////FUNNYDEATH CONTROLLER//////////////////////////////
 
     const backUrl = "http://localhost:8081/adminboard";
@@ -63,8 +64,9 @@ export default function CreateFunnyDeathForm(props) {
         }
         setTimeout(()=>setLabel(""), 5000)
         console.log("A funny Death was created ! " + newFunnyDeath.header)
+
         setTimeout(window.location.reload(), 1000)
-        resetFdForm()
+        // resetFdForm()
 
     }
 
@@ -73,8 +75,8 @@ export default function CreateFunnyDeathForm(props) {
      * This controller update a funnyDeath
      * @param funnyDeath A funnyDeath
      */
-    function updateFunnyDeath(funnyDeath){
-        console.log("Update funnyDeath : " + funnyDeath.header)
+    function updateFunnyDeath(){
+        console.log("Update funnyDeath : " + funnyDeathForm.header)
 
         try {
             //correspond à un objet AUTHREQUEST
@@ -86,16 +88,16 @@ export default function CreateFunnyDeathForm(props) {
                 },
 
                 body: JSON.stringify({
-                    id_funnydeath: funnyDeath.id_funnydeath,
-                    deadName: funnyDeath.deadName,
-                    header: funnyDeath.header,
-                    content: funnyDeath.content,
+                    id_funnydeath: funnyDeathForm.id_funnydeath,
+                    deadName: funnyDeathForm.deadName,
+                    header: funnyDeathForm.header,
+                    content: funnyDeathForm.content,
                     deadDate: getFunnyDeathFormDate()
                 })
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/funnydeath/update/" + funnyDeath.id_funnydeath, requestOptions)
+            fetch(backUrl + "/funnydeath/update/" + funnyDeathForm.id_funnydeath, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("updateStepListTask : Network response was not ok");
@@ -116,11 +118,10 @@ export default function CreateFunnyDeathForm(props) {
                     throw new Error("Network error occurred while fetching the API");
                 });
 
-
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
-        displayFunnyForm()
+        // setTimeout(window.location.reload(), 1000)
     }
 
 
@@ -230,7 +231,7 @@ export default function CreateFunnyDeathForm(props) {
 
     useEffect(()=>{
         displayFunnyForm()
-    },[defaultValues, funnyDeathForm, setFunnyDeathForm])
+    },[defaultValues, funnyDeathForm, searchFunnyDeath])
 
 
     useEffect(()=>{
@@ -265,15 +266,17 @@ export default function CreateFunnyDeathForm(props) {
     });
 
     function resetFdForm(){
-        setFunnyDeathForm(
-            {
-                id_funnydeath : null,
-                deadName : "",
-                header : "",
-                content : "VIDE",
-                deadDate : null
-            });
-        console.log(funnyDeathForm)
+        console.log("RESET FD FORM")
+        const tempFd = {
+            id_funnydeath : null,
+            deadName : "",
+            header : "",
+            content : "",
+            deadDate : null
+        }
+        setFunnyDeathForm(tempFd);
+        // document.getElementById("histoire").value="";
+        console.log(tempFd)
     }
 
     function onSubmit(data){
@@ -281,25 +284,30 @@ export default function CreateFunnyDeathForm(props) {
         console.log(data.deadDate)
 
         // Set the data state variable to the data object
-
         const tempFd = {...funnyDeathForm};
         tempFd.header = data.header;
+        console.log("data.header : " + data.header)
         tempFd.content = data.content;
+        console.log("data.content : " + data.content)
         tempFd.deadName = data.deadName;
+        console.log("data.deadName : " + data.deadName)
         tempFd.deadDate = data.deadDate;
+        console.log("data.deadDate : " + data.deadDate)
+        setFunnyDeathForm(tempFd)
 
         if(data) {
             switch (searchFunnyDeath) {
                 case "Créer" :
                     setLabel
                     ("Mort ajoutée !")
+                    console.log("label : " + label)
                     createFunnyDeath(data.deadName, data.header, data.content, data.deadDate);
                     break
 
                 case "Modifier":
                     setLabel
                     ("Mort modifiée !")
-                    updateFunnyDeath(tempFd)
+                    updateFunnyDeath()
                     break
 
                 case "Supprimer" :
@@ -318,6 +326,11 @@ export default function CreateFunnyDeathForm(props) {
         } else {
             alert("pas de data !");
         }
+        // 👇️ clear all input values in the form
+        // reset form data
+
+
+
 
         setTimeout(()=>setLabel(""), 5000)
     }
@@ -328,12 +341,16 @@ export default function CreateFunnyDeathForm(props) {
      * @returns {Promise<void>}
      */
     async function handleChange(e) {
-        setFunnyDeathForm(JSON.parse(e.target.value))
-        fetchFunnyDeaths()
+        e.preventDefault();
+        const tempFd = JSON.parse(e.target.value)
+        setFunnyDeathForm(tempFd)
+        console.log(tempFd)
     }
 
     function displayFunnyForm(){
-        fetchFunnyDeaths()
+        console.log("DISPLAY FD FORM")
+
+
         setFunnyDeathRender ([
             <div className="createDefaultTaskFormContainer">
                 <form id="funnyForm" className='createDefaultTask-writeForm' autoComplete='off'
@@ -359,7 +376,7 @@ export default function CreateFunnyDeathForm(props) {
                                     placeholder="Sectionner une mort cocasse"
                                     onChange={e => handleChange(e)} // parse the JSON string
                                 >
-                                    <option value="">-- Sectionner une mort cocasse --</option>
+                                    <option value="" selected={true}>-- Sectionner une mort cocasse --</option>
                                     {
                                         funnyDeaths.map(funnyDeath=>
                                             <option
@@ -377,7 +394,8 @@ export default function CreateFunnyDeathForm(props) {
                                 <label>Nom du defunt</label>
                                 <input type="text"
                                        placeholder='Nom du défunt'
-                                       defaultValue={defaultValues.deadName}
+                                       defaultValue={funnyDeathForm.deadName}
+                                       value={funnyDeathForm.deadName}
                                        {...register("deadName")}
                                 />
                                 <p>{errors.deadName?.message}</p>
@@ -387,7 +405,8 @@ export default function CreateFunnyDeathForm(props) {
                                 <label>Titre de la Mort sympa</label>
                                 <input type="text"
                                        placeholder='Titre'
-                                       defaultValue={defaultValues.header}
+                                       defaultValue={funnyDeathForm.header}
+                                       value={funnyDeathForm.header}
                                        {...register("header")}
                                 />
                                 <p>{errors.header?.message}</p>
@@ -396,9 +415,11 @@ export default function CreateFunnyDeathForm(props) {
                             <div className="createDefaultTask-formGroup">
                                 <label>Histoire</label>
                                 <textarea type="text"
-                                    // className="large_input"
+                                          id="histoire"
+                                          className="large_input"
                                           placeholder='histoire'
-                                          defaultValue={defaultValues.content}
+                                          defaultValue={funnyDeathForm.content}
+                                          value={funnyDeathForm.content}
                                           {...register("content")}
                                 />
                                 <p>{errors.content?.message}</p>
@@ -408,7 +429,8 @@ export default function CreateFunnyDeathForm(props) {
                                 <label>Date</label>
                                 <input type="date"
                                        placeholder='date'
-                                       defaultValue={defaultValues.deadDate}
+                                       defaultValue={funnyDeathForm.deadDate}
+                                       value={funnyDeathForm.deadDate}
                                        {...register("deadDate")}
                                 />
                             </div>
