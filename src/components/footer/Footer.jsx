@@ -13,32 +13,25 @@ const Footer = () => {
         <img src={plants} alt="plants"/>
     <div className='footer'>
       <div className="footer-links">
+          <img src={logo} alt="logo" />
         <div className="footer-links_logo">
         <div>
-          <img src={logo} alt="logo" />
-          <p>If I Die</p>
+          <h1>If I Die</h1>
         </div>
         <div>
-          <h3>Get the lastes Updates</h3>
+          <h3>Abonnez-vous à notre Newsletter</h3>
         </div>
         <div>
-          <input type="text" placeholder='Your Email' />
-          <button>Email Me!</button>
+          <input type="text" placeholder='Entrez votre email' />
+          <button>OK</button>
         </div>
         </div>
-        <div className="footer-links_div">
-          <h4>If I Die</h4>
-          <p>Explore</p>
-          <p>How it Works</p>
-          <p>Counters</p>
-          <p>Contact Us</p>
-        </div>
-        <div className="footer-links_div">
-          <h4>Support</h4>
-          <p>Help center</p>
-          <p>Terms of service</p>
-          <p>Legal</p>
-          <p>Privacy policy</p>
+        <div className="footer-links_logo">
+          <div className="centered">
+          <p>Politique de confidentialité</p>
+          <p>FAQ</p>
+          <p>Carte du Site</p>
+          </div>
         </div>
       </div>
       <div className="footer-copyright">
@@ -46,9 +39,9 @@ const Footer = () => {
         <p> © {(new Date().getFullYear())} If I Die, Inc. All Rights Reserved</p>
         </div>
         <div>
+          <p>Suivez-nous</p>
           <AiOutlineInstagram size={25} color='white' className='footer-icon' />
           <AiOutlineTwitter size={25} color='white' className='footer-icon'/>
-          <RiDiscordFill size={25} color='white' className='footer-icon'/>
           <FaTelegramPlane size={25} color='white'  className='footer-icon' />
         </div>
 
