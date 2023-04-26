@@ -10,10 +10,10 @@ import {
   faHourglassStart,
   faEnvelope,
   faCloud,
-  faCompass, faBroom
+  faCompass, faBroom, faGift, faMonument
 } from '@fortawesome/free-solid-svg-icons'
 import {FunnyDeath} from "../index";
-library.add(faCheckSquare, faCoffee, faHourglassStart, faEnvelope, faCloud, faCompass, faBroom)
+library.add(faCheckSquare, faCoffee, faHourglassStart, faEnvelope, faCloud, faCompass, faBroom, faGift, faMonument)
 
 const Cards = (props) => {
   return (
@@ -120,7 +120,7 @@ const Cards = (props) => {
           <div className="card-column" >
             <div className="card-grey">
               <div className="cards-top">
-                <FontAwesomeIcon icon="fa-solid fa-hourglass-start" size="2xl"  />
+                <FontAwesomeIcon icon="fa-solid fa-monument" size="2xl"  />
                 {/*<img src={bids1} alt="" />*/}
                 <Link to={`/`}>
                   <h2 className="cards-title">Créez votre cénotaphe</h2>
@@ -153,7 +153,7 @@ const Cards = (props) => {
           <div className="card-column" >
             <div className="card-grey">
               <div className="cards-top">
-                <FontAwesomeIcon icon="fa-solid fa-hourglass-start" size="2xl" />
+                <FontAwesomeIcon icon="fa-solid fa-gift" size="2xl" />
                 {/*<img src={bids1} alt="" />*/}
                 <Link to={`/`}>
                   <h2 className="cards-title">Capsule temporelle</h2>

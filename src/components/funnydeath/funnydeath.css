@@ -1,5 +1,5 @@
 .funnydeath{
-    margin: 2rem 0;
+    margin: 4rem 0;
     justify-content: center;
     display:flex;
     flex-flow: row wrap;
@@ -20,7 +20,7 @@
 }
 
 .funnydeath-header h1{
-    margin:auto;
+    margin:0 0 2rem 0;
 }
 
 .funny-content{

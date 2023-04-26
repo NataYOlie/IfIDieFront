@@ -34,10 +34,11 @@ const Header = () => {
         à se poser avant de mourir qu'en général on laisse à ceux qui reste.</p>
         <p>N'hésitez pas à créer un compte pour sauvegarder votre liste !</p>
         <br/>
-        <p>
+        <p><b>
           Ce projet est naissant, les fonctionnalités prévues sont toutes listées dans cette page d'accueil mais vous
-          remarquez que très peu sont déjà accessible, si
-          vous souhaitez soutenir le projet pour que ces fonctionnalités existent, n'hésitez pas à nous contacter !
+          remarquerez que très peu sont déjà accessibles.
+           <br/> Si vous souhaitez soutenir le projet pour que ces
+            fonctionnalités existent plus rapidement, n'hésitez pas à nous contacter !</b>
         </p>
       </div>
 
