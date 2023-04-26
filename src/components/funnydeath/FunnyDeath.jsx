@@ -10,6 +10,10 @@ const FunnyDeath = (props) => {
 
 
     return(
+        <div className="funnydeath">
+        <div className="funnydeath-header">
+            <h1>Histoires de faucheuses</h1>
+        </div>
         <div className="funny-content " onClick={props.getRandomFunnyDeath}>
         <div className="funny-pascontent">
             <div className="funny-pasdutoutcontent">
@@ -23,6 +27,7 @@ const FunnyDeath = (props) => {
                 <p>{props.currentFunnyDeath.content}</p>
                 </div>
             </div>
+        </div>
         </div>
         </div>
         )};

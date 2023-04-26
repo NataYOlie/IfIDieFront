@@ -4,12 +4,10 @@
 
 .footer{
   display: flex;
-  /*border-radius: 25px 25px 0 0 ;*/
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: var(--color-footer);
-  /*border-top: 1px solid rgba(165, 165, 165, 0.1);*/
   padding-bottom: 2rem;
 }
 
@@ -22,25 +20,27 @@
 }
 .footer-links{
   display: flex;
+  max-width: 1400px;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
   flex-direction: row;
   width: 100%;
 }
-
+/**/
 .footer-links div{
   width: 30%;
 }
 
 .footer-links_logo {
-  flex-direction: column;
   margin: 2rem;
   padding: 2rem;
 }
+
 .footer-links_logo div{
   display: flex;
-  position: relative;
+  /*position: relative;*/
+  align-items: flex-start;
   width: 100%;
 }
 .centered{
@@ -102,33 +102,34 @@
   /*right: -3rem;*/
 }
 
-.footer-links_div{
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-}
+/*.footer-links_div{*/
+/*  display: flex;*/
+/*  justify-content: flex-start;*/
+/*  flex-direction: column;*/
+/*}*/
 
-.footer-links_div h4{
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 30px;
-  color: #FFFFFF;
-  margin-bottom: 1rem;
-}
+/*.footer-links_div h4{*/
+/*  font-family: var(--font-family);*/
+/*  font-weight: 600;*/
+/*  font-size: 20px;*/
+/*  line-height: 30px;*/
+/*  color: #FFFFFF;*/
+/*  margin-bottom: 1rem;*/
+/*}*/
 
-.footer-links_div p{
-  font-family: var(--font-family);
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 26px;
-  color: #FFFFFF;
-  margin: 0.5rem 0;
-  cursor: pointer;
-}
+/*.footer-links_div p{*/
+/*  font-family: var(--font-family);*/
+/*  font-weight: normal;*/
+/*  font-size: 16px;*/
+/*  line-height: 26px;*/
+/*  color: #FFFFFF;*/
+/*  margin: 0.5rem 0;*/
+/*  cursor: pointer;*/
+/*}*/
 
 .footer-copyright{
   margin-top: 2rem;
+  max-width: 1400px;
   text-align: center;
   width: 100%;
   display: flex;
@@ -149,32 +150,52 @@ line-height: 24px;
  margin-inline: 10px;
 }
 
-@media screen and (max-width: 850px) {
-  .footer-heading h1 {
-      font-size: 44px;
-      line-height: 50px;
+@media screen and (max-width: 1000px) {
+  .footer-links img {
+    display: none;
+    width: 50%;
+  }
+
+  .footer-links div {
+    margin: 1rem 0;
+  }
+
+  .footer-btn p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .footer-links_logo {
+    flex-direction: column;
+    margin: 2rem;
+    padding: 0.5rem;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .footer-heading h1 {
-      font-size: 34px;
-      line-height: 42px;
-  }
 
   .footer-links div {
-      margin: 1rem 0;
+    margin: 1rem 0;
+  }
+
+  .footer-links_logo {
+    flex-direction: row;
+    margin: 2rem;
+    padding: 0.5rem;
+  }
+
+  .footer-links_logo p{
+    font-size: 10px;
+    margin:0.5rem 0 ;
   }
 
   .footer-btn p {
-      font-size: 14px;
+      font-size: 8px;
       line-height: 20px;
+  }
+
+  .footer-links_logo input {
+    font-size: 10px;
   }
 }
 
-@media screen and (max-width: 400px) {
-  .footer-heading h1 {
-      font-size: 27px;
-      line-height: 38px;
-  }
-}

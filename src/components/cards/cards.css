@@ -7,111 +7,76 @@
   justify-content: center;
   align-items: center;
   margin: auto;
+  /*padding-top: 2rem;*/
+  padding-bottom: 2rem;
   /*width: 90%;*/
-
 }
 
-.cards-container-text h1{
+.cards-container h1{
   font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 28px;
-  line-height: 42px;
-  color: #FFFFFF;
-  margin-bottom: 1rem;
+  color: whitesmoke;
+  /*margin:2rem 0;*/
 }
+
 .container-card{
   margin: 0 -5px;
+  display: flex;
+  flex-flow: row wrap;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
 }
 
-.container-card:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.card-column{
-  float: left;
-  width: 30%;
-}
 .card{
   background: rgba(255, 255, 255);
   border-radius: 20px;
   padding: 11px 12px 19px 11px;
+  height:95%;
   margin-inline: 10px;
-  margin: 20px 10px 20px 10px  ;
+}
+
+.card-grey{
+  background: rgba(255, 255, 255);
+  border-radius: 20px;
+  padding: 11px 12px 19px 11px;
+  margin-inline: 10px;
+  height:95%;
+  opacity: 50%;
 }
 
 .cards-title {
   font-family: var(--font-titles) !important;
-  color: #ff4800;
-}
-.card img{
-  border-radius: 20px;
-  width: 100%;
-}
-
-.card-top p{
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  margin-top: 15px;
+  color: #ff4800 !important;
+  font-size: 1.3rem !important;
+  margin : 0 2rem;
 }
 
 .cards-top{
   padding : 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.cards-top svg{
+  color: #ff4800;
+  margin:auto;
 }
 
 .card-content p{
   font-family: var(--font-family);
-  /*font-weight: 600;*/
   font-size: 1rem;
   padding : 0.5rem;
-/*line-height: 18px;*/
-/* text-align: right; */
 }
-
-.card-bottom p:last-child{
-font-weight: normal;
-}
-
-.card-bottom span{
-font-weight: normal;
-}
-
-.load-more{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-}
-
-.load-more button{
-  background: transparent;
-  border: 1px solid var(--primary-color);
-  margin: 0 1rem;
-  color: var(--primary-color);
-  border-radius: 10px;
-  padding: 10px 100px;
-  font-family: Poppins;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-}
-
 
 .cimetary-content {
   background: rgba(255, 255, 255);
-  margin-top: 5rem;
+  margin-top: 2rem;
   margin-bottom: 5rem;
   border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   padding: 2rem;
+  opacity: 50%;
 }
 
 .cimetary-content-text {
@@ -119,6 +84,10 @@ font-weight: normal;
   min-width: 20%;
   max-width: 40%;
   margin : 0 !important;
+}
+
+.cimetary-content img{
+  width:100%;
 }
 
 .cimetary-content p{
@@ -131,6 +100,7 @@ font-weight: normal;
   font-family: var(--font-titles);
   color: var(--ternary-color);
 }
+
 
 @media screen and (max-width: 2000px) {
   .card-column {
@@ -148,17 +118,40 @@ font-weight: normal;
 @media screen and (max-width: 900px) {
   .card-column {
     width: 50%;
-    
+  }
+  .cards-container{
+    width: 100%;
+  }
+  .cimetary-content{
+    flex-flow: row wrap;
+  }
+
+  .cimetary-content-text {
+    padding: 0.5rem;
+    max-width: 100%;
+    margin: 0 !important;
   }
 }
 @media screen and (max-width: 550px) {
   .section__padding{
     padding: 2rem 14px !important;
   }
-  .card{
-    margin-bottom: 10px;
+
+  .card-column {
+    width: 100%;
+  }
+
+  .card {
+    margin-top: 10px;
     margin-inline: 5px;
   }
+
+  .card-grey{
+    margin-top: 10px;
+    margin-inline: 5px;
+  }
+
+
   .card-top p{
     font-size: 12px;
     line-height: 18px;
@@ -171,7 +164,15 @@ font-weight: normal;
   .cards-container{
     width: 100%;
   }
+  .cimetary-content{
+    flex-flow: row wrap;
+  }
 
+  .cimetary-content-text {
+    padding: 0.5rem;
+    max-width: 100%;
+    margin: 0 !important;
+  }
  
 }
 

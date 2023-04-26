@@ -10,9 +10,7 @@ const Menu = () => {
 
     return (
     <>
-        <Link to="/envisager" ><p>StepList</p></Link>
-        {/*<Link to="/" ><p>Services</p></Link>*/}
-        {/*<Link to="/" ><p>Cimetière</p></Link>*/}
+        <Link to="/mettre_en_ordre" ><p>Mettre en ordre</p></Link>
     </>
  )
 }
@@ -46,7 +44,7 @@ const Menu = () => {
                     <Link to={`/space/${props.user.id}`}><p>{props.user.surname} {props.user.lastname}</p></Link>
 
                     {props.user.role === "ROLE_ADMIN" && (
-                        <Link to="/adminboard"><p>Admin Board</p></Link>
+                        <Link to="/adminboard"><p>Administration</p></Link>
                     )}
                 </>
             )}
@@ -58,12 +56,12 @@ const Menu = () => {
           <Menu />
       {props.user ? (
         <>
-            <Link to="/"><p onClick={handleLogout}>Logout</p></Link>
+            <Link to="/"><p onClick={handleLogout}>Se déconnecter</p></Link>
         </>
       ): (
         <>
         <Link to="/login">
-         <p onClick={handleLogin} >Connection</p>
+         <p onClick={handleLogin} >Connexion</p>
         </Link>
         </>
       )}
@@ -81,15 +79,15 @@ const Menu = () => {
             <div className="navbar-menu_container-links-sign">
             {props.user ? (
               <>
-                  <Link to="/"><p onClick={handleLogout}>Logout</p></Link>
+                  <Link to="/"><p onClick={handleLogout}>Se déconnecter</p></Link>
               </>
             ): (
               <>
                   <Link to="/login">
-                      <p onClick={handleLogin} >Connection</p>
+                      <p onClick={handleLogin} >Connexion</p>
                   </Link>
               <Link to="/register"> 
-                <button type='button' className='secondary-btn'>Sign Up</button>
+                <button type='button' className='secondary-btn'>Créer un compte</button>
               </Link>
               </>
             )}

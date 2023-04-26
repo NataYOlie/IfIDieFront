@@ -1,7 +1,15 @@
 import './App.css';
 import './index.css';
 import {Navbar} from './components'
-import {Home, Item, Envisager, Space, SecurityController, RegisterController, AdminBoardController} from './pages'
+import {
+    Home,
+    Item,
+    StepList,
+    Space,
+    SecurityController,
+    RegisterController,
+    AdminBoardController,
+} from './pages'
 import { Routes, Route,  } from "react-router-dom";
 
 
@@ -16,8 +24,8 @@ export default function App(props) {
                 refreshFunnyDeath = {props.refreshFunnyDeath}
                 getRandomFunnyDeath={props.getRandomFunnyDeath}/>} />
             <Route path=":item/:id" element={<Item />} />
-            <Route path="/envisager"
-                   element={<Envisager user={props.user} setUser={props.setUser}
+            <Route path="/mettre_en_ordre"
+                   element={<StepList user={props.user} setUser={props.setUser}
                                        setLoginRedirectMessage={props.setLoginRedirectMessage}
                                        stepTasks={props.stepTasks}
                                        setTasks={props.setStepTasks}
