@@ -1,6 +1,6 @@
 import './adminBoard.css';
 import React, {useState} from "react";
-import {CreateDefaultStepTaskForm, CreateFunnyDeathForm, StepTask, TaskList} from '../../components'
+import {CreateDefaultStepTaskForm, CreateFunnyDeathForm,TaskList} from '../../components'
 
 export default function AdminBoard(props) {
     const [toggleCreateTask, setToggleCreateTask]=useState(false)

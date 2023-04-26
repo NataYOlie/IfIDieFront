@@ -31,6 +31,8 @@
 
 }
 
+/*COMMENTS*/
+
 .comment-container{
     padding: 1rem;
     display: flex;
@@ -43,8 +45,7 @@
 }
 
 .comment{
-    /*background: rgba(133, 133, 133, 0.17);*/
-    background: var(--jaune);
+    background: rgba(133, 133, 133, 0.17);
     cursor: pointer;
     border-radius: 20px;
     padding: 2rem;
@@ -56,11 +57,19 @@
 .comment p{
     text-align: center;
     /*text-justify: newspaper;*/
-    color: #8b0015;
+    /*color: #8b0015;*/
     white-space: pre-line;
 
 }
 
+.task-delete{
+    text-align: right;
+}
+.task-delete svg{
+    color: var(--rouge);
+}
+
+/*BUTTONS*/
 
 .expand-writeButton{
     background: whitesmoke;
@@ -82,9 +91,30 @@
     background: #c7c3c3;
 }
 
+.add-writeButton{
+    background: var(--bleu);
+    border: none;
+    margin : 3rem auto;
+    border-radius: 10px;
+    padding: 12px 30px;
+    color: whitesmoke;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: var(--font-family);
+}
+.add-writeButton:hover{
+    filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));
+}
+
+.add-writeButton:active{
+    background: #c7c3c3;
+}
+
+
 .save-writeButton{
     /* float: right; */
-    background: var(--rouge);
+    background: var(--vert);
     font-family: var(--font-family);
     border: none;
     border-radius: 10px;
@@ -101,10 +131,16 @@
 }
 
 .save-writeButton:active {
-    background: rgb(183, 51, 0);
+    background: var(--vert);
 }
 
 .task-previsionnalDate{
     font-family: var(--font-family);
+    border-radius: 15px;
+}
 
+.task-previsionnalDate p {
+    text-align: right;
+    font-style: italic;
+    color: var(--marron);
 }

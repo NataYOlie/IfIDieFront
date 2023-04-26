@@ -9,13 +9,13 @@ import {
     faCircleCheck,
     faChevronUp,
     faSquarePlus,
-    faSquareMinus
+    faSquareMinus, faCircleXmark
 } from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {forEach} from "react-bootstrap/ElementChildren";
 import {Link} from "react-router-dom";
 import {Navigate} from "react-router";
-library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus)
+library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus, faCircleXmark)
 
 
 /**
@@ -33,11 +33,24 @@ export default function TaskList(props) {
     const today = todayprepare.toISOString().slice(0, 10);
 
     //Pour les commentaires, je créé une liste qui a la taille des step tasks
-    const [comments, setComments] =
-        useState(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})));
+    const [comments, setComments] = useState(props.stepTasks.map(task => {
+        if (!task.comment) {
+            return {
+                comment_id: task.id_task,
+                comment_header: task.header,
+                comment: "Ajoutez un commentaire"
+            };
+        } else {
+            return {
+                comment_id: task.id_task,
+                comment_header: task.header,
+                comment: task.comment
+            };
+        }
+    }));
 
     /**
-     * This useEffect.js updates my rendered task everytime steptasks state changes
+     * This useEffect updates my rendered task everytime steptasks state changes
      */
     useEffect(() => {
         if (props.stepTasks && props.stepTasks.length >0){
@@ -47,8 +60,8 @@ export default function TaskList(props) {
         props.updateStepTaskComment, props.updateStepTaskValidationDate]);
 
     /**
-     * This useEffect.js sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
-     * otherwise it fetches DefaultSteptasks and comments default useState is what is used (empty strings).
+     * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
+     * otherwise it fetches DefaultSteptasks and comments default useState is what is used.
      */
     useEffect(() => {
         if (props.user) {
@@ -181,6 +194,10 @@ export default function TaskList(props) {
     };
 
 
+    function deleteTask(i) {
+        console.log("DELETE TASK" + props.stepTasks[i]);
+    }
+
     function stepTasksRender() {
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
@@ -261,12 +278,12 @@ export default function TaskList(props) {
                                                     (<div key={nanoid()}
                                                           className="comment-container"
                                                           onClick={(event)=>handleComment(i)}>
-                                                    <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
+                                                    <div className="comment"><p>{comments[i].comment}</p></div>
                                                     {/*<h2 onClick={(event)=>handleComment(i)}>Modifier</h2>*/}
                                                     </div>
                                                     )}
-                                            <div>
-                                                <p>Prévu pour le :</p>
+                                            <div className="task-previsionnalDate">
+                                                <p>Quand ?</p>
                                                 <input type="date"
                                                        className="task-previsionnalDate"
                                                        defaultValue={props.stepTasks[i].previsionalDate}
@@ -276,9 +293,14 @@ export default function TaskList(props) {
                                                     </div>
                                                 )}
 
-
                                     {props.stepTasks[i].external_link  ? (
                                     <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}
+                                    <div className="task-delete">
+                                        <FontAwesomeIcon icon="fa-solid fa-circle-xmark"
+                                                         size="xl"
+                                                         className={props.stepTasks[i].task_color}
+                                                         onClick={()=>deleteTask(i)}/>
+                                    </div>
                                 </div>
                             )
                             //A chaque tâche traitée je l'ajoute à la liste entière
@@ -314,9 +336,12 @@ export default function TaskList(props) {
 
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
-                    <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
-                        Enregistrer
-                    </button>
+                    <div>
+                        <button className="add-writeButton" key={nanoid()}> Créer une tâche </button>
+                        <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
+                            Enregistrer
+                        </button>
+                    </div>
                 </div>
 
 

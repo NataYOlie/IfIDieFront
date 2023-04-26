@@ -13,24 +13,20 @@ const StepList = (props) => {
         <h1 >Mettre en Ordre</h1>
         <h2>döstädning</h2>
         <div className="steplist-intro">
-        <p>Il vous faudra naturellement bien moins de temps pour mourir que pour préparer votre mort, c'est pourquoi nous
-            vous conseillons de vous y mettre le plus tôt possible !
-            <br/>
-            <br/>
-            Naturellement, nous ne formulons ces questions que pour vous inviter à un cheminement personnel.
-            Vous pouvez aussi en discuter avec vos proches s’ils sont prêts à le faire.
-            <div>
-            <ul>
-                <li>Quel regard portez-vous sur le chemin parcouru et les événements majeurs de votre vie ?</li>
-                <li>Quelles valeurs essentielles souhaitez-vous transmettre à vos proches ?</li>
-                <li>Quelle image voulez-vous que l’on garde de vous ?</li>
-                <li>Quel souvenir de vos obsèques voudriez-vous laisser à votre famille et à vos amis ?</li>
-                <li>Quelle est votre attente par rapport à une cérémonie d’obsèques ?</li>
-                <li>Quelles sont vos convictions quant au sens de la vie et de la mort ?</li>
-                <li>Comment envisagez-vous les années à venir et qu’aimeriez-vous vivre avant votre départ ?</li>
-            </ul>
-            </div>
-        </p>
+            <p>Ce terme suédois désigne le fait de ranger sa vie pour préparer sa mort, concept développé par Margareta
+                Magnusson dans <i>La vie en ordre, L’art de ranger sa vie pour alléger celle des autres(Flammarion, 2018)</i>,
+                n'est pas nouveau. Il est courant de s'inscrire dans une démarche similaire à l'hiver de sa vie, néanmoins il est
+                également courant d'être surpris précocement par le destin et que ce soient celles et ceux qui restent, les proches
+                endeuillé.e.s qui se retrouvent à gérer les affaires matérielles, à prendre des décisions difficiles alors mêmes
+                que le choc, la chagrin, la colère parfois, ne permet pas d'aborder sereinement l'ensemble des choses à faire
+                quand un être nous quitte.
+                <br/>
+                <br/>
+                Mettre ses affaires en ordre est à la fois un ultime geste d'élégance envers celles et ceux qui vous aiment
+                ainsi qu'une démarche de dignité, une occasion d'agir et de décider pour nous même de ce qu'il advient
+                de ce qui a constitué notre existence.
+                Il n'est jamais trop tôt pour se poser ces questions
+            </p>
         </div>
     </div>
     <div>
