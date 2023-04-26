@@ -1,17 +1,17 @@
 import React from 'react';
 import {TaskList} from "../../components";
-import "./envisager.css"
+import "./steplist.css"
 import cloud_simple from "../../assets/cloud_simple.svg";
 
 
-const Envisager = (props) => {
+const StepList = (props) => {
 
     return (
         <>
     <div className="step-list">
         <img src={cloud_simple} alt={cloud_simple}/>
-        <h1 >StepList</h1>
-        <h2>Mes démarches</h2>
+        <h1 >Mettre en Ordre</h1>
+        <h2>döstädning</h2>
         <div className="steplist-intro">
         <p>Il vous faudra naturellement bien moins de temps pour mourir que pour préparer votre mort, c'est pourquoi nous
             vous conseillons de vous y mettre le plus tôt possible !
@@ -55,4 +55,4 @@ const Envisager = (props) => {
             </>
 )};
 
-export default Envisager;
+export default StepList;

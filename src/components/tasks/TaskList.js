@@ -56,7 +56,7 @@ export default function TaskList(props) {
         } else {
             props.fetchDefaultStepTasks();
         }
-    }, [props.user, props.updateStepTaskComment, props.stepTasks]);
+    }, [props.user]);
 
 
     /**

@@ -21,9 +21,9 @@ const Login = (props) => {
         <form className='login-writeForm' autoComplete='off'>
 
           <div className="login-formGroup">
-            <label>Username</label>
+            <label>Email</label>
             <input type="text"
-                   placeholder='Username'
+                   placeholder='email '
                    value={fields.login}
                    onChange={form => setFields({...fields, login: form.target.value})}
                    onKeyDown={handleKeyPress}
@@ -39,9 +39,9 @@ const Login = (props) => {
                    onKeyDown={handleKeyPress}
             />
           </div>
-          <div>
-            <a href className="login-formGroup">Mot de passe oublié ? </a>
-          </div>
+          {/*<div>*/}
+          {/*  <a href className="login-formGroup">Mot de passe oublié ? </a>*/}
+          {/*</div>*/}
          <div className="login-button">
           <button  className='login-writeButton'
                    type='button'

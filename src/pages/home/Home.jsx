@@ -1,15 +1,15 @@
 import React from 'react';
-import {Cards, Header, FunnyDeath } from '../../components'
+import {Cards, Header} from '../../components'
 
 const Home = (props) => {
 
   return <div>
     <Header />
-    <FunnyDeath
-        currentFunnyDeath = {props.currentFunnyDeath}
-        refreshFunnyDeath = {props.refreshFunnyDeath}
-        getRandomFunnyDeath={props.getRandomFunnyDeath}/>
-    <Cards title="Envisager"  />
+
+    <Cards title=""
+           currentFunnyDeath = {props.currentFunnyDeath}
+           refreshFunnyDeath = {props.refreshFunnyDeath}
+           getRandomFunnyDeath={props.getRandomFunnyDeath}/>
   </div>;
 };
 
