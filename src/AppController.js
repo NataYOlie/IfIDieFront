@@ -115,7 +115,7 @@ export default function AppController() {
      * This use Effect check if user token is still valid, if not it forces a logout
      */
     useEffect(() => {
-        if(user) {
+        if(storedUser) {
             const token = user.token;
             if (token) {
                 const decodedToken = jwt_decode(token);
@@ -128,6 +128,7 @@ export default function AppController() {
                         if (decodedToken.exp * 1000 < Date.now()) {
                             // Token has expired, clear the interval and logout
                             clearInterval(intervalId);
+                            console.log("AUTO LOGOUT")
                             logout();
                         }
                     }, 60000); // Check every minute
@@ -162,9 +163,13 @@ export default function AppController() {
      * @param newStepTask
      */
     function addStepTask(newStepTask) {
-        if (storedStepTasks && storedStepTasks.length > 0) {
-            setStepTasks([...stepTasks, newStepTask]);
-        } else setStepTasks([newStepTask])
+        const updatedStepTasks = [...stepTasks]
+        updatedStepTasks.push(newStepTask);
+        if (stepTasks && stepTasks.length > 0) {
+            setStepTasksArray(updatedStepTasks)
+        }
+        saveStepListTasks()
+
     }
 
     /**
@@ -411,7 +416,7 @@ export default function AppController() {
             console.log("Steplist is saved " + stepTasks.length);
         }
 
-        //C'est mal mais ça marche et j'ai pas trouvé mieux les promises et await ça marche pas
+        //C'est mal mais ça marche et j'ai pas trouvé mieux avec les promises et await je m'en sortais pas
         setTimeout(() => refresh(), 1000);
     }
 

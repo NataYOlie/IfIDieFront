@@ -98,12 +98,10 @@ const Cards = (props) => {
           <div className="cimetary-content">
             <div className="cimetary-content-text">
               <h1>Cimetière</h1>
-              <p>Hitoshi Christopher Nikaidoh, un chirurgien américain, est décapité en
-                montant dans un ascenseur à l'Hôpital Saint-Joseph (en) de Houston au Texas.
-                Les portes de l'ascenseur se sont fermées quand Nikaidoh est entré,
-                la tête piégée à l'intérieur de la cabine, le reste de son corps encore à l'extérieur.
-                Celui-ci a été retrouvé au fond de la fosse tandis que la partie supérieure de sa tête,
-                coupée juste au-dessus de la mâchoire inférieure, a été retrouvée dans la cabine</p>
+              <p>Ce cimetière en 3D est constitué de cénotaphes personnalisés, une partie a été reproduite à partir de
+              sépultures existantes, d'autres sont les cénotaphes de personnes ou de compagnons animaux décédés.
+              C'est un lieu virtuel de recueillement, il est recommandé de s'y promener en étant ouvert à la rencontre
+              de ses occupants qui auront peut être prévu des messages pour les visiteurs attentifs</p>
             </div>
             <div className="cimetary-content-img">
               <img src={cimetary} alt="" />

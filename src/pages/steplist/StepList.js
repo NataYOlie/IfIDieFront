@@ -16,15 +16,16 @@ const StepList = (props) => {
             <p>Ce terme suédois désigne le fait de ranger sa vie pour préparer sa mort, concept développé par Margareta
                 Magnusson dans <i>La vie en ordre, L’art de ranger sa vie pour alléger celle des autres(Flammarion, 2018)</i>,
                 n'est pas nouveau. Il est courant de s'inscrire dans une démarche similaire à l'hiver de sa vie, néanmoins il est
-                également courant d'être surpris précocement par le destin et que ce soient celles et ceux qui restent, les proches
+                également courant d'être surpris précocément par le destin et que ce soient celles et ceux qui restent, les proches
                 endeuillé.e.s qui se retrouvent à gérer les affaires matérielles, à prendre des décisions difficiles alors mêmes
-                que le choc, la chagrin, la colère parfois, ne permet pas d'aborder sereinement l'ensemble des choses à faire
+                que le choc, le chagrin, la colère parfois, ne permettent pas d'aborder sereinement l'ensemble des choses à faire
                 quand un être nous quitte.
                 <br/>
                 <br/>
                 Mettre ses affaires en ordre est à la fois un ultime geste d'élégance envers celles et ceux qui vous aiment
                 ainsi qu'une démarche de dignité, une occasion d'agir et de décider pour nous même de ce qu'il advient
                 de ce qui a constitué notre existence.
+
                 Il n'est jamais trop tôt pour se poser ces questions
             </p>
         </div>
