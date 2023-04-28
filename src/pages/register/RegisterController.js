@@ -8,7 +8,6 @@ export default function RegisterController(props){
     const backUrl = "http://localhost:8081/security";
 
     function createUser(username, password, surname, lastname) {
-        let errorName ="";
 
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
@@ -41,7 +40,7 @@ export default function RegisterController(props){
                 })
 
             .catch(error => {
-                    console.error('Error creating user:', error);
+                    console.error('Error creating user :', error);
                 if (error.message === 'Conflict') {
                     alert("Ce compte existe déjà !");
                 }

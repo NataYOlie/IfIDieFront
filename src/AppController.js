@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import App from "./App";
 import './App.css'
 import jwt_decode from 'jwt-decode';
-import {forEach} from "react-bootstrap/ElementChildren";
 import {Navigate} from "react-router";
 
 /**
@@ -210,11 +209,11 @@ export default function AppController() {
         //SI on a un index (vu qu'on le cherche avec l'id de la tache, si on n'a pas encore enregistrer il n'y a pas d'index
         if (index != null){
             updatedStepTasks[index] = { ...updatedStepTasks[index], comment: comment};
-            console.log(updatedStepTasks[index].header + "new comment is " + updatedStepTasks[index].comment )
-            setStepTasksArray(updatedStepTasks[index])
-            updateStepListTask(updatedStepTasks[index])
+            console.log(updatedStepTasks[index].header + "new comment is " + updatedStepTasks[index].comment);
+            setStepTasksArray(updatedStepTasks);
+            updateStepListTask(updatedStepTasks[index]);
         }else {
-            console.log("comment pas d'index")
+            console.log("comment pas d'index");
         }
     }
 
@@ -554,9 +553,9 @@ export default function AppController() {
                         subtype: json.subtype,
                         header: json.header,
                         description: json.description,
-                        externalLink: json.externalLink,
-                        taskColor: json.taskColor,
-                        defaultTask: true,
+                        external_link: json.externalLink,
+                        task_color: json.taskColor,
+                        default_task: json.defaultTask,
                         listType: "StepList",
                         user: user,
                         comment:json.comment,

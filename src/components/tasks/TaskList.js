@@ -17,17 +17,17 @@ import {Box, Modal} from "@mui/material";
 import {CreateUserStepTaskForm} from "../index";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus, faCircleXmark)
 
-
 /**
  * This function Display StepTask in html to be rendered.
  */
 
+
 export default function TaskList(props) {
     const [expanded, setExpanded] = useState(false);
-    const [subtypeListState, setSubtypeListState] = useState([])
-    const [newTaskDisplay,setNewTaskDisplay] = useState([])
+    const [subtypeListState, setSubtypeListState] = useState([]);
+    const [newTaskDisplay,setNewTaskDisplay] = useState([]);
     const [shouldRedirect, setShouldRedirect] = useState(false);
-    const [toggleButton, setToggleButton] = useState("Déplier")
+    const [toggleButton, setToggleButton] = useState("Déplier");
 
     //MODAL
     const [open, setOpen] = React.useState(false);
@@ -36,6 +36,7 @@ export default function TaskList(props) {
         setOpen(false);
         setTimeout(window.location.reload.bind(window.location), 1000)
     }
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -47,7 +48,7 @@ export default function TaskList(props) {
         p: 4,
         width:1000,
         maxHeight:700,
-        overflow:'scroll',
+        overflowY:'scroll',
     };
 
     //TODAY
@@ -55,22 +56,48 @@ export default function TaskList(props) {
     const today = todayprepare.toISOString().slice(0, 10);
 
     //Pour les commentaires, je créé une liste qui a la taille des step tasks
-    const [comments, setComments] = useState(props.stepTasks.map(task => {
-        if (!task.comment) {
-            return {
-                comment_id: task.id_task,
-                comment_header: task.header,
-                comment: "Ajoutez un commentaire"
-            };
-        } else {
-            return {
-                comment_id: task.id_task,
-                comment_header: task.header,
-                comment: task.comment
-            };
-        }
-    }));
 
+    const [comments, setComments] = useState(() => {
+        return props.stepTasks
+            ? props.stepTasks.map((task) => {
+                if (!task.comment) {
+                    return {
+                        comment_id: task.id_task,
+                        comment_header: task.header,
+                        comment: "Ajoutez un commentaire",
+                    };
+                } else {
+                    return {
+                        comment_id: task.id_task,
+                        comment_header: task.header,
+                        comment: task.comment,
+                    };
+                }
+            })
+            : [];
+    });
+
+    const [previsionalDate, setPrevisionalDate] = useState(() => {
+        return props.stepTasks
+            ? props.stepTasks.map((task) => {
+                if (!task.previsionalDate) {
+                    return {
+                        previsionalDate_id: task.id_task,
+                        previsionalDate_header: task.header,
+                        previsionalDate: today,
+                    };
+                } else {
+                    return {
+                        previsionalDate_id: task.id_task,
+                        previsionalDate_header: task.header,
+                        previsionalDate: today,
+                    };
+                }
+            })
+            : [];
+
+    });
+    //
     // function refreshComments() {
     //     console.log("REFRESH COMMENTS")
     //     props.stepTasks.map(task => {
@@ -107,7 +134,7 @@ export default function TaskList(props) {
     //     console.log("REFRESH COMMENTS")
     //     refreshComments()
     // },[props.stepTasks])
-
+    //
 
     /**
      * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
@@ -189,13 +216,11 @@ export default function TaskList(props) {
                     console.log("IF index : " + index + " et le commentsID : " + comments[i].comment_id)
                     props.updateStepTaskComment(index, comments[i].comment)
 
-
                 } else {
                     index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
                     console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
                     props.updateStepTaskComment(index, comments[i].comment)
                 }
-
 
             } else {
                 console.log("pas de user")
@@ -213,7 +238,6 @@ export default function TaskList(props) {
 
     const handleChangeComment = (index, value) => {
             console.log("handle Change : " + comments[index].comment)
-            // props.updateStepTaskComment(index,value)
             setTimeout(() => (comments[index].comment = value), 500);
             console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
@@ -224,7 +248,7 @@ export default function TaskList(props) {
      */
     function handleSaveList() {
         const updatedStepTasks = [...props.stepTasks]
-        console.log(updatedStepTasks[0].comment)
+        console.log(updatedStepTasks[0].comment);
         if (props.user) {
             props.saveStepListTasks();
         } else {
@@ -233,11 +257,31 @@ export default function TaskList(props) {
         }
     }
 
-    const handleChangePrevDate = (index) => (event) => {
-        const previsionalDate = event.target.value;
-        props.updateStepTaskPrevisionalDate(index, previsionalDate)
+    const handleChangePrevDate = (i) => (event) => {
+        setTimeout(()=> (previsionalDate[i].previsionalDate = (event.target.value)), 500);
     };
 
+    function handleSavePrevDate(i) {
+        console.log("handle PrevDate : " + i)
+            //Si pas de user je demande de login
+            if (props.user) {
+                let index
+                if (previsionalDate[i].previsionalDate_id) {
+                    index = props.stepTasks.findIndex(task => task.id_task === previsionalDate[i].previsionalDate_id)
+                    console.log("PREV DATE IF index : " + index + " et le PREVDATE ID : " + previsionalDate[i].previsionalDate_id)
+                    props.updateStepTaskPrevisionalDate(index, previsionalDate[i].previsionalDate)
+
+                } else {
+                    index = props.stepTasks.findIndex(task => task.id_task === previsionalDate[i].previsionalDate_id)
+                    console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
+                    props.updateStepTaskPrevisionalDate(index, previsionalDate[i].previsionalDate)
+                }
+            } else {
+                console.log("pas de user")
+                props.setLoginRedirectMessage("Il faut se connecter pour enregistrer une liste de tâches")
+                setShouldRedirect(true)
+            }
+    }
 
     function deleteTask(i) {
         console.log("DELETE TASK" + props.stepTasks[i].header);
@@ -246,7 +290,6 @@ export default function TaskList(props) {
             props.deleteTask(props.stepTasks[i])
         }
     }
-
 
 
     function stepTasksRender() {
@@ -311,7 +354,6 @@ export default function TaskList(props) {
                                                 <h4>En attente</h4>
                                             </div>
                                                 )}
-
                                     </div>
 
                                     {props.stepTasks[i].visible && (
@@ -339,6 +381,7 @@ export default function TaskList(props) {
                                                        className="task-previsionnalDate"
                                                        defaultValue={props.stepTasks[i].previsionalDate}
                                                        onChange={handleChangePrevDate(i)}
+                                                       onBlur={()=>handleSavePrevDate(i)}
                                                        placeholder='date'/>
                                             </div>
                                                     </div>
@@ -388,7 +431,7 @@ export default function TaskList(props) {
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
                     <div>
-                        {props.user && props.stepTasks[0].id_task ? (
+                        {props.user ? (
                         <button className="add-writeButton" key={nanoid()} onClick={()=>handleOpen()}> Créer une tâche </button>):
                             null}
                         <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>

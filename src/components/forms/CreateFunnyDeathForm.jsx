@@ -258,7 +258,6 @@ export default function CreateFunnyDeathForm(props) {
         return funnyDeathForm.deadName
     }
 
-
     const getFunnyDeathFormDate = ()=> {
         if (funnyDeathForm.deadDate) {
             const year = funnyDeathForm.deadDate.slice(0,4)
