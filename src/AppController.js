@@ -3,6 +3,7 @@ import App from "./App";
 import './App.css'
 import jwt_decode from 'jwt-decode';
 import {forEach} from "react-bootstrap/ElementChildren";
+import {Navigate} from "react-router";
 
 /**
  * This controller is kind of an init method for If I Die App
@@ -101,27 +102,39 @@ export default function AppController() {
 
     function logout(){
         setUser(null)
-        // setStepTasksArray(fetchDefaultStepTasks())
         localStorage.removeItem(JSON.stringify(user))
         localStorage.clear()
     }
 
-    //juste utilisée dans la nav bar, ça renvoie sur le login, je me demande si ça peut foutre la merde vis a vis du localstorage
+
+    function forcedLogout(){
+        setUser(null)
+        localStorage.removeItem(JSON.stringify(user))
+        localStorage.clear()
+        if (window.confirm("Votre session a expiré ! Merci de vous reconnecter")) {
+            return (
+                <Navigate to={"/login"}/>
+            )
+        }
+    }
+
     function setUserNew(newUser){
         setUser(newUser)
+        localStorage.setItem('user', JSON.stringify(newUser));
     }
 
     /**
      * This use Effect check if user token is still valid, if not it forces a logout
      */
     useEffect(() => {
-        if(storedUser) {
+        if(storedUser && user) {
             const token = user.token;
             if (token) {
                 const decodedToken = jwt_decode(token);
                 if (decodedToken.exp * 1000 < Date.now()) {
+                    console.log("AUTO LOGOUT")
                     // Token has expired
-                    logout();
+                    forcedLogout();
                 } else {
                     // Set an interval to check if the token has expired
                     const intervalId = setInterval(() => {
@@ -129,13 +142,12 @@ export default function AppController() {
                             // Token has expired, clear the interval and logout
                             clearInterval(intervalId);
                             console.log("AUTO LOGOUT")
-                            logout();
+                            forcedLogout();
                         }
                     }, 60000); // Check every minute
                 }
             }
         }
-
     }, []);
 
     /**
@@ -195,12 +207,12 @@ export default function AppController() {
      */
     function updateStepTaskComment(index, comment){
         const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
-
         //SI on a un index (vu qu'on le cherche avec l'id de la tache, si on n'a pas encore enregistrer il n'y a pas d'index
         if (index != null){
             updatedStepTasks[index] = { ...updatedStepTasks[index], comment: comment};
             console.log(updatedStepTasks[index].header + "new comment is " + updatedStepTasks[index].comment )
-            setStepTasksArray(updatedStepTasks)
+            setStepTasksArray(updatedStepTasks[index])
+            updateStepListTask(updatedStepTasks[index])
         }else {
             console.log("comment pas d'index")
         }

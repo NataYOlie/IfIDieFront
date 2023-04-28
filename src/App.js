@@ -41,6 +41,7 @@ export default function App(props) {
                                        fetchDefaultStepTasks={props.fetchDefaultStepTasks}
                                        saveStepListTasks={props.saveStepListTasks}
                                        setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
+                                       deleteTask={props.deleteTask}
                                        setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>} />
             <Route path="/space/:id" element={<Space />} />
             <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask}

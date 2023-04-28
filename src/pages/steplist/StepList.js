@@ -47,6 +47,7 @@ const StepList = (props) => {
             updateStepTaskVisible={props.updateStepTaskVisible}
             updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
             updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
+            deleteTask={props.deleteTask}
         />
     </div>
             </>

@@ -8,6 +8,7 @@ export default function RegisterController(props){
     const backUrl = "http://localhost:8081/security";
 
     function createUser(username, password, surname, lastname) {
+        let errorName ="";
 
         //correspond à un objet AUTHREQUEST
         const requestOptions = {
@@ -16,17 +17,35 @@ export default function RegisterController(props){
             body: JSON.stringify({ username: username, password: password, surname: surname, lastname: lastname})
         };
 
+
         //correspond à l'AUTHRESPONSE
         fetch(backUrl + "/register", requestOptions)
-            .then(response => response.json())
-            .then(json => props.setUser({
-                token: json.token,
-                id: json.user.id_user,
-                surname: json.user.surname,
-                lastname: json.user.lastname,
-                email:  json.user.email,
-                role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
-            }));
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 409) {
+                        throw new Error('Conflict');
+                    }
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(json => {
+                props.setUser({
+                    token: json.token,
+                    id: json.user.id_user,
+                    surname: json.user.surname,
+                    lastname: json.user.lastname,
+                    email: json.user.email,
+                    role: json.user.roles.length > 0 ? json.user.roles[0].roleName : null
+                    });
+                })
+
+            .catch(error => {
+                    console.error('Error creating user:', error);
+                if (error.message === 'Conflict') {
+                    alert("Ce compte existe déjà !");
+                }
+            });
     }
 
     // RETURN REDIRECT TO USER SPACE IF CONNECTED

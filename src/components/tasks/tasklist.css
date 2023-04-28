@@ -144,3 +144,16 @@
     font-style: italic;
     color: var(--marron);
 }
+
+/*MODAL*/
+.task-modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*bgcolor: background.paper,*/
+    border: 2px solid #000;
+    boxShadow: 24 px;
+    p: 4;
+    width:1000px;
+}

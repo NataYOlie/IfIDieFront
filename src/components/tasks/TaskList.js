@@ -12,9 +12,9 @@ import {
     faSquareMinus, faCircleXmark
 } from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {forEach} from "react-bootstrap/ElementChildren";
-import {Link} from "react-router-dom";
 import {Navigate} from "react-router";
+import {Box, Modal} from "@mui/material";
+import {CreateUserStepTaskForm} from "../index";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus, faCircleXmark)
 
 
@@ -27,6 +27,28 @@ export default function TaskList(props) {
     const [subtypeListState, setSubtypeListState] = useState([])
     const [newTaskDisplay,setNewTaskDisplay] = useState([])
     const [shouldRedirect, setShouldRedirect] = useState(false);
+    const [toggleButton, setToggleButton] = useState("Déplier")
+
+    //MODAL
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setTimeout(window.location.reload.bind(window.location), 1000)
+    }
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: '#FCD200FF',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        width:1000,
+        maxHeight:700,
+        overflow:'scroll',
+    };
 
     //TODAY
     const todayprepare = new Date;
@@ -49,6 +71,25 @@ export default function TaskList(props) {
         }
     }));
 
+    // function refreshComments() {
+    //     console.log("REFRESH COMMENTS")
+    //     props.stepTasks.map(task => {
+    //         if (!task.comment) {
+    //             return {
+    //                 comment_id: task.id_task,
+    //                 comment_header: task.header,
+    //                 comment: "Ajoutez un commentaire"
+    //             };
+    //         } else {
+    //             return {
+    //                 comment_id: task.id_task,
+    //                 comment_header: task.header,
+    //                 comment: task.comment
+    //             };
+    //         }
+    //     })
+    // }
+
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
      */
@@ -57,7 +98,16 @@ export default function TaskList(props) {
             stepTasksRender()
         }
     }, [props.stepTasks, props.setStepTasksDisplayArray, props.setStepTasksArray,
-        props.updateStepTaskComment, props.updateStepTaskValidationDate]);
+       props.updateStepTaskValidationDate]);
+
+    // /**
+    //  * This useEffect updates my comments everytime steptasks state changes
+    //  */
+    // useEffect(()=>{
+    //     console.log("REFRESH COMMENTS")
+    //     refreshComments()
+    // },[props.stepTasks])
+
 
     /**
      * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
@@ -80,10 +130,12 @@ export default function TaskList(props) {
             if (props.stepTasks[0].visible){
                 props.stepTasks.forEach((task) => {task.visible = false});
                 setExpanded(false)
+                setToggleButton("Déplier")
                 stepTasksRender()
             }else {
                 props.stepTasks.forEach((task) => {task.visible = true})
                 setExpanded(true)
+                setToggleButton("Plier")
                 stepTasksRender()
             }
         }
@@ -125,7 +177,6 @@ export default function TaskList(props) {
 
 
     function handleComment(i){
-        // let commentTemp = props.stepTasks[i].commentEdit
         console.log("handle Comment : " + i)
         //Enregistrer le commentaire
         if (props.stepTasks[i].commentEdit) {
@@ -152,7 +203,6 @@ export default function TaskList(props) {
                 setShouldRedirect(true)
             }
 
-
             //Mon choix
         } else {
             props.stepTasks[i].commentEdit = true
@@ -168,11 +218,6 @@ export default function TaskList(props) {
             console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
 
-    function updateComments (){
-        setComments((prevComments) =>props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header,
-            comment:task.comment})));
-        stepTasksRender()
-    }
 
     /**
      * This function is launched when saving steptasks
@@ -195,10 +240,17 @@ export default function TaskList(props) {
 
 
     function deleteTask(i) {
-        console.log("DELETE TASK" + props.stepTasks[i]);
+        console.log("DELETE TASK" + props.stepTasks[i].header);
+
+        if (window.confirm(" ATTENTION CETTE ACTION EST IRREVERSIBLE ! Etes vous sur de vouloir supprimer la  tâche suivante : " +  props.stepTasks[i].header + " ?")){
+            props.deleteTask(props.stepTasks[i])
+        }
     }
 
+
+
     function stepTasksRender() {
+
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
 
@@ -278,8 +330,7 @@ export default function TaskList(props) {
                                                     (<div key={nanoid()}
                                                           className="comment-container"
                                                           onClick={(event)=>handleComment(i)}>
-                                                    <div className="comment"><p>{comments[i].comment}</p></div>
-                                                    {/*<h2 onClick={(event)=>handleComment(i)}>Modifier</h2>*/}
+                                                    <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
                                                     </div>
                                                     )}
                                             <div className="task-previsionnalDate">
@@ -325,27 +376,60 @@ export default function TaskList(props) {
                     <button className="expand-writeButton"
                             key={nanoid()}
                             onClick={toggleExpand}>
-                            {props.stepTasksDisplay[0] ? "Toggle" :  "Chargez les tâches"}
+                            {props.stepTasksDisplay[0] ? toggleButton :  "Chargez les tâches"}
                     </button>)
                     : (
                         <button className="expand-writeButton"
                                 key={nanoid()}
                                 onClick={stepTasksRender}>
-                                {props.stepTasks ? "Toggle" :  "Chargez les tâches"}
+                                {props.stepTasks ? toggleButton :  "Chargez les tâches"}
                         </button>)}
 
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
                     <div>
-                        <button className="add-writeButton" key={nanoid()}> Créer une tâche </button>
+                        {props.user && props.stepTasks[0].id_task ? (
+                        <button className="add-writeButton" key={nanoid()} onClick={()=>handleOpen()}> Créer une tâche </button>):
+                            null}
                         <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
                             Enregistrer
                         </button>
                     </div>
                 </div>
-
-
             </div>
+            <Modal
+                open={open}
+                onClose={()=>handleClose()}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <Box sx={{ ...style, width: 1000 }}>
+                    <CreateUserStepTaskForm
+                        user={props.user}
+                        addStepTask={props.addStepTask}
+                        stepTasks={props.stepTasks}
+                        fetchDefaultStepTasks={props.fetchDefaultStepTasks}
+                        setStepTasks={props.setStepTasks}
+                        setLoginRedirectMessage={props.setLoginRedirectMessage}
+                        stepTasksDisplay={props.stepTasksDisplay}
+                        fetchUserStepTasks={props.fetchUserStepTasks}
+                        handleClose={handleClose}
+                        stepTasksRender={stepTasksRender}
+                        handleSaveList={handleSaveList}
+                        saveStepListTasks={props.saveStepListTasks}
+                        setStepTasksArray={(newStepTasks)=>props.setStepTasksArray(newStepTasks)}
+                        setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}
+                        refresh={props.refresh}
+                        updateStepTask = {props.updateStepTask}
+                        updateStepListTask = {props.updateStepListTask}
+                        updateStepTaskComment = {props.updateStepTaskComment}
+                        updateStepTaskVisible={props.updateStepTaskVisible}
+                        updateStepTaskValidationDate = {props.updateStepTaskValidationDate}
+                        updateStepTaskPrevisionalDate = {props.updateStepTaskPrevisionalDate}
+                        deleteTask={props.deleteTask}
+                    />
+                </Box>
+            </Modal>
         </>
 
 
