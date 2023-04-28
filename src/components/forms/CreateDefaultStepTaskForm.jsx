@@ -58,13 +58,13 @@ export default function CreateDefaultStepTaskForm(props) {
                     listType: "StepList",
                     createdBy: props.user
                 }));
-        props.addStepTask(newTask)
         console.log(newTask.header)
+        setTimeout(()=>window.location.reload(), 1000)
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // define state to keep track of whether to show new field or not
-    const [searchTask, setSearchTask] = useState(["Créer"]);
+    const [searchTask, setSearchTask] = useState("Créer");
 
     //store the selected task from the form
     const [taskForm, setTaskForm]=useState({})
@@ -95,6 +95,7 @@ export default function CreateDefaultStepTaskForm(props) {
         register,
         formState: {errors},
         handleSubmit,
+        reset,
     } = useForm({
         resolver: yupResolver(schema),
     });
@@ -143,7 +144,8 @@ export default function CreateDefaultStepTaskForm(props) {
 
         if(data){
             switch (searchTask){
-                case "Créer" :  createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
+                case "Créer" :
+                    createDefaultStepTask(data.subtype, data.header, data.description, data.externalLink, data.taskColor);
                     break
 
                 case "Modifier":

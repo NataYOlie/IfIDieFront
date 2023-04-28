@@ -66,11 +66,7 @@ export default function CreateFunnyDeathForm(props) {
         }
         setTimeout(()=>setLabel(""), 5000)
         console.log("A funny Death was created ! " + newFunnyDeath.header)
-
-
-
         setTimeout(()=>window.location.reload(), 1000)
-
 
     }
 
@@ -117,7 +113,6 @@ export default function CreateFunnyDeathForm(props) {
                                 "\r\n content : " + json.content +
                                 "\r\ndeadDate : " + json.deadDate.slice(0, 10)
                             )
-
 
                             resetFdForm();
                         }
@@ -374,8 +369,6 @@ export default function CreateFunnyDeathForm(props) {
         } else {
             alert("pas de data !");
         }
-        // 👇️ clear all input values in the form
-        reset()
 
         setTimeout(()=>setLabel(""), 5000)
     }
