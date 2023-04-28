@@ -84,15 +84,8 @@ export default function AppController() {
     }, [user]);
 
 
-    // /**
-    //  * This use Effect persist changes made on tasks in database
-    //  */
-    // useEffect.js (()=>{
-    //     if (user) {
-    //         saveStepListTasks(stepTasks);}
-    // }, [stepTasks]);
-    //
 ///////////////GLOBAL TRAITMENTS////////////////////////GLOBAL TRAITMENTS/////////////////////GLOBAL TRAITMENTS/////////////////////////
+
     function refresh(){
         window.location.reload()
     }
@@ -131,7 +124,7 @@ export default function AppController() {
             if (token) {
                 const decodedToken = jwt_decode(token);
                 if (decodedToken.exp * 1000 < Date.now()) {
-                    console.log("AUTO LOGOUT")
+                    console.log("AUTO LOGOUT");
                     // Token has expired
                     forcedLogout();
                 } else {
@@ -166,8 +159,6 @@ export default function AppController() {
     }
 
 //////////////////TASKS TRAITEMENTS/////////////////////////////////////////////////////////////////////////
-
-
 
     /**
      * This function add a StepTask and update StepTask List

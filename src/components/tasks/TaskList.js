@@ -97,25 +97,6 @@ export default function TaskList(props) {
             : [];
 
     });
-    //
-    // function refreshComments() {
-    //     console.log("REFRESH COMMENTS")
-    //     props.stepTasks.map(task => {
-    //         if (!task.comment) {
-    //             return {
-    //                 comment_id: task.id_task,
-    //                 comment_header: task.header,
-    //                 comment: "Ajoutez un commentaire"
-    //             };
-    //         } else {
-    //             return {
-    //                 comment_id: task.id_task,
-    //                 comment_header: task.header,
-    //                 comment: task.comment
-    //             };
-    //         }
-    //     })
-    // }
 
     /**
      * This useEffect updates my rendered task everytime steptasks state changes
@@ -127,14 +108,6 @@ export default function TaskList(props) {
     }, [props.stepTasks, props.setStepTasksDisplayArray, props.setStepTasksArray,
        props.updateStepTaskValidationDate]);
 
-    // /**
-    //  * This useEffect updates my comments everytime steptasks state changes
-    //  */
-    // useEffect(()=>{
-    //     console.log("REFRESH COMMENTS")
-    //     refreshComments()
-    // },[props.stepTasks])
-    //
 
     /**
      * This useEffect sets comments const when entering steplist. If a user is connected, it fetches user tasks comments
@@ -147,7 +120,6 @@ export default function TaskList(props) {
             props.fetchDefaultStepTasks();
         }
     }, [props.user]);
-
 
     /**
      * toggle expand ALL tasks
@@ -182,7 +154,6 @@ export default function TaskList(props) {
             props.updateStepTaskVisible(index, true)
         }
         stepTasksRender()
-
     };
 
     /**
@@ -201,7 +172,6 @@ export default function TaskList(props) {
             props.updateStepTaskValidationDate(index, today)
             }
         }
-
 
     function handleComment(i){
         console.log("handle Comment : " + i)
@@ -241,7 +211,6 @@ export default function TaskList(props) {
             setTimeout(() => (comments[index].comment = value), 500);
             console.log("handleChangeComment steptaskid : " + props.stepTasks[index].id_task)
     }
-
 
     /**
      * This function is launched when saving steptasks
@@ -291,7 +260,6 @@ export default function TaskList(props) {
         }
     }
 
-
     function stepTasksRender() {
 
         console.log("stepTaskRender !")
@@ -334,7 +302,8 @@ export default function TaskList(props) {
                                                               onClick={() => toggleTask(i)}/> )}
                                         <div key={nanoid()} onClick={() => toggleTask(i)}>
 
-                                            <h1>{props.stepTasks[i].header}</h1></div>
+                                            <h1 className="task-header">{props.stepTasks[i].header}</h1>
+                                        </div>
 
                                         {props.stepTasks[i].validationDate ? (
                                             <div className="task-done">
@@ -358,8 +327,7 @@ export default function TaskList(props) {
 
                                     {props.stepTasks[i].visible && (
                                         <div
-                                            key={nanoid()}
-                                            className="task-container">
+                                            key={nanoid()}>
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
                                                 {props.stepTasks[i].commentEdit ?
                                                     (<div>
@@ -367,23 +335,26 @@ export default function TaskList(props) {
                                                               defaultValue={props.stepTasks[i].comment}
                                                               placeholder="Ajouter un commentaire"
                                                               onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2></div>)
+                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2>
+                                                        <div className="task-previsionalDate">
+                                                            <p>Quand ?</p>
+                                                            <input type="date"
+                                                                   className="task-previsionalDate"
+                                                                   defaultValue={props.stepTasks[i].previsionalDate}
+                                                                   onChange={handleChangePrevDate(i)}
+                                                                   onBlur={()=>handleSavePrevDate(i)}
+                                                                   placeholder='date'/>
+                                                        </div>
+                                                    </div>)
                                                 :
                                                     (<div key={nanoid()}
-                                                          className="comment-container"
+                                                          className="task-postit"
                                                           onClick={(event)=>handleComment(i)}>
                                                     <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
+
                                                     </div>
                                                     )}
-                                            <div className="task-previsionnalDate">
-                                                <p>Quand ?</p>
-                                                <input type="date"
-                                                       className="task-previsionnalDate"
-                                                       defaultValue={props.stepTasks[i].previsionalDate}
-                                                       onChange={handleChangePrevDate(i)}
-                                                       onBlur={()=>handleSavePrevDate(i)}
-                                                       placeholder='date'/>
-                                            </div>
+
                                                     </div>
                                                 )}
 
