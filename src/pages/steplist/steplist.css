@@ -9,6 +9,9 @@
 .steplist-intro{
     margin: 2rem auto;
     width:60%;
+    border: solid whitesmoke;
+    border-radius: 20px;
+    padding: 1.5rem;
 }
 
 .step-list img{
@@ -36,5 +39,10 @@
 .step-list p {
     font-weight: normal;
     font-size: 1rem;
-    text-align: left !important;
+    text-align: justify;
+    text-justify: inter-character;
+}
+
+.steplist-intro a:hover{
+    font-size: 1.2rem;
 }

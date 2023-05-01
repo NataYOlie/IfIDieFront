@@ -35,7 +35,7 @@
 }
 
 .card-grey{
-  background: rgba(255, 255, 255);
+  background: rgb(182, 182, 182);
   border-radius: 20px;
   padding: 11px 12px 19px 11px;
   margin-inline: 10px;
@@ -68,7 +68,7 @@
 }
 
 .cimetary-content {
-  background: rgba(255, 255, 255);
+  background: rgb(182, 182, 182);
   border-radius: 25px;
   display: flex;
   align-items: center;

@@ -22,7 +22,7 @@ const Footer = () => {
           <h3>Abonnez-vous à notre Newsletter</h3>
         </div>
         <div>
-          <input type="text" placeholder='Entrez votre email' />
+          <input type="text" placeholder='Entrez votre email'/>
           <button>OK</button>
         </div>
         </div>
