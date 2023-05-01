@@ -4,6 +4,7 @@ import './createDefaultTask.css';
 import * as yup from "yup";
 import React, {useEffect, useState} from "react";
 import {log} from "util";
+import {backUrl} from "../../utils/url_back";
 
 export default function CreateFunnyDeathForm(props) {
     //TODAY :
@@ -23,7 +24,8 @@ export default function CreateFunnyDeathForm(props) {
 
 /////////FUNNYDEATH CONTROLLER///////FUNNYDEATH CONTROLLER/////////////////////////FUNNYDEATH CONTROLLER//////////////////////////////
 
-    const backUrl = "http://localhost:8081/adminboard";
+    const backUrlAdminboard = backUrl + "/adminboard";
+
     const [newFunnyDeath, setNewFunnyDeath] = useState()
     const [label, setLabel] = React.useState("");
 
@@ -48,7 +50,7 @@ export default function CreateFunnyDeathForm(props) {
         };
 
         //correspond à l'AUTHRESPONSE
-        fetch(backUrl + "/funnydeath/save", requestOptions)
+        fetch(backUrlAdminboard + "/funnydeath/save", requestOptions)
             .then(response => response.json())
             .then(json => setNewFunnyDeath(
                 {
@@ -97,7 +99,7 @@ export default function CreateFunnyDeathForm(props) {
                 };
 
                 //correspond à l'AUTHRESPONSE
-                fetch(backUrl + "/funnydeath/update/" + funnyDeathForm.id_funnydeath, requestOptions)
+                fetch(backUrlAdminboard + "/funnydeath/update/" + funnyDeathForm.id_funnydeath, requestOptions)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error("updateStepListTask : Network response was not ok");
@@ -144,7 +146,7 @@ export default function CreateFunnyDeathForm(props) {
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrl + "/funnydeath/delete/"  + funnyDeath_id, requestOptions)
+            fetch(backUrlAdminboard + "/funnydeath/delete/"  + funnyDeath_id, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("updateStepListTask : Network response was not ok");
@@ -180,7 +182,7 @@ export default function CreateFunnyDeathForm(props) {
         };
 
         const newFunnyDeaths = []
-        fetch(backUrl+ "/funnyDeaths", requestOptions)
+        fetch(backUrlAdminboard+ "/funnyDeaths", requestOptions)
             .then(response => response.json())
             .then(response => {
                 for (let i = 0; i < response.length; i++) {

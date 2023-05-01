@@ -4,13 +4,14 @@ import './createDefaultTask.css';
 import * as yup from "yup";
 import {useEffect, useState} from "react";
 import {nanoid} from "nanoid";
+import {backUrl} from "../../utils/url_back";
 
 export default function CreateUserStepTaskForm(props) {
 
 
 /////////////////CONTROLLER///////////////////////CONTROLLER///////////CONTROLLER/////////////CONTROLLER///////
 
-    const backUrl = "http://localhost:8081/task";
+    const backUrlTask = backUrl + "/task";
     const [newTask, setNewTask] = useState({})
     //TODAY :
     const todayprepare = new Date;
@@ -49,7 +50,7 @@ export default function CreateUserStepTaskForm(props) {
         console.log("lala" + requestOptions.method)
 
         //correspond à l'AUTHRESPONSE
-        fetch(backUrl + "/savetask/StepList/" + props.user.id, requestOptions)
+        fetch(backUrlTask + "/savetask/StepList/" + props.user.id, requestOptions)
             .then(response => response.json())
             .then(json => setNewTask(
                 {

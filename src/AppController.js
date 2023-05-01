@@ -3,6 +3,7 @@ import App from "./App";
 import './App.css'
 import jwt_decode from 'jwt-decode';
 import {Navigate} from "react-router";
+import {backUrl} from "./utils/url_back";
 
 /**
  * This controller is kind of an init method for If I Die App
@@ -278,7 +279,7 @@ export default function AppController() {
 
 //FETCH TASKS///////////////// FETCH TASKS ////////////////////////////FETCH TASKS////////////////////////////FETCH TASKS///////////////////////////////////////
 
-    const backUrlTask = "http://localhost:8081/task";
+    const backUrlTask = backUrl+"/task";
 
     /**
      * This function fetch DefaultStepTasks from ddb and reinitialize StepTasks
@@ -650,7 +651,7 @@ export default function AppController() {
 
 
 //////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH///////////////////FUNNY DEATH////////////////////////////////////
-    const backUrlFunnyDeath = "http://localhost:8081/funnydeath";
+    const backUrlFunnyDeath = backUrl + "/funnydeath";
 
     /**
      * This function fetch a random funnyDeath from ddb
