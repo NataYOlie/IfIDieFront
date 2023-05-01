@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import './createDefaultTask.css';
 import * as yup from "yup";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {nanoid} from "nanoid";
 
 export default function CreateDefaultStepTaskForm(props) {
@@ -88,7 +88,9 @@ export default function CreateDefaultStepTaskForm(props) {
     const schema = yup.object().shape({
         subtype: yup.string(),
         header: yup.string(),
-        description: yup.string()
+        description: yup.string(),
+        externalLink: yup.string().url("Cela n'a pas la forme d'une URL valide")
+
     });
 
     const {
@@ -190,8 +192,8 @@ export default function CreateDefaultStepTaskForm(props) {
     return (
     <div className='createDefaultTask section__padding'>
         <div className="createDefaultTask-container">
-            <h1>Créer une tâche Step par défaut </h1>
-            <h2>Cette tâche sera affichée à l'utilisateur dans sa todolist de base pour ses démarches</h2>
+            <h1>Mettre en Ordre</h1>
+            <h2> --  Administrer les tâches par défaut de todolist de base  -- </h2>
             <div className="createDefaultTaskFormContainer">
             <form className='createDefaultTask-writeForm' autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <div className="createDefaultTask-formGroup">
@@ -256,7 +258,7 @@ export default function CreateDefaultStepTaskForm(props) {
                 </div>
 
                 <div className="createDefaultTask-formGroup">
-                    <label>description</label>
+                    <label>Description</label>
                     <textarea type="text"
                            className="large_input"
                            placeholder='description'
@@ -268,11 +270,13 @@ export default function CreateDefaultStepTaskForm(props) {
 
                 <div className="createDefaultTask-formGroup">
                     <label>Ressource extérieure</label>
+                    <p>Lien vers un site officiel</p>
                     <input type="text"
                            placeholder='externalLink'
                            defaultValue={taskForm.external_link}
                            {...register("externalLink")}
                     />
+                    <p>{errors.externalLink?.message}</p>
                 </div>
 
                 <div className="createDefaultTask-button">

@@ -97,7 +97,8 @@ export default function CreateUserStepTaskForm(props) {
     const schema = yup.object().shape({
         subtype: yup.string().required("Merci de choisir une catégorie pour cette tâche"),
         header: yup.string().required("Merci de renseigner un titre pour cette tâche"),
-        description: yup.string()
+        description: yup.string(),
+        externalLink: yup.string().url("Cela n'a pas la forme d'une URL valide")
     });
 
     const {
@@ -205,6 +206,7 @@ export default function CreateUserStepTaskForm(props) {
                            defaultValue={taskForm.external_link}
                            {...register("externalLink")}
                     />
+                    <p>{errors.externalLink?.message}</p>
                 </div>
 
                 <div className="createDefaultTask-button">

@@ -54,14 +54,14 @@ export default function AppController() {
     const [login_label, setLogin_label] = useState("")
 
 /////USE EFFECTS//////////////////USE EFFECTS///////////////USE EFFECTS////////////////////////////////USE EFFECTS/////////////////////////////
-    /**
-     * This useEffect.js fetch StepTasks from ddb when launching app
-     */
-    useEffect(() => {
-        if (!user) {
-            fetchDefaultStepTasks();
-        }
-    }, []);
+//     /**
+//      * This useEffect.js fetch StepTasks from ddb when launching app
+//      */
+//     useEffect(() => {
+//         if (!user) {
+//             fetchDefaultStepTasks();
+//         } else fetchUserStepTasks()
+//     }, []);
 
     /**
      * This useEffect.js fetch random funnyDeath when launching app
@@ -104,6 +104,7 @@ export default function AppController() {
         localStorage.removeItem(JSON.stringify(user))
         localStorage.clear()
         if (window.confirm("Votre session a expiré ! Merci de vous reconnecter")) {
+            fetchDefaultStepTasks()
             return (
                 <Navigate to={"/login"}/>
             )
@@ -111,7 +112,7 @@ export default function AppController() {
     }
 
     function setUserNew(newUser){
-        setUser(newUser)
+        setUser(newUser);
         localStorage.setItem('user', JSON.stringify(newUser));
     }
 
@@ -219,6 +220,7 @@ export default function AppController() {
         // Update the task object with new data
         updatedStepTasks[index] = {...updatedStepTasks[index], visible: boolean};
         setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+        updateStepListTask(updatedStepTasks[index]);
         console.log(stepTasks[index].header + "visible status " +stepTasks[index].visible )
     }
 
@@ -227,6 +229,7 @@ export default function AppController() {
             const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
             updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate}; // Update the task object with new data
             setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+            updateStepListTask(updatedStepTasks[index]);
             console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
         }else console.log("check pas d'index")
     }
@@ -236,6 +239,7 @@ export default function AppController() {
             const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
             updatedStepTasks[index] = {...updatedStepTasks[index], previsionalDate: previsionalDate}; // Update the task object with new data
             setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+            updateStepListTask(updatedStepTasks[index]);
             console.log(stepTasks[index].header + "previsionalDate APP CONTROLLER " + updatedStepTasks[index].previsionalDate)
         }else console.log("check pas d'index")
     }
@@ -363,24 +367,62 @@ export default function AppController() {
                             user:user
                         }
                     );
+                    console.log("fetchuser push")
                 }if (newTasksUser.length>0){
                     console.log("fetchUserStepTasks " + newTasksUser.length + " tâches")
                     setStepTasksArray(newTasksUser)
+                    return newTasksUser;
 
                     //C'est ici que je crée mes tâches user si c'est la première fois
                 }else {
                     const defaultTasks = stepTasks.filter(task => task.default_task);
-                    const userDefaultTasks = defaultTasks.map(task => ({
-                        ...task,
-                        default_task: false,
-                        creationDate: today,
-                        id_task: null
-                    }));
-                    setStepTasksArray(userDefaultTasks);
+                    const userDefaultTasks =
+                        defaultTasks.map(task =>
+                            saveStepListTask(
+                                task.subtype,
+                                task.header,
+                                task.description,
+                                task.external_link,
+                                task.task_color,
+                                task.comment,
+                                task.validationDate,
+                                task.previsionalDate,
+                                task.modificationDate)
+                            )
+
+
+                    fetch(backUrlTask + "/mySteplist/" + user.id, requestOptions)
+                        .then(response => response.json())
+                        .then(response => {
+                            for (let i = 0; i < response.length; i++) {
+                                userDefaultTasks.push({
+                                        id_task: response[i].id_task,
+                                        description: response[i].description,
+                                        external_link: response[i].externalLink,
+                                        header: response[i].header,
+                                        previsionalDate: response[i].previsionalDate,
+                                        subtype: response[i].subtype,
+                                        task_color: response[i].taskColor,
+                                        listType: response[i].listType,
+                                        validationDate: response[i].validationDate,
+                                        visible: response[i].visible,
+                                        comment: response[i].comment,
+                                        creationDate: response[i].creationDate,
+                                        commentEdit: false,
+                                        default_task: response[i].defaultTask,
+                                        modificationDate: response[i].modificationDate,
+                                        user: user
+                                    }
+                                );
+                                console.log("fetchuser push")
+                                setStepTasksArray(userDefaultTasks)
+                            }
+                            })
                     console.log("User DUPLICATE DEFAULT " + userDefaultTasks.length + " tâches ");
+                    return userDefaultTasks;
                 }
             })
-        return stepTasks
+
     }
 
 
@@ -473,6 +515,7 @@ export default function AppController() {
                 })
                 .then(json => setNewTask(
                     {
+                        id_task: json.id_task,
                         subtype: json.subtype,
                         header: json.header,
                         description: json.description,

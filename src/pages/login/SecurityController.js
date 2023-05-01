@@ -42,7 +42,6 @@ export default function SecurityController(props) {
                 // handle error
                 alert("Login et/ou Mot de passe incorrect(s)");
             });
-
     }
 
 

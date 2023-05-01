@@ -14,7 +14,9 @@ import {
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {Navigate} from "react-router";
 import {Box, Modal} from "@mui/material";
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import {CreateUserStepTaskForm} from "../index";
+import {Link} from "react-router-dom";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus, faCircleXmark)
 
 /**
@@ -28,6 +30,45 @@ export default function TaskList(props) {
     const [newTaskDisplay,setNewTaskDisplay] = useState([]);
     const [shouldRedirect, setShouldRedirect] = useState(false);
     const [toggleButton, setToggleButton] = useState("Déplier");
+
+    //Post It
+    const [postItRotate, setPostItRotate] = useState([
+        "rotate(5deg)",
+        "rotate(-5deg)",
+        "rotate(-8deg)",
+        "rotate(10deg)",
+        "rotate(3deg)",
+        "rotate(-10deg)",
+        "rotate(15deg)",
+        "rotate(0deg)",
+        "rotate(-3deg)"
+    ]);
+
+    const postitColorValue = (task)=> {
+        console.log("postItColor VALUE : " + task.task_color)
+        const postItRotateRandomIndex = Math.floor(Math.random()*postItRotate.length)
+        switch (task.task_color){
+            case "pastille-rouge":
+                return {background: "#FF4800FF",
+                    transform : postItRotate[postItRotateRandomIndex]
+                    };
+            case "pastille-jaune":
+                return { background: "#FCD200FF",
+                    transform : postItRotate[postItRotateRandomIndex]
+                };
+            case "pastille-vert":
+                return { background: "var(--vert)",
+                    transform : postItRotate[postItRotateRandomIndex]};
+            case "pastille-bleu":
+                return { background: "var(--bleu)",
+                    transform : postItRotate[postItRotateRandomIndex]};
+            case "":
+                return { background: "#ece2c2",
+                    transform : postItRotate[postItRotateRandomIndex]};
+            default :
+                return { background: "#ece2c2" };;
+        }
+    }
 
     //MODAL
     const [open, setOpen] = React.useState(false);
@@ -56,7 +97,6 @@ export default function TaskList(props) {
     const today = todayprepare.toISOString().slice(0, 10);
 
     //Pour les commentaires, je créé une liste qui a la taille des step tasks
-
     const [comments, setComments] = useState(() => {
         return props.stepTasks
             ? props.stepTasks.map((task) => {
@@ -77,6 +117,7 @@ export default function TaskList(props) {
             : [];
     });
 
+    //Idem que les comments pour les dates objectif
     const [previsionalDate, setPrevisionalDate] = useState(() => {
         return props.stepTasks
             ? props.stepTasks.map((task) => {
@@ -121,10 +162,19 @@ export default function TaskList(props) {
         }
     }, [props.user]);
 
+    useEffect(() => {
+        if (props.user) {
+           props.fetchUserStepTasks()
+        } else {
+            props.fetchDefaultStepTasks();
+        }
+    }, [props.user]);
+
     /**
      * toggle expand ALL tasks
      */
     function toggleExpand() {
+
         if (props.stepTasks){
             if (props.stepTasks[0].visible){
                 props.stepTasks.forEach((task) => {task.visible = false});
@@ -145,6 +195,7 @@ export default function TaskList(props) {
      * @param index
      */
     const toggleTask = (index) => {
+
         console.log('Toggle task called with index:', index);
         if (props.stepTasks[index].visible){
             props.stepTasks[index].visible = false
@@ -175,29 +226,32 @@ export default function TaskList(props) {
 
     function handleComment(i){
         console.log("handle Comment : " + i)
+        setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
         //Enregistrer le commentaire
         if (props.stepTasks[i].commentEdit) {
             //Si pas de user je demande de login
             if (props.user) {
                 props.stepTasks[i].commentEdit = false
                 let index
-                if (comments[i].comment_id) {
-                    index = props.stepTasks.findIndex(task => task.id_task === comments[i].comment_id)
-                    console.log("IF index : " + index + " et le commentsID : " + comments[i].comment_id)
-                    props.updateStepTaskComment(index, comments[i].comment)
+                    if (comments[i].comment_id) {
+                        index = props.stepTasks.findIndex(task => task.id_task === comments[i].comment_id)
+                        console.log("IF index : " + index + " et le commentsID : " + comments[i].comment_id)
+                        props.updateStepTaskComment(index, comments[i].comment)
+                        stepTasksRender()
 
+                    } else {
+                        index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
+                        console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
+                        props.updateStepTaskComment(index, comments[i].comment)
+                        stepTasksRender()
+                    }
                 } else {
-                    index = props.stepTasks.findIndex(task => task.header == comments[i].comment_header)
-                    console.log("ELSE index : " + index + " pourtant comments header " + comments[i].comment_header)
-                    props.updateStepTaskComment(index, comments[i].comment)
-                }
-
-            } else {
                 console.log("pas de user")
                 props.setLoginRedirectMessage("Il faut se connecter pour enregistrer une liste de tâches")
                 setShouldRedirect(true)
             }
 
+            stepTasksRender()
             //Mon choix
         } else {
             props.stepTasks[i].commentEdit = true
@@ -219,6 +273,7 @@ export default function TaskList(props) {
         const updatedStepTasks = [...props.stepTasks]
         console.log(updatedStepTasks[0].comment);
         if (props.user) {
+            console.log("handleSaveLIst IF")
             props.saveStepListTasks();
         } else {
             console.log("pas d'utilisateur");
@@ -260,7 +315,18 @@ export default function TaskList(props) {
         }
     }
 
+    function handleCommentEdit(i) {
+        console.log("toutou")
+        props.stepTasks[i].commentEdit = true
+        stepTasksRender()
+    }
+
     function stepTasksRender() {
+
+        if (props.stepTasks && props.stepTasks[0].id_task ==null){
+            props.fetchUserStepTasks()
+            window.location.reload()
+        }
 
         console.log("stepTaskRender !")
         newTaskDisplay.length = 0;
@@ -294,84 +360,128 @@ export default function TaskList(props) {
                                     <div className="task-header"
                                          key={nanoid()}>
                                         {props.stepTasks[i].visible ? (
+                                            <Tooltip title="Plier">
                                             <FontAwesomeIcon icon="fa-square-minus"
                                                              size="lg" style={{color: "#12a3df"}}
                                                              onClick={() => toggleTask(i)}/>
-                                        ) : (<FontAwesomeIcon icon="fa-square-plus" size="lg"
+                                            </Tooltip>
+                                        ) : (
+                                            <Tooltip title="Déplier">
+                                            <FontAwesomeIcon icon="fa-square-plus" size="lg"
                                                               style={{color: "#12a3df"}}
-                                                              onClick={() => toggleTask(i)}/> )}
+                                                              onClick={() => toggleTask(i)}/>
+
+                                            </Tooltip>)}
                                         <div key={nanoid()} onClick={() => toggleTask(i)}>
 
                                             <h1 className="task-header">{props.stepTasks[i].header}</h1>
                                         </div>
-
-                                        {props.stepTasks[i].validationDate ? (
-                                            <div className="task-done">
-                                                <FontAwesomeIcon icon="fa-circle-check"
-                                                                 size="xl"
-                                                                 className={props.stepTasks[i].task_color}
-                                                                 onClick={()=>checkTask(i)}/>
-                                                <h4>OK</h4>
+                                        <> {props.user && (
+                                            <div className="task-delete">
+                                                {/*<p>Supprimer cette tâche</p>*/}
+                                                <Tooltip title="Supprimer cette tâche">
+                                                    <FontAwesomeIcon icon="fa-solid fa-circle-xmark"
+                                                                     size="xl"
+                                                                     className={props.stepTasks[i].task_color}
+                                                                     onClick={()=>deleteTask(i)}/>
+                                                </Tooltip>
                                             </div>
+                                        )}
+                                        </>
 
-                                        ) : (
-                                            <div className="task-done">
-                                            <FontAwesomeIcon icon="fa-circle"
-                                                              size="xl"
-                                                              className={props.stepTasks[i].task_color}
-                                                              onClick={()=>checkTask(i)}/>
-                                                <h4>En attente</h4>
-                                            </div>
-                                                )}
                                     </div>
+
 
                                     {props.stepTasks[i].visible && (
                                         <div
                                             key={nanoid()}>
                                             <p key={nanoid()}>{props.stepTasks[i].description}</p>
+                                            {props.stepTasks[i].external_link  ? (
+                                                <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus :  {new URL(props.stepTasks[i].external_link).hostname}</a>):(<></>)}
                                                 {props.stepTasks[i].commentEdit ?
-                                                    (<div>
+                                                    (<div className="task-commentEdit">
                                                     <textarea key={nanoid()}
                                                               defaultValue={props.stepTasks[i].comment}
-                                                              placeholder="Ajouter un commentaire"
+                                                              placeholder="Contenu du post it"
                                                               onChange={(e) => handleChangeComment(i, e.target.value)}></textarea>
-                                                    <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix </h2>
-                                                        <div className="task-previsionalDate">
-                                                            <p>Quand ?</p>
-                                                            <input type="date"
-                                                                   className="task-previsionalDate"
-                                                                   defaultValue={props.stepTasks[i].previsionalDate}
-                                                                   onChange={handleChangePrevDate(i)}
-                                                                   onBlur={()=>handleSavePrevDate(i)}
-                                                                   placeholder='date'/>
-                                                        </div>
-                                                    </div>)
-                                                :
-                                                    (<div key={nanoid()}
-                                                          className="task-postit"
-                                                          onClick={(event)=>handleComment(i)}>
-                                                    <div className="comment"><p>{props.stepTasks[i].comment}</p></div>
 
+                                                        {/*<div className="task-previsionalDate">*/}
+                                                        {/*    <p>Estimez la priorité de la tâche en donnant une date prévisionnelle</p>*/}
+                                                            {/*<select>*/}
+                                                            {/*    <option>dans la journée</option>*/}
+                                                            {/*    <option>dans la semaine</option>*/}
+                                                            {/*    <option>dans le mois</option>*/}
+                                                            {/*    <option>dans l'année</option>*/}
+                                                            {/*    <option>un jour</option>*/}
+                                                            {/*</select>*/}
+                                                            {/*<input type="date"*/}
+                                                            {/*       className="task-previsionalDate"*/}
+                                                            {/*       defaultValue={props.stepTasks[i].previsionalDate}*/}
+                                                            {/*       onChange={handleChangePrevDate(i)}*/}
+                                                            {/*       onBlur={()=>handleSavePrevDate(i)}*/}
+                                                            {/*       placeholder='date'/>*/}
+                                                        {/*</div>*/}
+
+                                                            <h2 onClick={(event)=>handleComment(i)}>Enregistrer mon choix</h2>
                                                     </div>
+                                                    ) : props.stepTasks[i].comment ?(
+                                                        <Tooltip title="Modifier le post it">
+                                                        <div key={nanoid()}
+                                                             className="task-postit"
+                                                             style={postitColorValue(props.stepTasks[i])}
+                                                             onClick={(event)=>handleComment(i)}>
+                                                            <div className="comment">
+                                                                <p>{props.stepTasks[i].comment}</p>
+                                                                {props.stepTasks[i].previsionalDate ? (
+                                                                <p>Avant le {props.stepTasks[i].previsionalDate}</p>
+                                                                    ): null}
+                                                            </div>
+                                                        </div>
+                                                        </Tooltip>
+                                                        ):(
+                                                            <div className="task-header"
+                                                            onClick={()=>handleCommentEdit(i)}>
+                                                                <h2>Ajouter un Post It</h2>
+                                                            </div>
                                                     )}
-
                                                     </div>
                                                 )}
 
-                                    {props.stepTasks[i].external_link  ? (
-                                    <a href={props.stepTasks[i].external_link} target="_blank">En savoir plus...</a>):(<></>)}
-                                    <div className="task-delete">
-                                        <FontAwesomeIcon icon="fa-solid fa-circle-xmark"
-                                                         size="xl"
-                                                         className={props.stepTasks[i].task_color}
-                                                         onClick={()=>deleteTask(i)}/>
-                                    </div>
+                                    <> {props.user && (
+                                        <div className="task-header">
+                                            {props.stepTasks[i].validationDate ? (
+                                                <div className="task-done"
+                                                     onClick={()=>checkTask(i)}>
+                                                    <Tooltip title="Changer le statut">
+                                                        <FontAwesomeIcon icon="fa-circle-check"
+                                                                         size="4x"
+                                                                         className={props.stepTasks[i].task_color}
+                                                        />
+                                                    </Tooltip>
+                                                    <h4>Fait !</h4>
+                                                </div>
+
+                                            ) : (
+                                                <div className="task-done"
+                                                     onClick={()=>checkTask(i)}>
+                                                    <Tooltip title="Changer le statut">
+                                                        <FontAwesomeIcon icon="fa-circle"
+                                                                         size="sm"
+                                                                         className={props.stepTasks[i].task_color}
+                                                                         onClick={()=>checkTask(i)}/>
+                                                    </Tooltip>
+                                                    <h4>A Faire</h4>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                    </>
+
                                 </div>
                             )
-                            //A chaque tâche traitée je l'ajoute à la liste entière
                         }
                     }
-                }
+                }//A chaque tâche traitée je l'ajoute à la liste entière
                 //J'ai fait une catégorie, je passe à la suivante
                 newTaskDisplay.push(newList)
 
@@ -401,13 +511,13 @@ export default function TaskList(props) {
 
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
-                    <div>
+                    <div className="task-buttons">
                         {props.user ? (
                         <button className="add-writeButton" key={nanoid()} onClick={()=>handleOpen()}> Créer une tâche </button>):
-                            null}
-                        <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
-                            Enregistrer
-                        </button>
+                            <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
+                                 Enregistrer
+                            </button>}
+
                     </div>
                 </div>
             </div>

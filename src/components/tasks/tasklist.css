@@ -37,10 +37,11 @@
     font-weight: bold;
     font-style: italic;
     color: var(--orange);
-    margin-top : 1rem;
+    /*margin-top : 1rem;*/
     text-align: left;
     width: auto;
     cursor: pointer;
+    margin: 1rem auto;
 }
 
 .task-container textarea{
@@ -81,7 +82,10 @@
     font-family: var(--font-family);
     font-size: 0.9rem;
     font-style: italic;
-    margin : 2rem 3rem;
+    font-weight: bold;
+    margin : auto ;
+    padding-top : 1rem;
+
 }
 
 .task-header{
@@ -102,21 +106,23 @@
 
 
 .task-postit{
-    /*z-index: 2; !* integer *!*/
-    background:var(--rouge) !important;
+    z-index: 2; /* integer */
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
     padding: 2rem;
-    margin: 2rem auto;
-    width: 20vw;
-    height: 20vw;
-    filter: drop-shadow(3px 3px 10px rgb(0 0 0 / 0.2));
-    transform: rotate(5deg);
+    margin-top: 2rem;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-left: 20rem;
+    min-width: 15vw;
+    min-height: 15vw;
+    width: fit-content;
+    height: fit-content;
+    aspect-ratio: 1 / 1;
+    filter: drop-shadow(4px 4px 3px rgb(0 0 0 / 0.2));
 }
 
-/*.task-postit:after {*/
-/*    content: "";*/
-/*    display: block;*/
-/*    padding-bottom: 100%;*/
-/*}*/
 
 .task-category{
     font-family: var(--font-titles);
@@ -126,6 +132,24 @@
     width: 80%;
 
 }
+
+.task-done{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.task-done h4{
+    text-align: right;
+    margin: 1rem;
+}
+
+.task-buttons{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+
 
 /*//////////////TASK COLOR///////////////////////////*/
 .pastille {
@@ -157,6 +181,7 @@
     margin-left: 2rem;
 }
 
+
 /*////////  COMMENTS //////////*/
 
 .comment-container{
@@ -171,30 +196,42 @@
 }
 
 .comment{
-    background: rgba(133, 133, 133, 0.17);
     cursor: pointer;
     border-radius: 20px;
-    padding: 2rem;
-    margin: 10% 0;
-    width: 120%;
+    /*padding: 2rem;*/
+    /*margin: 10% 0;*/
+    /*width: 120%;*/
 
 }
 .comment p{
     text-align: center;
-    /*text-justify: newspaper;*/
-    /*color: #8b0015;*/
+    padding:0.5rem;
+    font-family: var(--font-titles);
     white-space: pre-line;
+    font-size: 1.2vw;
 
+}
+
+.task-commentEdit{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 /*PREVISIONAL DATE*/
 .task-previsionalDate{
     font-family: var(--font-family);
+    display: flex;
+    flex-direction: column;
     border-radius: 15px;
+    justify-content: center;
+    align-content: center;
 }
 
 .task-previsionalDate p {
-    text-align: right;
+    text-align: left;
     font-style: italic;
     color: var(--marron);
 }
@@ -202,8 +239,10 @@
 /*DELETE*/
 .task-delete{
     text-align: right;
+    /*margin : 2rem;*/
 }
 .task-delete svg{
+    justify-self: flex-end;
     color: var(--rouge);
 }
 
@@ -283,4 +322,88 @@
     boxShadow: 24 px;
     p: 4;
     width:1000px;
+}
+
+@media screen and (max-width: 900px){
+    .section__padding {
+        padding: 4rem 2rem !important;
+    }
+    .task-container{
+        width: 100%;
+        margin: 0;
+    }
+    .task-container{
+        width: 100%;
+        margin: 0;
+    }
+    .task-postit{
+        margin:auto;
+    }
+    .comment p {
+        font-size: 2vw;
+    }
+
+    .task-header h1 {
+        font-size: 1.2rem !important;
+        line-height: 20px !important;
+    }
+
+    .task-header svg {
+        text-align: left;
+    }
+    .section__margin {
+        margin: 4rem 2rem;
+    }
+
+    .step-list h1{
+        font-size: 3rem !important;
+    }
+    .step-list img{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .section__padding {
+        padding: 0rem !important;
+    }
+    .task-container{
+        width: 100%;
+        margin: 0;
+    }
+
+    .task-container h1{
+        margin: auto 0.5rem;
+    }
+
+    .task{
+        width: 90%;
+        margin: 2rem 0;
+    }
+
+    .task-postit{
+        margin:auto;
+    }
+    .comment p {
+        font-size: 2vw;
+    }
+
+    .task-header h1 {
+        font-size: 1.2rem !important;
+        line-height: 20px !important;
+    }
+
+    .task-header svg {
+        text-align: left;
+    }
+    .section__margin {
+        margin: 4rem 2rem;
+    }
+
+    .step-list h1{
+        font-size: 3rem !important;
+    }
+    .step-list img{
+     display: none;
+    }
 }

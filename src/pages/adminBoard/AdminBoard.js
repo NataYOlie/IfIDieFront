@@ -21,12 +21,12 @@ export default function AdminBoard(props) {
                 <button className={buttonClass[0]}
                         type="submit"
                         onClick={handleToggle}>
-                    Créer une tache
+                    Mettre en Ordre
                 </button>
                 <button className={buttonClass[1]}
                         type="submit"
                         onClick={handleToggle}>
-                Créer une funnydeath
+                FunnyDeath
                 </button>
             </div>
 
@@ -38,15 +38,15 @@ export default function AdminBoard(props) {
         <div className="adminBoard section__padding">
             <div>
                 <div className="adminBoard-container">
-                <h1>Bienvenue cher Administratrice !</h1>
+                <h1>Bienvenue cher.e Admin !</h1>
                 <div className="button-centered">
-                <p>Que souhaitez vous faire ?</p>
+                <p>Que souhaitez vous administrer ?</p>
                 <ButtonSet />
                 </div>
             </div>
 
             {toggleCreateTask &&(
-                <div>
+                <>
                 <CreateDefaultStepTaskForm
                     user={props.user}
                     addStepTask={props.addStepTask}
@@ -97,7 +97,7 @@ export default function AdminBoard(props) {
                             setToggleTaskList={setToggleTaskList}
                         />
                     )}
-                </div>
+                </>
             )
             }
 

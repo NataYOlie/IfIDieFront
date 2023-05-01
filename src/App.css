@@ -105,10 +105,10 @@ button{
 
 @media screen and (max-width: 550px){
   .section__padding{
-    padding: 4rem 2rem !important;
+    padding: 4rem 0.5rem !important;
   }
   .section__margin{
-   margin:4rem 2rem;
+   margin:4rem 0;
   }
 
 }

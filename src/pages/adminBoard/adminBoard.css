@@ -60,11 +60,12 @@
     border: none;
     border-radius: 10px;
     padding: 12px 30px;
-    color: white;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 600;
     font-size: 14px;
     line-height: 21px;
     font-family: var(--font-family);
+    margin: 2rem;
 }
 .adminBoard-white-writeButton:hover{
     filter: drop-shadow(0 0 0.75rem rgba(255, 255, 255, 0.8));

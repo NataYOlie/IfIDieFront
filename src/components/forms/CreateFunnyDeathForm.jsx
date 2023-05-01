@@ -57,7 +57,7 @@ export default function CreateFunnyDeathForm(props) {
                     content: json.content,
                     deadDate: json.deadDate.slice(0, 10)
                 }) );
-            resetFdForm()
+
 
         }catch (error) {
             console.error(error);
@@ -114,7 +114,7 @@ export default function CreateFunnyDeathForm(props) {
                                 "\r\ndeadDate : " + json.deadDate.slice(0, 10)
                             )
 
-                            resetFdForm();
+
                         }
                     )
 
@@ -387,8 +387,6 @@ export default function CreateFunnyDeathForm(props) {
     }
 
     function displayFunnyForm(){
-        console.log("DISPLAY FD FORM")
-
         setFunnyDeathRender ([
             <div className="createDefaultTaskFormContainer">
                 <form id="funnyForm" className='createDefaultTask-writeForm' autoComplete='off'
@@ -428,10 +426,11 @@ export default function CreateFunnyDeathForm(props) {
                                 </select>
                             </>
                         )}
+                        <p> </p>
 
                         <div id="Inputs">
                             <div className="createDefaultTask-formGroup">
-                                <label>Nom du defunt</label>
+                                <label>Nom du défunt</label>
                                 <input type="text"
                                        placeholder='Nom du défunt'
                                        defaultValue={funnyDeathForm.deadName}
@@ -441,7 +440,7 @@ export default function CreateFunnyDeathForm(props) {
                             </div>
 
                             <div className="createDefaultTask-formGroup">
-                                <label>Titre de la Mort sympa</label>
+                                <label>Titre de la FunnyDeath</label>
                                 <input type="text"
                                        placeholder='Titre'
                                        defaultValue={funnyDeathForm.header}
@@ -455,7 +454,7 @@ export default function CreateFunnyDeathForm(props) {
                                 <textarea type="text"
                                           id="histoire"
                                           className="large_input"
-                                          placeholder='histoire'
+                                          placeholder='Histoire'
                                           defaultValue={funnyDeathForm.content}
                                           {...register("content")}
                                 />
@@ -465,7 +464,7 @@ export default function CreateFunnyDeathForm(props) {
                             <div className="createDefaultTask-formGroup">
                                 <label>Date</label>
                                 <input type="date"
-                                       placeholder='date'
+                                       placeholder='Date'
                                        defaultValue={getFunnyDeathFormDate()}
                                        {...register("deadDate")}
                                 />
@@ -473,7 +472,7 @@ export default function CreateFunnyDeathForm(props) {
                         </div>
                         <div className="createDefaultTask-button">
                             <button className='createDefaultTask-writeButton' type="submit">
-                                {searchFunnyDeath} une Mort Sympa
+                                {searchFunnyDeath} une FunnyDeath
                             </button>
                         </div>
 
@@ -491,8 +490,8 @@ export default function CreateFunnyDeathForm(props) {
 return (
     <div className='createDefaultTask section__padding'>
         <div className="createDefaultTask-container">
-            <h1>Créer une FunnyDeath ! </h1>
-            <h2>Cette FunnyDeath sera ajouté à la liste des FunnyDeath Random affichées en Homepage</h2>
+            <h1>FunnyDeath</h1>
+            <h2>--  Administrer les FunnyDeaths affichées en Homepage  --</h2>
 
             {funnyDeathRender}
 

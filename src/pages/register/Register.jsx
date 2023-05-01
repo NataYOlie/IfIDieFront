@@ -87,7 +87,6 @@ import './register.css';
                                 Créer un compte
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>

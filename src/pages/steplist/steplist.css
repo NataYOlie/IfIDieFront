@@ -14,9 +14,9 @@
 .step-list img{
     position: absolute;
     max-width: 10%;
-    right:20% ;
+    right:10% ;
     transform: rotateY(180deg);
-    top:60%;
+    top:30%;
 }
 
 

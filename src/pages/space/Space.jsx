@@ -1,34 +1,78 @@
 import React from 'react';
 import './space.css'
-import profile_banner from '../../assets/OLD/profile_banner.png'
-import profile_pic from '../../assets/OLD/profile.jpg'
-import Cards from '../../components/cards/Cards'
+import {Link} from "react-router-dom";
 
-const Space = () => {
+const Space = (props) => {
+
+    function percentageDone() {
+        const steptasks = props.stepTasks;
+        console.log("percentage done" + props.stepTasks.length)
+        if (props.stepTasks.length > 0){
+            let count = 0;
+            steptasks.forEach(task => {
+                if (task.validationDate) {
+                    count += 1;
+                }
+            });
+            console.log("count " + count)
+            let percentage = (count * 100) /props.stepTasks.length ;
+            return Math.floor(percentage);
+
+        }else {
+            return 0
+        }
+    }
+
 
   return (
     <div className='profile section__padding'>
       <div className="profile-top">
         <div className="profile-banner">
-          <img src={profile_banner} alt="banner" />
+          {/*<img src={profile_banner} alt="banner" />*/}
         </div>
         <div className="profile-pic">
-            <img src={profile_pic} alt="profile" />
-            <h3>James Bond</h3>
+            {/*<img src={profile_pic} alt="profile" />*/}
+            <h3>{props.user.surname} {props.user.lastname}</h3>
         </div>
+          {props.user.role === "ROLE_ADMIN" && (
+              <h3>- ADMIN -</h3>
+          )}
       </div>
-      <div className="profile-bottom">
-        <div className="profile-bottom-input">
-          <input type="text" placeholder='Search Item here' />
-          <select>
-            <option>Recently Listed</option>
-            <option>Popular</option>
-            <option>Low to High</option>
-            <option>High to Low</option>
-          </select>
+
+
+        <div className="space-content">
+            <div className="space-info">
+                <h1>Vos Infos</h1>
+                <div>
+                    <h2>Nom : </h2>
+                    <p>{props.user.lastname}</p>
+                    <h2>Prénom : </h2>
+                    <p>{props.user.surname}</p>
+                    <h2>Email : </h2>
+                    <p>{props.user.email}</p>
+                    <h2>Adresse : </h2>
+                    <p>non renseignée</p>
+                </div>
+            </div>
+            <div className="space-info">
+                <h1>Vos éléments : </h1>
+                {props.user.role === "ROLE_USER" && (
+                    <div>
+                        <h2>Mettre en ordre : </h2>
+                        <p>{percentageDone()} % de tâches validées ! </p>
+                        <Link to ="/mettre_en_ordre">Voir ma liste</Link>
+                    </div>
+                )}
+                {props.user.role === "ROLE_ADMIN" && (
+                    <div>
+                        <h2>Administration </h2>
+                        <Link to ="/adminboard">Tableau de board</Link>
+                    </div>
+                )}
+
+            </div>
         </div>
-        <Cards title="Item" />
-      </div>
+
     </div>
   );
 };
