@@ -1,14 +1,14 @@
-/**
- * Local Back URL
- * @type {string}
- */
-export const backUrl = "http://localhost:8081";
-
 // /**
-//  * Deployment Back URL
+//  * Local Back URL
 //  * @type {string}
 //  */
-// export const backUrl = "http://34.163.128.226:8081";
+// export const backUrl = "http://localhost:8081";
+
+/**
+ * Deployment Back URL
+ * @type {string}
+ */
+export const backUrl = "http://34.163.128.226:8081";
 
 
 
