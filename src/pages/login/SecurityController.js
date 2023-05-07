@@ -1,9 +1,10 @@
 import Login from "./Login";
 import {Navigate} from "react-router";
+import {backUrl} from "../../utils/url_back";
 
 export default function SecurityController(props) {
 
-    const backUrl = "http://localhost:8081/security";
+    const backUrlSecurity = backUrl + "/security";
 
     /**
      * This method fetch user and gives them a token + affect a role.
@@ -19,7 +20,7 @@ export default function SecurityController(props) {
         };
 
         //correspond à l'AUTHRESPONSE
-        fetch(backUrl + "/authorize", requestOptions)
+        fetch(backUrlSecurity + "/authorize", requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Authentication failed");

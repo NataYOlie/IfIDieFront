@@ -1,11 +1,12 @@
 import {Register} from "../index";
 import "whatwg-fetch";
 import RegisterValidation from "./RegisterValidation";
+import {backUrl} from "../../utils/url_back";
 
 
 export default function RegisterController(props){
 
-    const backUrl = "http://localhost:8081/security";
+    const backUrlSecurity = backUrl + "/security";
 
     function createUser(username, password, surname, lastname) {
 
@@ -18,7 +19,7 @@ export default function RegisterController(props){
 
 
         //correspond à l'AUTHRESPONSE
-        fetch(backUrl + "/register", requestOptions)
+        fetch(backUrlSecurity + "/register", requestOptions)
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 409) {
