@@ -41,7 +41,8 @@ export default function TaskList(props) {
         "rotate(-10deg)",
         "rotate(15deg)",
         "rotate(0deg)",
-        "rotate(-3deg)"
+        "rotate(-3deg)",
+        "rotate(-17deg)"
     ]);
 
     const postitColorValue = (task)=> {
@@ -78,19 +79,19 @@ export default function TaskList(props) {
         setTimeout(window.location.reload.bind(window.location), 1000)
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        bgcolor: '#FCD200FF',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        width:1000,
-        maxHeight:700,
-        overflowY:'scroll',
-    };
+    // const style = {
+    //     position: 'absolute',
+    //     top: '50%',
+    //     left: '50%',
+    //     transform: 'translate(-50%, -50%)',
+    //     bgcolor: '#FCD200FF',
+    //     border: '2px solid #000',
+    //     boxShadow: 24,
+    //     p: 4,
+    //     width:1000,
+    //     maxHeight:700,
+    //     overflowY:'scroll',
+    // };
 
     //TODAY
     const todayprepare = new Date;
@@ -527,7 +528,7 @@ export default function TaskList(props) {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
-                <Box sx={{ ...style, width: 1000 }}>
+                <Box classes={{ root: 'modal-box' }}>
                     <CreateUserStepTaskForm
                         user={props.user}
                         addStepTask={props.addStepTask}
