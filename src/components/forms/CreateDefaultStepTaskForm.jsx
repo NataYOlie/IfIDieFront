@@ -159,7 +159,7 @@ export default function CreateDefaultStepTaskForm(props) {
 
     const schema = yup.object().shape({
         subtype: yup.string(),
-        header: yup.string(),
+        header: yup.string().required(),
         description: yup.string(),
         externalLink: yup.string().url("Cela n'a pas la forme d'une URL valide")
 
