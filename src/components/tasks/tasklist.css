@@ -395,6 +395,7 @@
     }
     .comment p {
         font-size: 2vw;
+        min-font-size: 12px;
     }
 
     .task-header h1 {
