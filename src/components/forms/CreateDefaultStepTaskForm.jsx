@@ -78,7 +78,7 @@ export default function CreateDefaultStepTaskForm(props) {
             const requestOptions = {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${user.token}`,
+                    'Authorization': `Bearer ${props.user.token}`,
                     'Content-Type': 'application/json'
                 },
 
@@ -116,7 +116,7 @@ export default function CreateDefaultStepTaskForm(props) {
                         task_color: json.taskColor,
                         default_task: json.defaultTask,
                         listType: "StepList",
-                        user: props.user,
+                        user: json.user,
                         comment:json.comment,
                         creationDate: json.creationDate,
                         modificationDate: today
