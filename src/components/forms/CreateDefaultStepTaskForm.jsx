@@ -13,6 +13,9 @@ export default function CreateDefaultStepTaskForm(props) {
 
     const backUrlAdminboard = backUrl + "/adminboard";
     const [newTask, setNewTask] = useState({})
+    //TODAY :
+    const todayprepare = new Date;
+    const today = todayprepare.toISOString().slice(0, 10);
 
 
     /**
@@ -61,6 +64,73 @@ export default function CreateDefaultStepTaskForm(props) {
                 }));
         console.log(newTask.header)
         setTimeout(()=>window.location.reload(), 1000)
+    }
+
+    /**
+     * This controller update a Default stepTask by admin
+     * @param stepTask A stepTask
+     */
+    function updateDefaultStepListTask(stepTask){
+        console.log("Update Step Task : " + stepTask.header)
+
+        try {
+            //correspond à un objet AUTHREQUEST
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    subtype: stepTask.subtype,
+                    header: stepTask.header,
+                    description: stepTask.description,
+                    externalLink: stepTask.external_link,
+                    taskColor: stepTask.task_color,
+                    defaultTask: stepTask.default_task,
+                    comment : stepTask.comment,
+                    validationDate : stepTask.validationDate,
+                    previsionalDate : stepTask.previsionalDate,
+                    creationDate: stepTask.creationDate,
+                    modificationDate : today,
+                    visible : stepTask.visible,
+                    user : stepTask.user
+                })
+            };
+
+            //correspond à l'AUTHRESPONSE
+            fetch(backUrlAdminboard + "/updatetask", requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("updateStepListTask : Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(json => setNewTask(
+                    {
+                        subtype: json.subtype,
+                        header: json.header,
+                        description: json.description,
+                        external_link: json.externalLink,
+                        task_color: json.taskColor,
+                        default_task: json.defaultTask,
+                        listType: "StepList",
+                        user: props.user,
+                        comment:json.comment,
+                        creationDate: json.creationDate,
+                        modificationDate: today
+                    }))
+                .catch(error => {
+                    console.error('An error occurred while fetching the API:', error);
+                    throw new Error("Network error occurred while fetching the API");
+                });
+
+            console.log(newTask.header)
+
+        } catch (error) {
+            console.error('An error occurred while saving the step list task:', error);
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +224,7 @@ export default function CreateDefaultStepTaskForm(props) {
                 case "Modifier":
                     console.log("Modifier !")
                     console.log("tempTask is : " +tempTask.header)
-                    props.updateStepListTask(tempTask)
+                    updateDefaultStepListTask(tempTask)
                     break;
 
                 case "Supprimer" :

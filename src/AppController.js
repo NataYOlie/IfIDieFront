@@ -611,6 +611,8 @@ export default function AppController() {
     }
 
 
+
+
     function deleteTask(task){
         console.log("Delete Step Task : " + task.header)
 
