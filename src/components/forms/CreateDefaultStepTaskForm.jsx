@@ -17,7 +17,6 @@ export default function CreateDefaultStepTaskForm(props) {
     const todayprepare = new Date;
     const today = todayprepare.toISOString().slice(0, 10);
 
-
     /**
      * This function add freshly created default StepTask in database and populate the stepTasks list with it
      * @param subtype category of the task
@@ -108,28 +107,10 @@ export default function CreateDefaultStepTaskForm(props) {
                     }
                     return response.json();
                 })
-                .then(json => setNewTask(
-                    {
-                        id_task: json.id_task,
-                        subtype: json.subtype,
-                        header: json.header,
-                        description: json.description,
-                        external_link: json.externalLink,
-                        task_color: json.taskColor,
-                        default_task: json.defaultTask,
-                        listType: "StepList",
-                        user: props.user,
-                        comment:json.comment,
-                        creationDate: json.creationDate,
-                        modificationDate: today
-                    }))
                 .catch(error => {
                     console.error('An error occurred while fetching the API:', error);
                     throw new Error("Network error occurred while fetching the API");
                 });
-
-            console.log(newTask.header)
-
         } catch (error) {
             console.error('An error occurred while saving the step list task:', error);
         }
@@ -141,7 +122,7 @@ export default function CreateDefaultStepTaskForm(props) {
 
     //store the selected task from the form
     const [taskForm, setTaskForm]=useState({})
-    const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Divers" ])
+    const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Obsèques","Divers" ])
     const [taskColor, setTaskColor] = useState([
         {colorName:"Bleu", colorValue:"pastille-bleu"},
         {colorName:"Vert", colorValue:"pastille-vert"},
