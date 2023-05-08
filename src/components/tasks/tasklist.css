@@ -368,6 +368,8 @@
         max-width: 500px;
         max-height: none;
         top: 20%;
+        background-color: #FCD200FF;
+        overflow-y: scroll;
     }
 }
 
