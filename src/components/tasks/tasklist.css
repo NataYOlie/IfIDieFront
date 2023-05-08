@@ -366,8 +366,7 @@
     .modal-box{
         width: 100%;
         max-width: 500px;
-        max-height: 400px;
-        /*top: 20%;*/
+        max-height: 700px;
         background-color: #FCD200FF;
         overflow-y: scroll;
     }
