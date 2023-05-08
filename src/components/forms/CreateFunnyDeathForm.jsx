@@ -94,7 +94,7 @@ export default function CreateFunnyDeathForm(props) {
                         deadName: funnyDeath.deadName,
                         header: funnyDeath.header,
                         content: funnyDeath.content,
-                        deadDate: getFunnyDeathFormDate()
+                        deadDate: funnyDeath.deadDate,
                     })
                 };
 
@@ -466,7 +466,6 @@ export default function CreateFunnyDeathForm(props) {
                             <div className="createDefaultTask-formGroup">
                                 <label>Date</label>
                                 <input type="date"
-                                       placeholder='Date'
                                        defaultValue={getFunnyDeathFormDate()}
                                        {...register("deadDate")}
                                 />
