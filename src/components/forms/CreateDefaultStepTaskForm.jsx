@@ -95,7 +95,7 @@ export default function CreateDefaultStepTaskForm(props) {
                     creationDate: stepTask.creationDate,
                     modificationDate : today,
                     visible : stepTask.visible,
-                    user : stepTask.user
+                    user : props.user
                 })
             };
 
