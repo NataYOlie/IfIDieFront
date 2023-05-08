@@ -16,7 +16,6 @@ import {Navigate} from "react-router";
 import {Box, Modal} from "@mui/material";
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import {CreateUserStepTaskForm} from "../index";
-import {Link} from "react-router-dom";
 library.add(faEyeSlash, faEye, faCircle, faCircleCheck, faChevronUp,faSquarePlus,faSquareMinus, faCircleXmark)
 
 /**
@@ -528,7 +527,7 @@ export default function TaskList(props) {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
-                <Box classes={{ root: 'modal-box' }}>
+                <Box className="modal-box">
                     <CreateUserStepTaskForm
                         user={props.user}
                         addStepTask={props.addStepTask}
