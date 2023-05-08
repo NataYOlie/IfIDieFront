@@ -144,6 +144,7 @@
   .register-container{
     padding: 1.5rem 1rem;
   }
+
   .register-container h1{
     /* display: none; */
       font-size: 36px;
@@ -152,6 +153,13 @@
   .register-formGroup label{
     font-size: 20px;
     line-height: 30px;
+  }
+  .register-validation-container{
+    background: var(--vert);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: none;
+    filter: drop-shadow(0px 3px 2px rgb(0 0 0 / 0.2));
   }
   
 }
