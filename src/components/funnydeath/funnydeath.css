@@ -61,6 +61,7 @@
     font-family: var(--font-titles);
     color: var(--ternary-color);
     text-align: left;
+    margin-right: 2rem;
 }
 
 .funny-div{
