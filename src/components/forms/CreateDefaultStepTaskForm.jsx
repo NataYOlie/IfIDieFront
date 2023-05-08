@@ -83,6 +83,7 @@ export default function CreateDefaultStepTaskForm(props) {
                 },
 
                 body: JSON.stringify({
+                    id_task: stepTask.id_task,
                     subtype: stepTask.subtype,
                     header: stepTask.header,
                     description: stepTask.description,
@@ -100,7 +101,7 @@ export default function CreateDefaultStepTaskForm(props) {
             };
 
             //correspond à l'AUTHRESPONSE
-            fetch(backUrlAdminboard + "/updatetask", requestOptions)
+            fetch(backUrlAdminboard + "/updatetask/" + props.user.id, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("updateStepListTask : Network response was not ok");
