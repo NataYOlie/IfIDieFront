@@ -109,6 +109,7 @@ export default function CreateDefaultStepTaskForm(props) {
                 })
                 .then(json => setNewTask(
                     {
+                        id_task: json.id_task,
                         subtype: json.subtype,
                         header: json.header,
                         description: json.description,
@@ -116,7 +117,7 @@ export default function CreateDefaultStepTaskForm(props) {
                         task_color: json.taskColor,
                         default_task: json.defaultTask,
                         listType: "StepList",
-                        user: json.user,
+                        user: props.user,
                         comment:json.comment,
                         creationDate: json.creationDate,
                         modificationDate: today
