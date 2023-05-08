@@ -78,7 +78,7 @@ export default function CreateUserStepTaskForm(props) {
 
     //store the selected task from the form
     const [taskForm, setTaskForm]=useState({})
-    const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Divers" ])
+    const [taskCategory, setTaskCategory] = useState(["Famille","Administratif","Sante","Transmission","Obsèques","Divers" ])
     const [taskColor, setTaskColor] = useState([
         {colorName:"Bleu", colorValue:"pastille-bleu"},
         {colorName:"Vert", colorValue:"pastille-vert"},
