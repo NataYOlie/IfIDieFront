@@ -19,7 +19,6 @@ const Space = (props) => {
             return Math.floor(percentage);
 
         }else {
-            props.fetchUserStepTasks();
             return 0;
         }
     }
