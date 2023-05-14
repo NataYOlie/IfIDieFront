@@ -45,6 +45,7 @@ export default function RegisterController(props){
                 if (error.message === 'Conflict') {
                     alert("Ce compte existe déjà !");
                 }
+                props.fetchUserStepTasks();
             });
     }
 
