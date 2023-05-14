@@ -3,9 +3,9 @@ import { redirect } from "react-router-dom";
 
 export default function RegisterValidation (props){
 
-    function onSubmit() {
+    function onClick() {
 
-        return redirect("/")
+       window.location.reload();
     }
 
 
@@ -24,7 +24,7 @@ export default function RegisterValidation (props){
                 {/*</Link>*/}
 
                 <div className="register-button">
-                    <button className='register-writeButton' type='submit' onSubmit={()=>onSubmit()}>Voir mon espace</button>
+                    <button className='register-writeButton' type='submit' onClick={()=>onClick()}>Voir mon espace</button>
                 </div>
 
             </div>
