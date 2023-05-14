@@ -227,9 +227,13 @@ export default function AppController() {
 
     function updateStepTaskValidationDate(index, validationDate){
         if (index != null) {
-            const updatedStepTasks = [...stepTasks]; // Make a copy of the stepTasks array
-            updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate}; // Update the task object with new data
-            setStepTasksArray(updatedStepTasks); // Update the stepTasks state
+            // Make a copy of the stepTasks array
+            const updatedStepTasks = [...stepTasks];
+            // Update the task object with new data
+            updatedStepTasks[index] = {...updatedStepTasks[index], validationDate: validationDate};
+            // Update the stepTasks state
+            setStepTasksArray(updatedStepTasks);
+            // Save steptask chang in database
             updateStepListTask(updatedStepTasks[index]);
             console.log(stepTasks[index].header + "validationDate APP CONTROLLER " + updatedStepTasks[index].validationDate)
         }else console.log("check pas d'index")

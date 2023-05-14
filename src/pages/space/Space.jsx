@@ -6,20 +6,21 @@ const Space = (props) => {
 
     function percentageDone() {
         const steptasks = props.stepTasks;
-        console.log("percentage done" + props.stepTasks.length)
-        if (props.stepTasks.length > 0){
+        console.log("percentage done" + props.stepTasks.length);
+        if (props.stepTasks.length > 0 && !props.stepTasks[0].default_task){
             let count = 0;
             steptasks.forEach(task => {
                 if (task.validationDate) {
                     count += 1;
                 }
             });
-            console.log("count " + count)
+            console.log("count " + count);
             let percentage = (count * 100) /props.stepTasks.length ;
             return Math.floor(percentage);
 
         }else {
-            return 0
+            props.fetchUserStepTasks();
+            return 0;
         }
     }
 

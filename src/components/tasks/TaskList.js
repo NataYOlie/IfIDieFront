@@ -28,7 +28,7 @@ export default function TaskList(props) {
     const [subtypeListState, setSubtypeListState] = useState([]);
     const [newTaskDisplay,setNewTaskDisplay] = useState([]);
     const [shouldRedirect, setShouldRedirect] = useState(false);
-    const [toggleButton, setToggleButton] = useState("Déplier");
+    const [toggleButton, setToggleButton] = useState("Plier");
 
     //Post It
     const [postItRotate, setPostItRotate] = useState([
@@ -329,7 +329,7 @@ export default function TaskList(props) {
         }
 
         console.log("stepTaskRender !")
-        newTaskDisplay.length = 0;
+        newTaskDisplay.length = 0; //Je vide la constante qui contient mes tâches formatées pour affichage
 
         if (props.stepTasks && props.stepTasks.length > 0) {
             const steptasksMirror = props.stepTasks
@@ -482,12 +482,11 @@ export default function TaskList(props) {
                         }
                     }
                 }//A chaque tâche traitée je l'ajoute à la liste entière
-                //J'ai fait une catégorie, je passe à la suivante
                 newTaskDisplay.push(newList)
-
                 //Pis je met à jour mon props quoi en lui collant ma liste de travail
                 props.setStepTasksDisplayArray(newTaskDisplay)
-            }
+
+            }//J'ai fait une catégorie, je passe à la suivante
         }
     }
 

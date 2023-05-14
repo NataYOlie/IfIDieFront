@@ -22,6 +22,8 @@ export default function CreateFunnyDeathForm(props) {
 
 
 
+
+
 /////////FUNNYDEATH CONTROLLER///////FUNNYDEATH CONTROLLER/////////////////////////FUNNYDEATH CONTROLLER//////////////////////////////
 
     const backUrlAdminboard = backUrl + "/adminboard";
@@ -115,15 +117,16 @@ export default function CreateFunnyDeathForm(props) {
                                 "\r\n content : " + json.content +
                                 "\r\ndeadDate : " + json.deadDate.slice(0, 10)
                             )
-
-
                         }
                     )
+
 
                     .catch(error => {
                         console.error('An error occurred while fetching the API:', error);
                         throw new Error("Network error occurred while fetching the API");
                     });
+
+                refresh();
 
             } catch (error) {
                 console.error('An error occurred while saving the step list task:', error);
@@ -318,7 +321,7 @@ export default function CreateFunnyDeathForm(props) {
         reset()
         // document.getElementById("histoire").value="";
         console.log(tempFd)
-       refresh()
+
     }
 
     function onSubmit(data){
