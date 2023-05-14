@@ -4,9 +4,8 @@ import {useEffect} from "react";
 export default function RegisterValidation (props){
 
     function onSubmit() {
-        props.fetchUserStepTasks().then(() => {
-            const url = "/space/" + props.user.id;
-            history.push(url); // rediriger vers la page spécifique de l'utilisateur
+        window.location.reload().then(() => {
+            window.location.href = "/"; // rediriger vers la page d'accueil
         });
     }
 
@@ -19,7 +18,7 @@ export default function RegisterValidation (props){
                 <h3>Un email de validation a été envoyé à votre adresse {props.user.email}, merci de cliquer sur le
                     lien de validation afin de finaliser l'enregistrement de votre compte.</h3>
                     <div className="register-button">
-                        <button className='register-writeButton' type='submit' onSubmit={()=>onSubmit()}>Voir mon espace</button>
+                        <button className='register-writeButton' type='submit' onSubmit={()=>onSubmit()}>Accéder au site</button>
                     </div>
             </div>
 
@@ -28,3 +27,4 @@ export default function RegisterValidation (props){
 
     );
 }
+
