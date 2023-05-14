@@ -67,7 +67,7 @@ const Space = (props) => {
                     <div>
                         <h2>Mettre en ordre : </h2>
                         {
-                            props.stepTasks  && (
+                            props.stepTasks[0].validationDate && (
                                 <p>{percentageDone()} % de tâches validées ! </p>
                             )
                         }
