@@ -60,11 +60,8 @@ const Space = (props) => {
                 {props.user.role === "ROLE_USER" && (
                     <div>
                         <h2>Mettre en ordre : </h2>
-                        {
-                            props.stepTasks[0].validationDate && (
+
                                 <p>{percentageDone()} % de tâches validées ! </p>
-                            )
-                        }
 
                         <Link to ="/mettre_en_ordre">Voir ma liste</Link>
                     </div>
