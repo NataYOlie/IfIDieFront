@@ -1,11 +1,13 @@
-import {Link} from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 
 export default function RegisterValidation (props){
-    const history = useHistory();
+
     function onSubmit() {
-        location.replace(window.location.pathname + window.location.search);
+
+        return redirect("/")
     }
+
 
     return(
         <div className='register section__padding'>
