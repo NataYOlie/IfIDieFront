@@ -5,10 +5,10 @@ export default function RegisterValidation (props){
 
     function onSubmit() {
         props.fetchUserStepTasks().then(() => {
-            window.location.href = `/space/${props.user.id}`; // rediriger vers la page de l'espace de l'utilisateur
+            const url = "/space/" + props.user.id;
+            history.push(url); // rediriger vers la page spécifique de l'utilisateur
         });
     }
-
 
     return(
         <div className='register section__padding'>
