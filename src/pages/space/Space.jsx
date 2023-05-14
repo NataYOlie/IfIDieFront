@@ -8,9 +8,7 @@ const Space = (props) => {
         if (props.stepTasks[0].default_task == null){
             window.location.reload()
         }
-        if (props.stepTasks[0].validationDate == null){
-            window.location.reload()
-        }
+
     }, [])
 
     function percentageDone() {
@@ -19,7 +17,7 @@ const Space = (props) => {
         if (props.stepTasks.length > 0){
             let count = 0;
             steptasks.forEach(task => {
-                if (task.validationDate) {
+                if (task.validationDate && task.validationDate != null) {
                     count += 1;
                 }
             });
@@ -59,8 +57,8 @@ const Space = (props) => {
                     <p>{props.user.surname}</p>
                     <h2>Email : </h2>
                     <p>{props.user.email}</p>
-                    <h2>Adresse : </h2>
-                    <p>non renseignée</p>
+                    {/*<h2>Adresse : </h2>*/}
+                    {/*<p>non renseignée</p>*/}
                 </div>
             </div>
             <div className="space-info">
@@ -68,7 +66,12 @@ const Space = (props) => {
                 {props.user.role === "ROLE_USER" && (
                     <div>
                         <h2>Mettre en ordre : </h2>
-                        <p>{percentageDone()} % de tâches validées ! </p>
+                        {
+                            props.stepTasks  && (
+                                <p>{percentageDone()} % de tâches validées ! </p>
+                            )
+                        }
+
                         <Link to ="/mettre_en_ordre">Voir ma liste</Link>
                     </div>
                 )}
