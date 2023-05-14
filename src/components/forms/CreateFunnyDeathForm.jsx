@@ -125,8 +125,7 @@ export default function CreateFunnyDeathForm(props) {
                         console.error('An error occurred while fetching the API:', error);
                         throw new Error("Network error occurred while fetching the API");
                     });
-
-                resetFdForm();
+                setTimeout(()=>resetFdForm(), 3000)
 
             } catch (error) {
                 console.error('An error occurred while saving the step list task:', error);
