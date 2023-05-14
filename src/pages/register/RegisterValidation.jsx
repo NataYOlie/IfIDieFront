@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+
 
 export default function RegisterValidation (props){
     const history = useHistory();
     function onSubmit() {
-        history.go(0);
+        location.replace(window.location.pathname + window.location.search);
     }
 
     return(
