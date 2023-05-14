@@ -5,7 +5,7 @@ export default function RegisterValidation (props){
 
     function onSubmit() {
         props.fetchUserStepTasks().then(() => {
-            window.location.href = "/space/$"${props.user.id}; // rediriger vers la page d'accueil
+            window.location.href = `/space/${props.user.id}`; // rediriger vers la page de l'espace de l'utilisateur
         });
     }
 
