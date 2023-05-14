@@ -45,7 +45,7 @@ export default function App(props) {
                                        setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>} />
             <Route path="/space/:id" element={<Space user={props.user} setUser={props.setUser} stepTasks={props.stepTasks}  fetchUserStepTasks={props.fetchUserStepTasks}/>} />
             <Route path="/login" element={<SecurityController user={props.user} setUser={props.setUser} addStepTasks={props.addStepTask} fetchUserStepTasks={props.fetchUserStepTasks}
-                                                              login_label={props.login_label} setLoginRedirectMessage={props.setLoginRedirectMessage}/>} />
+                                                              login_label={props.login_label} setLoginRedirectMessage={props.setLoginRedirectMessage} />} />
             <Route path="/register" element={ <RegisterController user={props.user} setUser={props.setUser} setLoginRedirectMessage={props.setLoginRedirectMessage}/>} />
             <Route path="/register/validation"  user={props.user} setUser={props.setUser}/>}
             <Route path="/adminboard" element={<AdminBoardController             stepTasks={props.stepTasks}
