@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './space.css'
 import {Link} from "react-router-dom";
 
 const Space = (props) => {
+
+    useEffect(() => {
+        if (props.stepTasks[0].default_task == null){
+            window.location.reload()
+        }
+    }, [])
 
     function percentageDone() {
         const steptasks = props.stepTasks;
