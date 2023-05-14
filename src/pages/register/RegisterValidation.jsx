@@ -1,6 +1,11 @@
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function RegisterValidation (props){
+
+    useEffect(() => {
+        window.location.reload()
+    }, [])
 
     return(
         <div className='register section__padding'>
@@ -12,7 +17,7 @@ export default function RegisterValidation (props){
                     lien de validation afin de finaliser l'enregistrement de votre compte.</h3>
                 <Link to={`/`}>
                     <div className="register-button">
-                    <button className='register-writeButton' type='submit' onClick={window.location.reload}>Accéder au site</button>
+                    <button className='register-writeButton' type='submit'>Accéder au site</button>
                     </div>
                 </Link>
             </div>
