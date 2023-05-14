@@ -8,6 +8,9 @@ const Space = (props) => {
         if (props.stepTasks[0].default_task == null){
             window.location.reload()
         }
+        if (props.stepTasks[0].validationDate == null){
+            window.location.reload()
+        }
     }, [])
 
     function percentageDone() {
