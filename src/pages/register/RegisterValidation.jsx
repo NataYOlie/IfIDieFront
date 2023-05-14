@@ -12,7 +12,7 @@ export default function RegisterValidation (props){
                     lien de validation afin de finaliser l'enregistrement de votre compte.</h3>
                 <Link to={`/`}>
                     <div className="register-button">
-                    <button className='register-writeButton' type='submit' onClick={props.fetchUserStepTasks}>Accéder au site</button>
+                    <button className='register-writeButton' type='submit' onClick={window.location.reload}>Accéder au site</button>
                     </div>
                 </Link>
             </div>
