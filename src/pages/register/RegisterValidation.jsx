@@ -1,11 +1,11 @@
-import { redirect } from "react-router-dom";
+
 
 
 export default function RegisterValidation (props){
 
     function onClick() {
 
-       window.location.reload();
+       window.location.replace("/");
     }
 
 
