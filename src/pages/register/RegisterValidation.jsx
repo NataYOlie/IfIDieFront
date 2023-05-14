@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 
 export default function RegisterValidation (props){
     function onSubmit() {
-        window.location.reload()
+        history.go(0)
     }
 
     return(
