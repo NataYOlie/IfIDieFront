@@ -4,7 +4,9 @@ import {useEffect} from "react";
 export default function RegisterValidation (props){
 
     useEffect(() => {
-        window.location.reload()
+        if (!props.stepTasks){
+            props.fetchUserStepTasks()
+        }
     }, [])
 
     return(

@@ -50,7 +50,7 @@ export default function RegisterController(props){
 
     // RETURN REDIRECT TO USER SPACE IF CONNECTED
     if (props.user) {
-        return <RegisterValidation user={props.user} fetchUserStepTasks={props.fetchUserStepTasks}/>;
+        return <RegisterValidation user={props.user} fetchUserStepTasks={props.fetchUserStepTasks} stepTasks={props.stepTasks}/>;
     } else {
         return (
             <Register
