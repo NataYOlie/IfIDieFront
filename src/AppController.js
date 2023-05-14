@@ -55,14 +55,7 @@ export default function AppController() {
     const [login_label, setLogin_label] = useState("")
 
 /////USE EFFECTS//////////////////USE EFFECTS///////////////USE EFFECTS////////////////////////////////USE EFFECTS/////////////////////////////
-//     /**
-//      * This useEffect.js fetch StepTasks from ddb when launching app
-//      */
-//     useEffect(() => {
-//         if (!user) {
-//             fetchDefaultStepTasks();
-//         } else fetchUserStepTasks()
-//     }, []);
+
 
     /**
      * This useEffect.js fetch random funnyDeath when launching app

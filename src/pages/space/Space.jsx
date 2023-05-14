@@ -4,12 +4,6 @@ import {Link} from "react-router-dom";
 
 const Space = (props) => {
 
-    useEffect(() => {
-        if (props.stepTasks[0].default_task == null){
-            window.location.reload()
-        }
-
-    }, [])
 
     function percentageDone() {
         const steptasks = props.stepTasks;
@@ -17,7 +11,7 @@ const Space = (props) => {
         if (props.stepTasks.length > 0){
             let count = 0;
             steptasks.forEach(task => {
-                if (task.validationDate && task.validationDate != null) {
+                if (task.validationDate) {
                     count += 1;
                 }
             });

@@ -1,12 +1,8 @@
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
 
 export default function RegisterValidation (props){
-
     function onSubmit() {
-        props.fetchUserStepTasks().then(() => {
-            window.location.href = "/space/" + props.user.id; // rediriger vers la page spécifique de l'utilisateur
-        });
+        window.location.reload()
     }
 
     return(
@@ -17,9 +13,16 @@ export default function RegisterValidation (props){
                 </h2>
                 <h3>Un email de validation a été envoyé à votre adresse {props.user.email}, merci de cliquer sur le
                     lien de validation afin de finaliser l'enregistrement de votre compte.</h3>
-                    <div className="register-button">
-                        <button className='register-writeButton' type='submit' onSubmit={()=>onSubmit()}>Voir mon espace</button>
-                    </div>
+                {/*<Link to={`/space/${props.user.id}`}>*/}
+                {/*    <div className="register-button">*/}
+                {/*        <button className='register-writeButton' type='submit'>Voir mon espace</button>*/}
+                {/*    </div>*/}
+                {/*</Link>*/}
+
+                <div className="register-button">
+                    <button className='register-writeButton' type='submit' onSubmit={()=>onSubmit()}>Voir mon espace</button>
+                </div>
+
             </div>
 
 
