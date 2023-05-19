@@ -19,7 +19,7 @@
     max-width: 10%;
     right:10% ;
     transform: rotateY(180deg);
-    top:30%;
+    top:20%;
 }
 
 
@@ -50,5 +50,11 @@
 @media screen and (min-width: 2000px){
     .steplist-intro{
         width:50%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .steplist-intro {
+        width: 70%;
     }
 }
