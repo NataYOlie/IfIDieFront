@@ -160,7 +160,7 @@ export default function TaskList(props) {
         } else {
             props.fetchDefaultStepTasks();
         }
-    }, [props.user]);
+    }, [props.user, props.stepTasks]);
 
     useEffect(() => {
         if (props.user) {
@@ -252,7 +252,7 @@ export default function TaskList(props) {
             }
 
             stepTasksRender()
-            //Mon choix
+
         } else {
             props.stepTasks[i].commentEdit = true
             console.log("handleComment TRUE " + props.stepTasks[i].comment)
@@ -554,7 +554,5 @@ export default function TaskList(props) {
                 </Box>
             </Modal>
         </>
-
-
     )
 }

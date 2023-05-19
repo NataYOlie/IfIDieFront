@@ -46,8 +46,8 @@ const Cards = (props) => {
                 </Link>
               </div>
               <div className="card-content">
-                <p>Si vous êtes ici c'est que vous n'êtes pas mort.e ! Comment faire de ce temps qui nous ai donné sur
-                  terre notre vie ? Comment choisir ce que l'on vit et renoncer à ce que l'on ne souhaite plus vivre ?</p>
+                <p>Si vous êtes ici c'est que vous n'êtes pas mort.e ! Comment faire de ce temps qui nous est donné sur
+                  terre ? Comment choisir ce que l'on vit et renoncer à ce que l'on ne souhaite plus vivre ?</p>
                   <p>Listez ici vos envies, projets, objectifs personnels,
                 professionnels, intimes...</p>
               </div>
