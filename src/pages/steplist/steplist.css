@@ -46,3 +46,10 @@
 .steplist-intro a:hover{
     font-size: 1.2rem;
 }
+
+@media screen and (max-width: 2000px){
+    .step-list img{
+        right:7% ;
+        top:30%;
+    }
+}
