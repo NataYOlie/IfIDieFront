@@ -157,9 +157,8 @@ export default function TaskList(props) {
     useEffect(() => {
         if (props.user) {
             setComments(props.stepTasks.map(task => ({comment_id:task.id_task,comment_header:task.header, comment:task.comment})))
-        } else {
-            props.fetchDefaultStepTasks();
         }
+
     }, [props.user, props.stepTasks]);
 
     useEffect(() => {
