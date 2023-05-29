@@ -19,7 +19,7 @@ export default function RegisterValidation (props){
                     lien de validation afin de finaliser l'enregistrement de votre compte.</h3>
 
                 <div className="register-button">
-                    <button className='register-writeButton' type='submit' onClick={()=>onClick()}>Voir mon espace</button>
+                    <button className='register-writeButton' type='submit' onClick={()=>onClick()}>Retourner à l'accueil</button>
                 </div>
             </div>
 
