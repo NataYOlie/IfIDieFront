@@ -42,6 +42,7 @@ const Menu = (props) => {
       }
 
       const handleLogin = () => {
+         props.setLoginRedirectMessage("")
          props.setUser(props.user);
       }
 
