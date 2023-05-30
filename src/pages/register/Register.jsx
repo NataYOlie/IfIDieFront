@@ -7,7 +7,7 @@ import './register.css';
         lastname: yup.string().required("Merci de renseigner votre nom"),
         surname: yup.string().required("Merci de renseigner votre prénom"),
         username: yup.string().email("Cela ne ressemble pas à un email valide").required("Merci de renseigner votre email"),
-        password: yup.string().min(6, "le mot de passe doit faire au moins 6 caractère")
+        password: yup.string().min(12, "le mot de passe doit faire au moins 12 caractères")
             .max(20, "le mot de passe ne peut dépasser 20 caractères")
             .required("Vous devez entrer un mot de passe"),
         confirmPassword: yup.string()
