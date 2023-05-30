@@ -17,7 +17,11 @@ export default function App(props) {
 
   return (
     <>
-      <Navbar logout={props.logout} user={props.user}  setUser={props.setUser} setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays)}/>
+      <Navbar logout={props.logout} user={props.user}
+              setUser={props.setUser}
+              setStepTasksDisplayArray={(newStepTasksDisplays)=>props.setStepTasksDisplayArray(newStepTasksDisplays) }
+              setLoginRedirectMessage={props.setLoginRedirectMessage}
+     />
           <Routes>
             <Route path="/" element={<Home
                 currentFunnyDeath = {props.currentFunnyDeath}
