@@ -342,6 +342,9 @@ export default function TaskList(props) {
             //je passe mon set en array parce que je suis plus à l'aise pour la suite pour le manipuler
             setSubtypeListState(Array.from(subtypeList))
 
+            // Trier le tableau subtypeListState dans l'ordre alphabétique
+            subtypeListState.sort();
+
             if (subtypeListState.length > 0) {
                 //Enregistrer les tâches dans chacune de leur catégorie
                 const newList = []
