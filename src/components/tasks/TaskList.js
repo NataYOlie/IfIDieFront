@@ -276,6 +276,7 @@ export default function TaskList(props) {
             props.saveStepListTasks();
         } else {
             console.log("pas d'utilisateur");
+            props.setLoginRedirectMessage("Il faut se connecter pour enregistrer la liste")
             setShouldRedirect(true);
         }
     }
@@ -518,8 +519,10 @@ export default function TaskList(props) {
                 <div key={nanoid()} className="task-container">
                     {props.stepTasksDisplay}
                     <div className="task-buttons">
-                        {props.user ? (
-                        <button className="add-writeButton" key={nanoid()} onClick={()=>handleOpen()}> Créer une tâche </button>):
+                        {props.user ?
+                            (
+                        <button className="add-writeButton" key={nanoid()} onClick={()=>handleOpen()}> Créer une tâche </button>
+                            ):
                             <button className="save-writeButton" key={nanoid()} onClick={()=>handleSaveList()}>
                                  Enregistrer
                             </button>}
