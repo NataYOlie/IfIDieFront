@@ -315,9 +315,14 @@ export default function TaskList(props) {
     }
 
     function handleCommentEdit(i) {
-        console.log("toutou")
-        props.stepTasks[i].commentEdit = true
-        stepTasksRender()
+        if (props.user) {
+            props.stepTasks[i].commentEdit = true
+            stepTasksRender()
+        } else {
+            console.log("pas de user")
+            props.setLoginRedirectMessage("Il faut se connecter pour modifier une tâche")
+            setShouldRedirect(true)
+        }
     }
 
     function stepTasksRender() {
